@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginRoutingModule } from './login-routing.module';
 import { AppCommonModule } from '../../app.common.module';
-
 @NgModule({
   imports: [
     CommonModule,
