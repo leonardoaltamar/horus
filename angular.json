@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/font-awesome/css/font-awesome.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -119,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "horus"
+    }
+  },
+  "defaultProject": "horus",
+  "cli": {
+    "analytics": "43677749-ac2b-4954-90e8-529b37c1ab15"
+  }
 }
