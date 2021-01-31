@@ -1,18 +1,19 @@
+import { AppCommonModule } from './../../app.common.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 
 @NgModule({
-  declarations: [
-    MainComponent
-  ], imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
-    MainRoutingModule
-  ]
+    MainRoutingModule,
+    AppCommonModule
+  ],
+  declarations: [MainComponent],
+  exports:[]
 })
 export class MainModule { }

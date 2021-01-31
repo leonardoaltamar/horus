@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { LayoutComponent } from './shared/layout/layout.component';
-
 const appRoutes: Routes = [
   {
     path: 'login',
