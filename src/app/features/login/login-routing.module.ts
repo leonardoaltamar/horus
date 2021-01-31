@@ -1,6 +1,7 @@
 import { LoginComponent } from './login.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { NbButtonModule, NbCardModule, NbLayoutModule, NbSidebarModule, NbThemeModule} from '@nebular/theme';
 
 const routes: Routes = [
   {
@@ -10,7 +11,8 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes),
+  ],
   exports: [RouterModule]
 })
 export class LoginRoutingModule { }
