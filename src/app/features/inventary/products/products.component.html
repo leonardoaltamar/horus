@@ -9,11 +9,11 @@
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
             <span class="p-input-icon-right">
-              <i class="fa fa-search"></i>
+              <i class="pi pi-search"></i>
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line" />
             </span>
-            <button pButton pRipple icon="fa fa-plus" iconPos="right" label="Nuevo" class="button-text"
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text"
               (click)="newProduct()"></button>
           </div>
         </ng-template>
