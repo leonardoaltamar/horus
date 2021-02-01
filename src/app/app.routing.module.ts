@@ -12,6 +12,15 @@ const appRoutes: Routes = [
     loadChildren: () => import('./features/main/main.module').then(m => m.MainModule)
   },
   {
+    path: 'inventary',
+    component: LayoutComponent,
+    children:[{
+        path: '',
+        loadChildren: () => import('./features/inventary/inventary.module').then(m => m.InventaryModule)
+      }
+    ]
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'

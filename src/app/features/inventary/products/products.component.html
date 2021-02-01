@@ -1,0 +1,23 @@
+<nb-card>
+  <nb-card-body class="example-items-rows">
+    <p-table [value]="products">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>descripcion</th>
+              <th>cantidad</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+          <tr>
+              <td>{{product.id}}</td>
+              <td>{{product.name}}</td>
+              <td>{{product.description}}</td>
+              <td>{{product.count}}</td>
+          </tr>
+      </ng-template>
+  </p-table>
+  </nb-card-body>
+</nb-card>
+
