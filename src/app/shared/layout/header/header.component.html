@@ -1,18 +1,31 @@
-<div class="header">
+<div class="header p-d-flex p-jc-between">
   <div class="row">
     <div class="column-logo">
-      <button class="fa fa-bars bar"></button>
-      <h2 class="logo">HORUS</h2>
+      <button class="pi pi-bars bar"></button>
+      <img class="logo" style="width: 100%;" src="assets/images/horus.svg">
     </div>
-    <div class="column-user">
+    <div class="column-user" (click)="userdetails.toggle($event)">
       <img class="user" src="assets/images/user.jpg">
       <div class="info">
-        <a href="">
-          <h3 style="font-weight: bold;">Admin Administrador</h3>
-          <p>Administrador</p>
-        </a>
+        <h3>Admin Administrador</h3>
+        <p>Administrador</p>
       </div>
-      <i class="fa fa-bell icon"></i>
+      <i class="pi pi-bell icon-notification"></i>
     </div>
   </div>
 </div>
+
+<!-- user detials overlay panel -->
+<p-overlayPanel #userdetails>
+  <div style="display: flex;">
+    <img class="user" src="assets/images/user.jpg">
+    <div class="info" (click)="userdetails.toggle($event)">
+      <h3 style="font-weight: bold;">Admin Administrador</h3>
+      <p>Administrador</p>
+    </div>
+  </div>
+  <hr>
+  <div class="p-pt-4">
+    <a class="item-logout"><i class="pi pi-sign-out"></i> Cerrar Sesión</a>
+  </div>
+</p-overlayPanel>

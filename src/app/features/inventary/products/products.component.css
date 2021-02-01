@@ -1,13 +1,9 @@
 .button-text{
   float: right;
   position: relative;
-  top: -6px;
+  top: -1px;
   border: none;
 }
-.button-text:active{
-  background:#FAB710;
-}
-
-.button-text:focus{
-  background:#FAB710;
+.button-text:active:focus{
+  background:#439D49;
 }

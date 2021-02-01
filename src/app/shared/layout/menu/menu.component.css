@@ -1,11 +1,51 @@
 .menu{
-  width: 16.875rem;
+  width: 15rem;
   display: block;
   z-index: 3;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
   color: #414141;
   border-right: 1px solid #f1f1f1;
   height: 100%;
   position: fixed;
   overflow: auto;
+}
+
+.hr-menu {
+  padding: 5px;
+  margin: 0px;
+  list-style: none !important;
+  margin-top: 1.6rem;
+  margin-bottom: 5.6rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.hr-menu li a {
+  padding: 12px 10px;
+  color: #697477;
+  display: block;
+  text-decoration: none !important;
+  position: relative;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hr-menu li a:hover {
+  background: #f8f8f8;
+}
+
+.hr-menu li ul {
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .menu {
+      display: block !important;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .menu {
+    display: none;
+    width: 100%;
+  }
 }
