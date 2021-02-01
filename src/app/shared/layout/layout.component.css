@@ -1,3 +1,27 @@
 .header{
   width: 100%;
 }
+
+.ng-content {
+  padding: 1.25rem;
+  margin-left: 14.875rem;
+}
+
+@media only screen and (max-width: 992px) {
+
+  .ng-content {
+    margin-left: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+}
+
+@media only screen and (max-width: 576px) {
+
+  .ng-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+}

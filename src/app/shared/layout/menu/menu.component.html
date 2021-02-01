@@ -1,6 +1,16 @@
-
-  <nb-card Style="width: 15rem; border:none">
-    <nb-menu [items]="items"></nb-menu>
-  </nb-card>
-
-
+<div class="menu scroll">
+  <ul class="hr-menu">
+    <ng-template #recursiveList let-list>
+      <li *ngFor="let menu of list">
+        <a>
+          <i class="pi pi-chart-line"></i> Inventario <i class="pi pi-angle-right"></i>
+          <ul class="ssw-sub-menu">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menu.Childs }">
+            </ng-container>
+          </ul>
+        </a>
+      </li>
+    </ng-template>
+    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: items }"></ng-container>
+  </ul>
+</div>
