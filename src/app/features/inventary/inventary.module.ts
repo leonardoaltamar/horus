@@ -4,7 +4,9 @@ import { NgModule } from "@angular/core";
 import { ProductsComponent } from './products/products.component';
 import { InventaryRoutingModule } from './inventary-routing.module';
 import { NbCardModule, NbInputModule, NbLayoutModule } from '@nebular/theme';
-import { TableModule } from 'primeng/table'
+import { TableModule } from 'primeng/table';
+import {DialogModule} from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [
     InventaryComponent,
@@ -13,12 +15,11 @@ import { TableModule } from 'primeng/table'
   exports:[
   ],
   imports: [
-    NbInputModule,
     InventaryRoutingModule,
-    NbCardModule,
-    NbLayoutModule,
     TableModule,
     ButtonModule,
+    DialogModule,
+    InputTextModule
   ],
   providers: [ ],
   entryComponents: []

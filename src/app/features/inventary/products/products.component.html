@@ -1,23 +1,77 @@
-<nb-card>
-  <nb-card-body class="example-items-rows">
-    <p-table [value]="products">
-      <ng-template pTemplate="header">
+<div styleClass="ssw-panel" class="card scroll">
+  <div class="card-header">
+    Productos
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+        [globalFilterFields]="['title', 'activityType.name']">
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            <span class="p-input-icon-right">
+              <i class="fa fa-search"></i>
+              <input type="text" pInputText placeholder="Buscar..."
+                (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line" />
+            </span>
+            <button pButton pRipple icon="fa fa-plus" iconPos="right" label="Nuevo" class="button-text p-button-warning"
+              (click)="newProduct()"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
           <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>descripcion</th>
-              <th>cantidad</th>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Cantidad</th>
+            <th>*</th>
           </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-product>
+        </ng-template>
+        <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
-              <td>{{product.id}}</td>
-              <td>{{product.name}}</td>
-              <td>{{product.description}}</td>
-              <td>{{product.count}}</td>
+            <td>{{rowIndex+1}}</td>
+            <td>{{dataRow.name}}</td>
+            <td>{{dataRow.description}}</td>
+            <td>{{dataRow.count}}</td>
+            <td>
+              <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
+              <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
+            </td>
           </tr>
-      </ng-template>
-  </p-table>
-  </nb-card-body>
-</nb-card>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
 
+
+<p-dialog header="Nuevo" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true" [baseZIndex]="10000"
+[resizable]="false">
+  <form class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-6 p-sm-6">
+        <label for="firstname2">Nombre</label>
+        <input id="firstname2" type="text" pInputText>
+    </div>
+    <div class="p-field p-col-6 p-sm-6">
+        <label for="lastname2">Descripción</label>
+        <input id="lastname2" type="text" pInputText>
+    </div>
+    <div class="p-field p-col-6 p-sm-6">
+      <label for="lastname2">Precio</label>
+      <input id="lastname2" type="text" pInputText>
+    </div>
+    <div class="p-field p-col-6 p-sm-6">
+      <label for="lastname2">Cantidad</label>
+      <input id="lastname2" type="text" pInputText>
+    </div>
+  </form>
+
+   <p-footer class="p-grid">
+      <p-button type="submit" icon="fa fa-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
+      <p-button icon="fa fa-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false"></p-button>
+    </p-footer>
+  <!-- <p-footer>
+    <p-button icon="fas fa-save" iconPos="left" label="Guardar" [disabled]="name.invalid" (click)="saveTerm()">
+    </p-button>
+    <p-button icon="fas fa-times" iconPos="left" label="Cerrar" (click)="showModal=false"></p-button>
+  </p-footer> -->
+</p-dialog>

@@ -1,4 +1,578 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #f3f8fb;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  color: #414141;
+}
+body .ui-button {
+  background: #1B5E6F;
+  border: none;
+}
+.p-component {
+  font-family: 'Open Sans', sans-serif;
+}
+.p-multiselect {
+  width: 100%;
+}
+.p-sidebar-content {
+  height: 100%;
+}
+.p-sidebar-left {
+  width: 20rem;
+  background-color: #e2e2e2;
+  height: 100%;
+  overflow: hidden;
+  margin-left: -15px;
+  padding-bottom: 60px;
+  width: 18%;
+}
+.caption {
+  color: red;
+  font-size: 0.75rem;
+}
+.success-icon {
+  color: #27ae60;
+}
+.error-icon {
+  color: #e74c3c;
+}
+.ssw-header {
+  z-index: 4;
+  background: white;
+  top: 0;
+  overflow: hidden;
+  z-index: 4;
+  padding: 5px;
+  border: 1px solid #f1f1f1;
+  position: sticky;
+}
+
+input[type="radio"] {
+  border: 2px solid #ced4da;
+  background: #ffffff;
+  width: 22px;
+  height: 22px;
+  color: #495057 !important;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+input[type="radio"]:enabled:hover {
+  border-color: #2196F3;
+  cursor: pointer;
+}
+
+.ng-header .pi {
+  color: #000000;
+}
+
+.ng-footer div {
+  text-align: center;
+  padding: 10px;
+}
+
+.ng-content {
+  padding: 1.25rem;
+  margin-left: 16.875rem;
+}
+.ssw-content .p-card {
+  min-height: 100%;
+  background: #f7f9fa;
+}
+
+.icon {
+  line-height: 3.125em;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.prime-button {
+  width: 9.375em !important;
+}
+
+.color-red {
+  color: red;
+}
+
+.breadcrumb {
+  margin-bottom: 10px;
+}
+.p-overlay-badge {
+  position: relative;
+  display: inline-block;
+}
+.p-overlay-badge:hover  {
+  cursor: pointer
+}
+.p-overlay-badge .p-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  -ms-transform: translate(1em,-1em);
+  transform: translate(1em,-1em);
+  margin: 0;
+}
+.p-badge {
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%;
+  background: #F44336;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 21px;
+  height: 21px;
+  line-height: 21px;
+}
+.icon-notification {
+  font-size: 1.375rem;
+  color: #5F6368;
+}
+.login-logo {
+  height: 100%;
+  width: 100%;
+}
+.button-action {
+  width: 20px !important;
+  height: 20px;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(31, 45, 65, 0.5) !important;
+}
+.button-action:enabled:hover, .button-action:enabled:focus {
+  box-shadow: none !important;
+}
+.p-button {
+  background: #1a718a;
+  border-color: #1a718a !important;
+}
+.p-button:enabled:hover, .p-button:enabled:focus {
+  box-shadow: 0 2px 13px 0 rgba(26,113,138,0.45);
+  background: #1a718a;
+  border-color: #1a718a !important;
+}
+.no-focus:enabled:focus, .no-focus:enabled:hover{
+  background: none !important;
+  box-shadow: none !important;
+}
+.p-button:enabled:active {
+  transition: 0.3s;
+  transform: scale(0.9);
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: transparent;
+  color: #1a718a;
+  font-weight: bold;
+  border: 1px solid #1a718a;
+}
+.p-paginator .p-paginator-pages .p-paginator-page {
+  min-width: 2rem;
+  height: 2rem;
+}
+.p-paginator .p-dropdown {
+  border: none;
+}
+.p-dropdown {
+  width: 100%;
+}
+.toggle-menu-button {
+  display: none;
+  text-align: center;
+  height: 3.125em;
+  width: 3.125em;
+  background-color: var(--menubar-background);
+}
+
+.toggle-menu-button .icon {
+  padding: 0;
+  color: var(--menubar-color) !important;
+}
+
+.logo-large {
+  display: block;
+  height: 3.125em;
+  width: 11.25em;
+}
+
+/* .logo-small {
+  display: none;
+} */
+
+.notification-message {
+  min-height: 1.5625em;
+  width: 12.5em;
+  padding: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.ssw-loader {
+  position: fixed;
+  z-index: 1100;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.ssw-loader:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.fa-fw {
+  width: 3.125em;
+}
+
+.right {
+  float: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.left {
+  float: left;
+}
+.card {
+  box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0;
+  background-color: #fff;
+  height: calc(100vh - 6.5em);
+  border: 1px solid #F2F2F2 !important;
+  border-radius: 3px;
+}
+.card .card-header {
+  padding: 1rem 1.35rem;
+  margin-bottom: 0;
+  font-weight: bold;
+  color: #68697a;
+}
+.card-footer {
+  padding: 1.5rem;
+}
+.p-datatable .p-datatable-header{
+  background: white !important;
+  border: none;
+  padding: 1rem;
+}
+.card .card-body {
+  padding: 1.5rem;
+  padding-top: 0;
+}
+.card-body .card-action {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin-bottom: 1rem;
+}
+.input-line {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0px;
+  font-size: 14.5px;
+}
+.input-line:enabled:focus {
+  box-shadow: none ;
+}
+.p-input-icon-right > i:last-of-type {
+  font-size: 14px;
+}
+.ssw-menubar {
+  width: 16.875rem;
+  display: block;
+  z-index: 3;
+  background-color: white;
+  color: #414141;
+  border-right: 1px solid #f1f1f1;
+  height: 100%;
+  position: fixed;
+  overflow: auto;
+}
+.scroll {
+  overflow-y: auto;
+}
+.scroll:hover {
+  overflow-y: auto;
+}
+.scroll::-webkit-scrollbar-track
+{
+    border-radius: 10px;
+    background-color: transparent;
+}
+.scroll::-webkit-scrollbar
+{
+    width: 8px;
+    height: 8px;
+    background-color: transparent;
+}
+.scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: #d9d9d9;
+}
+.ssw-sub-menu {
+  padding: 0px;
+  width: 100%;
+  list-style: none;
+  position: relative;
+  left: 2rem;
+  border-left: 1px solid #d4d4d4;
+}
+
+.ssw-sub-menu li a {
+  font-weight: 500 !important;
+}
+
+.ssw-menu {
+  padding: 5px;
+  margin: 0px;
+  list-style: none !important;
+  margin-top: 1.6rem;
+  margin-bottom: 5.6rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.ssw-menu li a {
+  padding: 12px 10px;
+  color: #697477;
+  display: block;
+  text-decoration: none !important;
+  position: relative;
+  font-size: 15px;
+  font-family: 'Open Sans';
+  font-weight: 600;
+}
+.ssw-menu li a:hover {
+  background: #f8f8f8;
+}
+
+.ssw-menu li ul {
+  display: block;
+}
+a {
+  cursor: pointer;
+  color: #1a718a;
+}
+.p-datepicker table td, .p-datepicker table th {
+  padding: 0 !important;
+  font-size: 13px;
+}
+.p-datepicker .p-timepicker button {
+  height: 1.5rem;
+}
+.p-datepicker .p-timepicker span {
+  font-size: 0.875rem;
+}
+.p-datepicker .p-datepicker-header .p-datepicker-title select {
+  margin-right: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 3px;
+  color: #5a5a5a;
+}
+.extra-page-footer {
+  position: relative;
+  bottom: 0px;
+  padding: 10px;
+  height: 3.125em;
+  text-align: center;
+  width: 100%;
+  color: white;
+}
+
+.ui-messages ul{
+  display: inline-block !important;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 0.75rem 1.5rem;
+}
+.p-dialog .p-dialog-content {
+  padding: 0 1.5rem 0.75rem 1.5rem;
+}
+label {
+  font-size: 0.8125rem;
+  color: #575757;
+}
+.p-dialog .p-dialog-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.p-dialog .p-dialog-footer button {
+  width: 7.5rem;
+}
+.p-inputtext {
+  padding: 0.376rem !important;
+}
+.p-inputtext:enabled:focus {
+  box-shadow: none !important;
+}
+.p-field {
+  display: flex;
+  flex-direction: column;
+}
+.p-calendar .p-datepicker {
+  top: 0 !important;
+}
+
+th, td {
+  padding: 8px !important;
+  font-size: 15px;
+}
+.p-inputtext, .p-multiselect {
+  font-size: 14px;
+  width: 100%;
+}
+
+.p-editor-content {
+  min-height: 3.75em;
+  height: auto;
+}
+
+.p-tabview-title {
+  color: #68697a;
+  font-size: 15px;
+}
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  border-color: #1a718a;
+}
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  box-shadow: none;
+}
+.p-avatar img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+table {
+  table-layout: auto !important;
+}
+th{
+  white-space:nowrap;
+}
+
+/* Extra large devices (large laptops and desktops, 1200px or more) */
+
+@media only screen and (min-width: 1200px) {}
+
+/* Large devices (laptops/desktops, 1200px or less) */
+
+@media only screen and (max-width: 1200px) {}
+
+/* Medium devices (landscape tablets, 992px or less) */
+
+@media (min-width: 992px) {
+  .ssw-menubar {
+      display: block !important;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+
+  .ssw-menubar {
+    display: none;
+    width: 100%;
+  }
+  .ng-content {
+    margin-left: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .logo-small {
+    display: block;
+    height: 50px;
+    width: 50px;
+  }
+  .toggle-menu-button {
+    display: block;
+  }
+  .user-name {
+    display: none;
+  }
+  .ssw-content {
+    padding-left: 10px;
+  }
+  .ssw-header-left {
+    width: 100px;
+  }
+}
+
+.error-box {
+  max-width: 900px;
+  margin: 0 auto;
+  height: 100%;
+  overflow: auto;
+  color: greenyellow
+}
+.dialog-small {
+  width: 22rem;
+}
+
+
+.p-tabview .p-tabview-panels {
+  padding: 0px !important;
+}
+
+/* Small devices (portrait tablets and large phones, 768px or less) */
+
+@media only screen and (max-width: 768px) {}
+
+/* Extra small devices (phones, 600px or less) */
+
+@media only screen and (max-width: 576px) {
+  .ng-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .p-dialog .p-dialog-footer{
+    display: block !important;
+  }
+  .p-dialog .p-dialog-footer button {
+    width: 100% !important;
+    margin-top: 8px !important;
+  }
+  .logo-large {
+    display: none;
+  }
+  th, td {
+    padding: 12px !important;
+    font-size: 13.5px;
+  }
+}
+span.created-by {
+  font-size: 15px;
+}
+.socials > a {
+  padding: 3px;
+  font-size: 30px;
+  color: #1a718a;
+  text-decoration: none;
+  transition: color ease-out 0.1s;
+}

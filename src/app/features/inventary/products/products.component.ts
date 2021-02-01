@@ -10,6 +10,7 @@ import { RouteStateService } from 'src/app/core/services/route-state.service';
 export class ProductsComponent implements OnInit {
 
   products:Product[] = [];
+  showModal:boolean = false;
   constructor(private routeStateService: RouteStateService) { }
 
   ngOnInit(): void {
@@ -21,4 +22,7 @@ export class ProductsComponent implements OnInit {
     })
   }
 
+  newProduct(){
+    this.showModal = true;
+  }
 }

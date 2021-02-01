@@ -1,0 +1,13 @@
+.button-text{
+  float: right;
+  position: relative;
+  top: -6px;
+  border: none;
+}
+.button-text:active{
+  background:#FAB710;
+}
+
+.button-text:focus{
+  background:#FAB710;
+}
