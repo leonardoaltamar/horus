@@ -32,9 +32,10 @@
             <td>{{dataRow.name}}</td>
             <td>{{dataRow.description}}</td>
             <td>{{dataRow.count}}</td>
-            <td>
-              <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
+            <td style="text-align: center;">
+              <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
+                class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -66,8 +67,8 @@
   </div>
 
   <p-footer class="p-grid">
-    <p-button type="submit" icon="fa fa-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
-    <p-button icon="fa fa-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
+    <p-button type="submit" icon="pi pi-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
+    <p-button icon="pi pi-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
     </p-button>
   </p-footer>
   <!-- <p-footer>

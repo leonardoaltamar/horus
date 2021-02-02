@@ -63,7 +63,7 @@ input[type="radio"] {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 input[type="radio"]:enabled:hover {
-  border-color: #2196F3;
+  border-color: #439D49;
   cursor: pointer;
 }
 
@@ -166,7 +166,7 @@ input[type="radio"]:enabled:hover {
   background-color: transparent;
   color: #439D49;
   font-weight: bold;
-  border: 1px solid #1a718a;
+  border: 1px solid #439D49;
 }
 .p-paginator .p-paginator-pages .p-paginator-page {
   min-width: 2rem;
@@ -297,46 +297,11 @@ input[type="radio"]:enabled:hover {
   font-size: 14px;
 }
 
-.scroll {
-  overflow-y: auto;
-}
-.scroll:hover {
-  overflow-y: auto;
-}
-.scroll::-webkit-scrollbar-track
-{
-    border-radius: 10px;
-    background-color: transparent;
-}
-.scroll::-webkit-scrollbar
-{
-    width: 8px;
-    height: 8px;
-    background-color: transparent;
-}
-.scroll::-webkit-scrollbar-thumb
-{
-    border-radius: 10px;
-    background-color: #d9d9d9;
-}
-.ssw-sub-menu {
-  padding: 0px;
-  width: 100%;
-  list-style: none;
-  position: relative;
-  left: 2rem;
-  border-left: 1px solid #d4d4d4;
-}
-
-.ssw-sub-menu li a {
-  font-weight: 500 !important;
-}
-
-
 a {
   cursor: pointer;
-  color: #1a718a;
+  color: #439D49;
 }
+
 .p-datepicker table td, .p-datepicker table th {
   padding: 0 !important;
   font-size: 13px;
@@ -420,7 +385,7 @@ th, td {
   font-size: 15px;
 }
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  border-color: #1a718a;
+  border-color: #439D49;
 }
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
   box-shadow: none;

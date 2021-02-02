@@ -10,31 +10,37 @@
   overflow: auto;
 }
 
-.hr-menu {
-  padding: 5px;
-  margin: 0px;
-  list-style: none !important;
-  margin-top: 1.6rem;
-  margin-bottom: 5.6rem;
-  font-family: 'Open Sans', sans-serif;
+:host /deep/ .p-panelmenu .p-panelmenu-header > a{
+  background: #fff;
+  border: none;
 }
 
-.hr-menu li a {
-  padding: 12px 10px;
-  color: #697477;
-  display: block;
-  text-decoration: none !important;
-  position: relative;
-  font-size: 15px;
-  font-weight: 600;
+:host /deep/ .p-panelmenu .p-panelmenu-header > a:hover{
+  background: rgb(204, 201, 201);
+  border: none;
 }
 
-.hr-menu li a:hover {
-  background: #f8f8f8;
+.scroll {
+  overflow-y: auto;
 }
-
-.hr-menu li ul {
-  display: block;
+.scroll:hover {
+  overflow-y: auto;
+}
+.scroll::-webkit-scrollbar-track
+{
+    border-radius: 10px;
+    background-color: transparent;
+}
+.scroll::-webkit-scrollbar
+{
+    width: 8px;
+    height: 8px;
+    background-color: transparent;
+}
+.scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: #d9d9d9;
 }
 
 @media (min-width: 992px) {
@@ -49,3 +55,5 @@
     width: 100%;
   }
 }
+
+
