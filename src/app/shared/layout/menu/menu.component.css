@@ -13,11 +13,34 @@
 :host /deep/ .p-panelmenu .p-panelmenu-header > a{
   background: #fff;
   border: none;
+  box-shadow: none;
 }
 
-:host /deep/ .p-panelmenu .p-panelmenu-header > a:hover{
-  background: rgb(204, 201, 201);
-  border: none;
+:host /deep/ .p-panelmenu .p-panelmenu-header > a:hover:focus{
+  background: rgb(248, 248, 248);
+  box-shadow: none;
+}
+
+:host /deep/ .p-panelmenu .p-panelmenu-header:not(.p-highlight):not(.p-disabled) > a:hover {
+  background: rgb(248, 248, 248);
+  border-color: #dee2e6;
+  color: #495057;
+}
+
+:host /deep/ .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:not(.p-disabled):hover {
+  background: rgb(248, 248, 248);
+}
+
+:host /deep/ a.p-menuitem-link.ng-tns-c16-2.ng-star-inserted {
+  margin-left: 20px;
+  border-left: 1px solid #c3c3c3;
+}
+
+:host /deep/ .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:focus {
+  background: rgb(248, 248, 248);
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
 }
 
 .scroll {
