@@ -11,7 +11,7 @@ export class InventaryComponent {
   constructor(private routeStateService: RouteStateService) {  }
 
   ngOnInit(){
-    this.routeStateService.add("Inventario", "/inventary", null, true);
+    this.routeStateService.add("Inventario", "main/inventary", null, true);
   }
 
 }
