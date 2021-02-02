@@ -144,15 +144,7 @@ input[type="radio"]:enabled:hover {
 .button-action:enabled:hover, .button-action:enabled:focus {
   box-shadow: none !important;
 }
-.p-button {
-  background: #439D49;
-  border-color: #439D49 !important;
-}
-.p-button:enabled:hover, .p-button:enabled:focus {
-  box-shadow: 0 2px 13px 0 #439D49;
-  background: #439d49d5;
-  border-color: #439d49d5 !important;
-}
+
 .no-focus:enabled:focus, .no-focus:enabled:hover{
   background: none !important;
   box-shadow: none !important;

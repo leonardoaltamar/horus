@@ -13,7 +13,7 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text"
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button"
               (click)="newRawMaterial()"></button>
           </div>
         </ng-template>
@@ -47,7 +47,7 @@
 
 <p-dialog header="Ingreso de materia prima" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small"
   [modal]="true" [baseZIndex]="10000" [resizable]="false">
-  <form [formGroup]="form_rowMaterial" (ngSubmit)="saveRawMaterial()" class="p-fluid p-formgrid p-grid card-body">
+  <form [formGroup]="form_rowMaterial" (ngSubmit)="saveRawMaterial()" class="">
 
     <div class="p-grid">
       <div class="p-field p-col-6 p-sm-6">
@@ -61,7 +61,6 @@
           *ngIf="form_rowMaterial.get('description').hasError('A') && form_rowMaterial.get('description').touched">
           <small class="p-invalid p-text-center">Esta materia prima ya está registrada</small>
         </ng-container>
-
       </div>
       <div class="p-field p-col-6 p-sm-6">
         <label for="dateAdd">Fecha de ingreso</label>
@@ -71,8 +70,6 @@
           <small class="p-invalid p-text-center">la fecha de ingreso es obligatoria</small>
         </ng-container>
       </div>
-    </div>
-    <div class="p-grid">
       <div class="p-field p-col-6 p-sm-6">
         <label for="count">Cantidad</label>
         <input id="count" type="text" pInputText>
@@ -93,15 +90,10 @@
     <br>
     <br>
     <p-footer class="p-grid">
-      <p-button type="submit" icon="fa fa-save" [disabled]="form_rowMaterial.invalid" class="btns bt1 p-col-6"
-        iconPos="left" label="Guardar"></p-button>
-      <p-button icon="fa fa-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
-      </p-button>
+      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"
+        (click)="newRawMaterial()"></button>
+      <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
+        (click)="showModal=false"></button>
     </p-footer>
   </form>
-  <!-- <p-footer>
-    <p-button icon="fas fa-save" iconPos="left" label="Guardar" [disabled]="name.invalid" (click)="saveTerm()">
-    </p-button>
-    <p-button icon="fas fa-times" iconPos="left" label="Cerrar" (click)="showModal=false"></p-button>
-  </p-footer> -->
 </p-dialog>

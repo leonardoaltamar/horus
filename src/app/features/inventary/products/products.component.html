@@ -13,7 +13,7 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text"
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button"
               (click)="newProduct()"> <i></i></button>
           </div>
         </ng-template>
@@ -67,9 +67,10 @@
   </div>
 
   <p-footer class="p-grid">
-    <p-button type="submit" icon="pi pi-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
-    <p-button icon="pi pi-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
-    </p-button>
+    <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text"
+      (click)="showModal=false"></button>
+    <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button"
+      (click)="newProduct()"></button>
   </p-footer>
   <!-- <p-footer>
     <p-button icon="fas fa-save" iconPos="left" label="Guardar" [disabled]="name.invalid" (click)="saveTerm()">
