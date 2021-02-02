@@ -1,10 +1,10 @@
 <div styleClass="ssw-panel" class="card scroll">
   <div class="card-header">
-    Productos
+    Materia prima
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['title', 'activityType.name']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -14,20 +14,21 @@
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line" />
             </span>
             <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text"
-              (click)="newProduct()"></button>
+              (click)="newRawMaterial()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Nombre</th>
             <th>Descripcion</th>
+            <th>Decha de ingreso</th>
             <th>Cantidad</th>
+            <th>Importe</th>
             <th>*</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
-          <tr>
+          <!-- <tr>
             <td>{{rowIndex+1}}</td>
             <td>{{dataRow.name}}</td>
             <td>{{dataRow.description}}</td>
@@ -36,7 +37,7 @@
               <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
               <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
             </td>
-          </tr>
+          </tr> -->
         </ng-template>
       </p-table>
     </div>
@@ -44,32 +45,54 @@
 </div>
 
 
-<p-dialog header="Nuevo" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true" [baseZIndex]="10000"
+<p-dialog header="Ingreso de materia prima"  [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true" [baseZIndex]="10000"
 [resizable]="false">
+<form [formGroup]="form_rowMaterial" (ngSubmit)="saveRawMaterial()" class="p-fluid p-formgrid p-grid card-body">
+
   <div class="p-grid">
     <div class="p-field p-col-6 p-sm-6">
       <label for="description">Descripción</label>
       <input id="description" type="text" pInputText>
+      <ng-container *ngIf="form_rowMaterial.get('description').hasError('required') && form_rowMaterial.get('description').touched">
+        <small class="p-invalid p-text-center">la descripcion es obligatoria</small>
+      </ng-container>
+      <ng-container *ngIf="form_rowMaterial.get('description').hasError('A') && form_rowMaterial.get('description').touched">
+        <small class="p-invalid p-text-center">Esta materia prima ya está registrada</small>
+      </ng-container>
+
     </div>
     <div class="p-field p-col-6 p-sm-6">
-      <label for="barCode">Codigo de barra</label>
-      <input id="barCode" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="content">Contenido Neto</label>
-      <input id="content" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="packing">Empaque</label>
-      <input id="packing" type="text" pInputText>
+      <label for="dateAdd">Fecha de ingreso</label>
+      <input id="dateAdd" type="text" pInputText>
+      <ng-container *ngIf="form_rowMaterial.get('dateAdd').hasError('required') && form_rowMaterial.get('dateAdd').touched">
+        <small class="p-invalid p-text-center">la fecha de ingreso es obligatoria</small>
+      </ng-container>
     </div>
   </div>
-
+  <div class="p-grid">
+    <div class="p-field p-col-6 p-sm-6">
+      <label for="count">Cantidad</label>
+      <input id="count" type="text" pInputText>
+      <ng-container *ngIf="form_rowMaterial.get('count').hasError('required') && form_rowMaterial.get('count').touched">
+        <small class="p-invalid p-text-center">La cantidad es obligatoria</small>
+      </ng-container>
+    </div>
+    <div class="p-field p-col-6 p-sm-6">
+      <label for="amount">Importe</label>
+      <input id="amount" type="text" pInputText>
+      <ng-container *ngIf="form_rowMaterial.get('amount').hasError('required') && form_rowMaterial.get('amount').touched">
+        <small class="p-invalid p-text-center">El importe es obligatorio</small>
+      </ng-container>
+    </div>
+  </div>
+ <br>
+ <br>
   <p-footer class="p-grid">
-    <p-button type="submit" icon="fa fa-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
+    <p-button type="submit" icon="fa fa-save" [disabled]="form_rowMaterial.invalid" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
     <p-button icon="fa fa-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
     </p-button>
   </p-footer>
+</form>
   <!-- <p-footer>
     <p-button icon="fas fa-save" iconPos="left" label="Guardar" [disabled]="name.invalid" (click)="saveTerm()">
     </p-button>

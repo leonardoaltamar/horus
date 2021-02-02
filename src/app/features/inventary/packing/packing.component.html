@@ -1,10 +1,10 @@
 <div styleClass="ssw-panel" class="card scroll">
   <div class="card-header">
-    Productos
+    Empaques
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['title', 'activityType.name']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -14,7 +14,7 @@
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line" />
             </span>
             <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text"
-              (click)="newProduct()"></button>
+              (click)="newPacking()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -48,20 +48,12 @@
 [resizable]="false">
   <div class="p-grid">
     <div class="p-field p-col-6 p-sm-6">
-      <label for="description">Descripción</label>
-      <input id="description" type="text" pInputText>
+      <label for="firstname2">Nombre</label>
+      <input id="firstname2" type="text" pInputText>
     </div>
     <div class="p-field p-col-6 p-sm-6">
-      <label for="barCode">Codigo de barra</label>
-      <input id="barCode" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="content">Contenido Neto</label>
-      <input id="content" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="packing">Empaque</label>
-      <input id="packing" type="text" pInputText>
+      <label for="lastname2">Descripción</label>
+      <input id="lastname2" type="text" pInputText>
     </div>
   </div>
 

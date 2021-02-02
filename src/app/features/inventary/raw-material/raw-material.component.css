@@ -1,0 +1,9 @@
+.button-text{
+  float: right;
+  position: relative;
+  top: -1px;
+  border: none;
+}
+.button-text:active:focus{
+  background:#439D49;
+}
