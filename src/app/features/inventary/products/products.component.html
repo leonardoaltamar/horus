@@ -32,9 +32,10 @@
             <td>{{dataRow.name}}</td>
             <td>{{dataRow.description}}</td>
             <td>{{dataRow.count}}</td>
-            <td>
-              <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
+            <td style="text-align: center;">
+              <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
+                class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -47,27 +48,31 @@
 <p-dialog header="Nuevo" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
   [baseZIndex]="10000" [resizable]="false">
   <form class="p-fluid p-formgrid p-grid">
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="firstname2">Nombre</label>
-      <input id="firstname2" type="text" pInputText>
+    <div class="row ">
+      <div class="p-field column mb-1 mr-05">
+        <label for="firstname2">Nombre</label>
+        <input id="firstname2" type="text" pInputText>
+      </div>
+      <div class="p-field column mb-1 ml-05">
+        <label for="lastname2">Descripción</label>
+        <input id="lastname2" type="text" pInputText>
+      </div>
     </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="lastname2">Descripción</label>
-      <input id="lastname2" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="lastname2">Precio</label>
-      <input id="lastname2" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="lastname2">Cantidad</label>
-      <input id="lastname2" type="text" pInputText>
+    <div class="row">
+      <div class="p-field column mr-05">
+        <label for="firstname2">Nombre</label>
+        <input id="firstname2" type="text" pInputText>
+      </div>
+      <div class="p-field column ml-05" style="padding-left: 0.5em;">
+        <label for="lastname2">Descripción</label>
+        <input id="lastname2" type="text" pInputText>
+      </div>
     </div>
   </form>
 
   <p-footer class="p-grid">
-    <p-button type="submit" icon="fa fa-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
-    <p-button icon="fa fa-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
+    <p-button type="submit" icon="pi pi-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
+    <p-button icon="pi pi-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
     </p-button>
   </p-footer>
   <!-- <p-footer>

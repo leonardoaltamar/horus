@@ -1,9 +1,33 @@
 .button-text{
   float: right;
   position: relative;
-  top: -1px;
   border: none;
 }
 .button-text:active:focus{
   background:#439D49;
+}
+
+.row:after {
+  content: "";
+  display: bethe;
+  clear: both;
+}
+
+.mb-1{
+  margin-bottom: 1em;
+}
+
+.mr-05{
+  padding-right: 0.5em;
+}
+
+.ml-05{
+  padding-left: 0.5em;
+}
+
+.column {
+  display: flex;
+  float: left;
+  height: 100%;
+  width: 50%
 }

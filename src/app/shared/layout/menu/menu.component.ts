@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbMenuItem } from '@nebular/theme';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'hr-menu',
@@ -9,21 +9,25 @@ import { NbMenuItem } from '@nebular/theme';
 export class MenuComponent implements OnInit {
 
   constructor() { }
-  items: NbMenuItem[] = [
-    {
-      title: 'Productos',
 
-    },
-    {
-      title: 'Clientes',
+  items: MenuItem[];
 
-    },
-    {
-      title: 'Reportes',
-
-    }
-  ];
-  ngOnInit(): void {
+  ngOnInit() {
+    this.items = [
+      {
+        label: 'Inventario',
+        icon: 'pi pi-pw pi-book',
+        items: [
+          { label: 'Materia prima', icon: 'pi pi-fw pi-clone' },
+          { separator: true },
+          { label: 'Producto', icon: 'pi pi-fw pi-send' },
+          { separator: true },
+          { label: 'Empague', icon: 'pi pi-fw pi-briefcase' },
+          { separator: true },
+          { label: 'Produccion', icon: 'pi pi-fw pi-sitemap' }
+        ]
+      }
+    ];
   }
 
 }

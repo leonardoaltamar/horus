@@ -1,16 +1,5 @@
 <div class="menu scroll">
-  <ul class="hr-menu">
-    <ng-template #recursiveList let-list>
-      <li *ngFor="let menu of list">
-        <a>
-          <i class="pi pi-chart-line"></i> Inventario <i class="pi pi-angle-right"></i>
-          <ul class="ssw-sub-menu">
-            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menu.Childs }">
-            </ng-container>
-          </ul>
-        </a>
-      </li>
-    </ng-template>
-    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: items }"></ng-container>
-  </ul>
+  <p-panelMenu [transitionOptions]="'400ms'" multiple="false" [model]="items"
+    [style]="{'width':'100%', 'padding-top':'2em'}" styleClass="p-panelmenu p-panelmenu-header">
+  </p-panelMenu>
 </div>
