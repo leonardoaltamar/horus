@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { RouteStateService } from 'src/app/core/services/route-state.service';
 
 @Component({
   selector: 'hr-menu',
@@ -8,7 +9,7 @@ import { MenuItem } from 'primeng/api';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private routeStateService: RouteStateService) { }
 
   items: MenuItem[];
 
@@ -18,13 +19,13 @@ export class MenuComponent implements OnInit {
         label: 'Inventario',
         icon: 'pi pi-pw pi-book',
         items: [
-          { label: 'Materia prima', icon: 'pi pi-fw pi-clone', url:'inventary/raw-materials' },
+          { label: 'Materia prima', icon: 'pi pi-fw pi-clone', routerLink: ["/inventary/raw-materials"] },
           { separator: true },
-          { label: 'Producto', icon: 'pi pi-fw pi-send', url:'inventary/products' },
+          { label: 'Producto', icon: 'pi pi-fw pi-send', routerLink: ["/inventary/products"] },
           { separator: true },
-          { label: 'Empague', icon: 'pi pi-fw pi-briefcase', url:'inventary/packings' },
+          { label: 'Empague', icon: 'pi pi-fw pi-briefcase', routerLink: ["/inventary/packings"] },
           { separator: true },
-          { label: 'Produccion', icon: 'pi pi-fw pi-sitemap', url:'inventary/productions' }
+          { label: 'Produccion', icon: 'pi pi-fw pi-sitemap', routerLink: ["/inventary/productions"] }
         ]
       }
     ];
