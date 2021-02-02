@@ -23,9 +23,9 @@ export class MenuComponent implements OnInit {
           { separator: true },
           { label: 'Producto', icon: 'pi pi-fw pi-send', routerLink: ["/inventary/products"] },
           { separator: true },
-          { label: 'Empague', icon: 'pi pi-fw pi-briefcase', routerLink: ["/inventary/packings"] },
+          { label: 'Empaque', icon: 'pi pi-fw pi-briefcase', routerLink: ["/inventary/packings"] },
           { separator: true },
-          { label: 'Produccion', icon: 'pi pi-fw pi-sitemap', routerLink: ["/inventary/productions"] }
+          { label: 'Produción', icon: 'pi pi-fw pi-sitemap', routerLink: ["/inventary/productions"] }
         ]
       }
     ];

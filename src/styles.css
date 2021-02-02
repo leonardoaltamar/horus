@@ -284,15 +284,7 @@ input[type="radio"]:enabled:hover {
   align-content: center;
   margin-bottom: 1rem;
 }
-.input-line {
-  border: none;
-  border-bottom: 1px solid #ced4da;
-  border-radius: 0px;
-  font-size: 14.5px;
-}
-.input-line:enabled:focus {
-  box-shadow: none ;
-}
+
 .p-input-icon-right > i:last-of-type {
   font-size: 14px;
 }
@@ -349,15 +341,35 @@ label {
   justify-content: center;
   align-items: center;
 }
+
 .p-dialog .p-dialog-footer button {
   width: 7.5rem;
 }
+
 .p-inputtext {
   padding: 0.376rem !important;
 }
+
 .p-inputtext:enabled:focus {
   box-shadow: none !important;
 }
+
+:host /deep/.input-line {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0px;
+  font-size: 14.5px;
+}
+
+:host /deep/.input-line:enabled:focus {
+  box-shadow: none ;
+}
+
+:host /deep/.p-inputtext {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+}
+
 .p-field {
   display: flex;
   flex-direction: column;

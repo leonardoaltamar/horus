@@ -1,9 +1,20 @@
 .button-text{
   float: right;
   position: relative;
-  top: -1px;
   border: none;
+  font-weight: bold;
 }
 .button-text:active:focus{
   background:#439D49;
+}
+
+.input-line {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0px;
+  font-size: 14.5px;
+}
+
+.input-line:enabled:focus {
+  box-shadow: none ;
 }
