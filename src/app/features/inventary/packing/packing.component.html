@@ -22,9 +22,8 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th class="th-id">#</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
+            <th>#</th>
+            <th>Descripción</th>
             <th>Cantidad</th>
             <th class="th-actions">*</th>
           </tr>
@@ -32,7 +31,6 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.name}}</td>
             <td>{{dataRow.description}}</td>
             <td>{{dataRow.count}}</td>
             <td>
@@ -51,11 +49,11 @@
   [baseZIndex]="10000" [resizable]="false">
   <div class="p-grid">
     <div class="p-field p-col-6 p-sm-6">
-      <label for="firstname2">Nombre</label>
+      <label for="firstname2">Descripción</label>
       <input id="firstname2" type="text" pInputText>
     </div>
     <div class="p-field p-col-6 p-sm-6">
-      <label for="lastname2">Descripción</label>
+      <label for="lastname2">Cantidad</label>
       <input id="lastname2" type="text" pInputText>
     </div>
   </div>
