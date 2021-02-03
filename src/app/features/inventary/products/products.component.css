@@ -2,9 +2,54 @@
   float: right;
   position: relative;
   border: none;
+  font-weight: bold;
 }
-.button-text:active:focus{
-  background:#439D49;
+
+.p-button {
+  color: #4CAF50;
+  background: none;
+  border-color: #439D49 !important;
+}
+
+.p-button:enabled:hover, .p-button:enabled:focus {
+  color: #4CAF50;
+  background: #439d4913;
+  border-color: #4caf4f48 !important;
+}
+
+.p-button-close {
+  color: #4CAF50;
+  background: #439d492c;
+  border-color: #439D49 !important;
+}
+
+.p-button-close:enabled:hover, .p-button-close:enabled:focus {
+  color: #4CAF50;
+  background: #439d4949;
+  border-color: #4caf4f48 !important;
+}
+
+.p-button-save {
+  color: #fff;
+  background: #439D49;
+  border-color: #439D49 !important;
+}
+
+.p-button-save:enabled:hover, .p-button-save:enabled:focus {
+  color: #fff;
+  background: #419944ea;
+  border-color: #4caf4f48 !important;
+}
+
+.input-line {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0px;
+  font-size: 14.5px;
+}
+
+.input-line:enabled:focus {
+  box-shadow: none ;
 }
 
 .row:after {

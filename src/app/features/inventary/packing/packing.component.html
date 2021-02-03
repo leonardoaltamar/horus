@@ -11,10 +11,10 @@
             <span class="p-input-icon-right">
               <i class="pi pi-search"></i>
               <input type="text" pInputText placeholder="Buscar..."
-                (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line" />
+                (input)="dt.filterGlobal($event.target.value, 'contains')" class="p-inputtext input-line" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text"
-              (click)="newPacking()"></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button"
+              (click)="newPacking()"> <i></i></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -42,8 +42,8 @@
 </div>
 
 
-<p-dialog header="Nuevo" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true" [baseZIndex]="10000"
-[resizable]="false">
+<p-dialog header="Nuevo" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
+  [baseZIndex]="10000" [resizable]="false">
   <div class="p-grid">
     <div class="p-field p-col-6 p-sm-6">
       <label for="firstname2">Descripción</label>
