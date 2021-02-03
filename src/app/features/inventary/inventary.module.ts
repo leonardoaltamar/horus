@@ -1,17 +1,21 @@
 import { InventaryComponent } from './inventary';
 import { CommonModule } from '@angular/common';
-import {ButtonModule} from 'primeng/button';
 import { NgModule } from "@angular/core";
 import { ProductsComponent } from './products/products.component';
 import { InventaryRoutingModule } from './inventary-routing.module';
-import { NbCardModule, NbInputModule, NbLayoutModule } from '@nebular/theme';
-import { TableModule } from 'primeng/table';
-import {DialogModule} from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
 import { PackingComponent } from './packing/packing.component';
 import { RawMaterialComponent } from './raw-material/raw-material.component';
 import { ProductionComponent } from './production/production.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Theme Primeng
+import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+
 @NgModule({
   declarations: [
     InventaryComponent,
@@ -20,7 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RawMaterialComponent,
     ProductionComponent
   ],
-  exports:[
+  exports: [
   ],
   imports: [
     InventaryRoutingModule,
@@ -30,9 +34,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     InputTextModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    CalendarModule,
+    InputNumberModule
   ],
-  providers: [ ],
+  providers: [],
   entryComponents: []
 })
 export class InventaryModule { }

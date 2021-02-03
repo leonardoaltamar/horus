@@ -3,9 +3,12 @@
     Materia prima
   </div>
   <div class="card-body">
-    <div class="table-responsive">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
+    <div class="table-responsive" *ngIf="!isLoading">
       <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
-        [globalFilterFields]="['title', 'activityType.name']">
+        [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
             <span class="p-input-icon-right">
@@ -13,7 +16,7 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button"
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button-close"
               (click)="newRawMaterial()"></button>
           </div>
         </ng-template>
@@ -21,23 +24,23 @@
           <tr>
             <th>#</th>
             <th>Descripcion</th>
-            <th>Decha de ingreso</th>
+            <th>Fecha de ingreso</th>
             <th>Cantidad</th>
-            <th>Importe</th>
+            <th>Precio de compra</th>
             <th>*</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
-          <!-- <tr>
+          <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.name}}</td>
-            <td>{{dataRow.description}}</td>
-            <td>{{dataRow.count}}</td>
+            <td>Tapas</td>
+            <td>12/1234/12 12:23:23</td>
+            <td>23</td>
             <td>
               <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
               <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
             </td>
-          </tr> -->
+          </tr>
         </ng-template>
       </p-table>
     </div>
@@ -48,11 +51,10 @@
 <p-dialog header="Ingreso de materia prima" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small"
   [modal]="true" [baseZIndex]="10000" [resizable]="false">
   <form [formGroup]="form_rowMaterial" (ngSubmit)="saveRawMaterial()" class="">
-
-    <div class="p-grid">
+    <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
         <label for="description">Descripción</label>
-        <input id="description" type="text" pInputText>
+        <input id="description" formControlName="description" type="text" pInputText>
         <ng-container
           *ngIf="form_rowMaterial.get('description').hasError('required') && form_rowMaterial.get('description').touched">
           <small class="p-invalid p-text-center">la descripcion es obligatoria</small>
@@ -63,16 +65,9 @@
         </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="dateAdd">Fecha de ingreso</label>
-        <input id="dateAdd" type="text" pInputText>
-        <ng-container
-          *ngIf="form_rowMaterial.get('dateAdd').hasError('required') && form_rowMaterial.get('dateAdd').touched">
-          <small class="p-invalid p-text-center">la fecha de ingreso es obligatoria</small>
-        </ng-container>
-      </div>
-      <div class="p-field p-col-6 p-sm-6">
         <label for="count">Cantidad</label>
-        <input id="count" type="text" pInputText>
+        <p-inputNumber formControlName="count" [style]="{width: '100%'}" mode="decimal" [showButtons]="true"
+          inputId="count" [min]="0"></p-inputNumber>
         <ng-container
           *ngIf="form_rowMaterial.get('count').hasError('required') && form_rowMaterial.get('count').touched">
           <small class="p-invalid p-text-center">La cantidad es obligatoria</small>
@@ -80,7 +75,8 @@
       </div>
       <div class="p-field p-col-6 p-sm-6">
         <label for="amount">Importe</label>
-        <input id="amount" type="text" pInputText>
+        <p-inputNumber formControlName="amount" [style]="{width: '100%'}" mode="decimal" [showButtons]="true"
+          inputId="count" [min]="0">}</p-inputNumber>
         <ng-container
           *ngIf="form_rowMaterial.get('amount').hasError('required') && form_rowMaterial.get('amount').touched">
           <small class="p-invalid p-text-center">El importe es obligatorio</small>
@@ -91,7 +87,7 @@
     <br>
     <p-footer class="p-grid">
       <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"
-        (click)="newRawMaterial()"></button>
+        (click)="newRawMaterial()" [disabled]="form_rowMaterial.invalid"></button>
       <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
         (click)="showModal=false"></button>
     </p-footer>

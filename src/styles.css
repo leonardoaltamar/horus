@@ -13,7 +13,7 @@ body {
 }
 
 body .ui-button {
-  background: #439D49;
+  background: #3646cd;
   border: none;
 }
 
@@ -63,7 +63,7 @@ input[type="radio"] {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 input[type="radio"]:enabled:hover {
-  border-color: #439D49;
+  border-color: #3646cd;
   cursor: pointer;
 }
 
@@ -156,9 +156,9 @@ input[type="radio"]:enabled:hover {
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background-color: transparent;
-  color: #439D49;
+  color: #3646cd;
   font-weight: bold;
-  border: 1px solid #439D49;
+  border: 1px solid #3646cd;
 }
 .p-paginator .p-paginator-pages .p-paginator-page {
   min-width: 2rem;
@@ -283,7 +283,7 @@ input[type="radio"]:enabled:hover {
 
 a {
   cursor: pointer;
-  color: #439D49;
+  color: #3646cd;
 }
 
 .p-datepicker table td, .p-datepicker table th {
@@ -389,7 +389,7 @@ th, td {
   font-size: 15px;
 }
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  border-color: #439D49;
+  border-color: #3646cd;
 }
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
   box-shadow: none;

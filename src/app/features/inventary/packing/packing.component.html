@@ -3,6 +3,9 @@
     Empaques
   </div>
   <div class="card-body">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
     <div class="table-responsive">
       <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['title', 'activityType.name']">
@@ -19,11 +22,11 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th>#</th>
+            <th class="th-id">#</th>
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Cantidad</th>
-            <th>*</th>
+            <th class="th-actions">*</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
