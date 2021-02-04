@@ -1,7 +1,7 @@
 <div class="header">
   <div class="row">
     <div class="column-logo">
-      <button class="pi pi-bars bar"></button>
+      <button class="pi pi-bars bar" (click)="toggleMenu()"></button>
       <img class="logo" style="width: 100%;" src="assets/images/horus.svg">
     </div>
     <div class="column-user" (click)="userdetails.toggle($event)">

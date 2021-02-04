@@ -27,13 +27,23 @@
   color: #495057;
 }
 
-:host /deep/ .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:not(.p-disabled):hover {
-  background: rgb(248, 248, 248);
+:host /deep/ .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link {
+  padding: 0.7rem 1.3rem;
+  color: #212529;
+  border-radius: 0;
+  transition: box-shadow 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+  margin-left: 25px;
+  border-left: 1px solid #c3c3c3;
 }
 
-:host /deep/ a.p-menuitem-link.ng-tns-c16-2.ng-star-inserted {
-  margin-left: 20px;
-  border-left: 1px solid #c3c3c3;
+:host /deep/ .p-panelmenu .p-panelmenu-content {
+  padding-top: 0;
+}
+
+:host /deep/ .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:not(.p-disabled):hover {
+  background: rgb(248, 248, 248);
 }
 
 :host /deep/ .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:focus {
@@ -75,7 +85,7 @@
 @media only screen and (max-width: 992px) {
   .menu {
     display: none;
-    width: 100%;
+    min-width: 200px;
   }
 }
 

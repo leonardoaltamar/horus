@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="rowMaterial" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -33,12 +33,13 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>Tapas</td>
-            <td>12/1234/12 12:23:23</td>
-            <td>23</td>
+            <td>{{dataRow.description}}</td>
+            <td>{{dataRow.startAt}}</td>
+            <td>{{dataRow.count}}</td>
+            <td>{{dataRow.price}}</td>
             <td>
-              <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -74,11 +75,12 @@
         </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="amount">Importe</label>
-        <p-inputNumber formControlName="amount" [style]="{width: '100%'}" mode="decimal" [showButtons]="true"
-          inputId="count" [min]="0">}</p-inputNumber>
+        <label for="price">Precio de compra</label>
+        <p-inputNumber formControlName="price" [style]="{width: '100%'}" inputId="locale-us" mode="decimal"
+          locale="en-US" [minFractionDigits]="0" [min]="0">
+        </p-inputNumber>
         <ng-container
-          *ngIf="form_rowMaterial.get('amount').hasError('required') && form_rowMaterial.get('amount').touched">
+          *ngIf="form_rowMaterial.get('price').hasError('required') && form_rowMaterial.get('price').touched">
           <small class="p-invalid p-text-center">El importe es obligatorio</small>
         </ng-container>
       </div>

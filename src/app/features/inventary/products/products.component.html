@@ -3,9 +3,12 @@
     Productos
   </div>
   <div class="card-body">
-    <div class="table-responsive">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
+    <div class="table-responsive" *ngIf="!isLoading">
       <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
-        [globalFilterFields]="['title', 'activityType.name']">
+        [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
             <span class="p-input-icon-right">
@@ -13,15 +16,15 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button"
-              (click)="newProduct()"> <i></i></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button-close"
+              (click)="newProduct()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Nombre</th>
             <th>Descripcion</th>
+            <th>Precio</th>
             <th>Cantidad</th>
             <th>*</th>
           </tr>
@@ -29,10 +32,10 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.name}}</td>
             <td>{{dataRow.description}}</td>
-            <td>{{dataRow.count}}</td>
-            <td style="text-align: center;">
+            <td>{{dataRow.price}}</td>
+            <td>{{dataRow.category}}</td>
+            <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
                 class="button-action"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
@@ -53,10 +56,6 @@
       <input id="description" type="text" pInputText>
     </div>
     <div class="p-field p-col-6 p-sm-6">
-      <label for="barCode">Codigo de barra</label>
-      <input id="barCode" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
       <label for="content">Contenido Neto</label>
       <input id="content" type="text" pInputText>
     </div>
@@ -72,9 +71,4 @@
     <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button"
       (click)="newProduct()"></button>
   </p-footer>
-  <!-- <p-footer>
-    <p-button icon="fas fa-save" iconPos="left" label="Guardar" [disabled]="name.invalid" (click)="saveTerm()">
-    </p-button>
-    <p-button icon="fas fa-times" iconPos="left" label="Cerrar" (click)="showModal=false"></p-button>
-  </p-footer> -->
 </p-dialog>
