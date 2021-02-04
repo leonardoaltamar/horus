@@ -2,44 +2,101 @@ import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from '../../../core/services/route-state.service';
 import { CategoryService } from './../../../core/services/category.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { first, map } from 'rxjs/operators';
 
 import { Category } from '../../../core/models/category.model'
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  styleUrls: ['./category.component.css'],
+  providers: [ConfirmationService]
 })
 export class CategoryComponent {
   form_category: FormGroup;
   model: Category = new Category();
+  models: Category[];
 
   isLoading: boolean = false;
   showModal: boolean = false;
 
   constructor(
-    private service: CategoryService,
-    private _formuilder: FormBuilder, private routeStateService: RouteStateService,) {
+    private categoryService: CategoryService,
+    private confirmationService: ConfirmationService,
+    private _formuilder: FormBuilder,
+    private routeStateService: RouteStateService,) {
     this.form_category = this._formuilder.group({
-      code: ['', [Validators.required], []],
+      code: ['', [Validators.required], [this.validate_category.bind(this)]],
       description: ['', [Validators.required], []]
     })
   }
 
   ngOnInit(): void {
     this.routeStateService.add("Configuration", "/configuration/categorys", null, false);
+    this.getAllCategory()
+    console.table(this.models);
+  }
+
+  async validate_category(control: AbstractControl) {
+    const val = control.value;
+    const response = await this.categoryService.getAll();
+    if (this.model.id) {
+      return null;
+    } else {
+      for (let i = 0; i < response.length; i++) {
+        if (response[i].code == val) {
+          return { A: true }
+        }
+      }
+    }
   }
 
   newCategory() {
     this.showModal = true;
   }
 
-  saveCategory() {
-    // this.categoryService.create(this.model);
-    console.log(this.model);
+  async getAllCategory() {
+    try {
+      this.isLoading = true;
+      this.models = await this.categoryService.getAll();
+      this.isLoading = false;
+    } catch (error) {
+      this.isLoading = false;
+      console.error(error);
+    }
   }
 
-  deletedCategory() { }
+  saveCategory() {
+    this.categoryService.create(this.model).subscribe(
+      data => {
+        console.table(data)
+      },
+      error => {
+        console.error(`Error de guardado ${error}`);
+      }
+    );
+    this.showModal = false;
+  }
+
+  deletedCategory(category: Category) {
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `Está eliminando: ${category.code} - ${category.description}`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.categoryService.delete(category.id).pipe(first()).subscribe(
+          data => {
+            if (data['success']) {
+              this.models = this.models.filter((x) => x.id != category.id);
+            }
+          },
+          error => {
+            console.log(error);
+          });
+      }
+    });
+  }
 
   modifideOCategory() { }
 
