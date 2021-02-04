@@ -15,6 +15,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ReactiveFormsModule,
     CommonModule,
     CalendarModule,
-    InputNumberModule
+    InputNumberModule,
+    ProgressSpinnerModule
   ],
   providers: [],
   entryComponents: []

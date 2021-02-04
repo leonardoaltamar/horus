@@ -1,6 +1,7 @@
 import { LayoutComponent } from './shared/layout/layout.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 const appRoutes: Routes = [
   {
     path: 'login',
@@ -14,10 +15,19 @@ const appRoutes: Routes = [
   {
     path: 'inventary',
     component: LayoutComponent,
-    children:[{
-        path: '',
-        loadChildren: () => import('./features/inventary/inventary.module').then(m => m.InventaryModule)
-      }
+    children: [{
+      path: '',
+      loadChildren: () => import('./features/inventary/inventary.module').then(m => m.InventaryModule)
+    }
+    ]
+  },
+  {
+    path: 'configuration',
+    component: LayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: () => import('./features/configuration/configuration.module').then(m => m.ConfigurationModule)
+    }
     ]
   },
   {

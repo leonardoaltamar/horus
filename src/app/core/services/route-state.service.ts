@@ -22,7 +22,7 @@ export class RouteStateService {
 
   getUrl(): RouteState {
     const routeStates = this.getFromStorage();
-    return routeStates[routeStates.length -1];
+    return routeStates[routeStates.length - 1];
   }
 
   /**
@@ -32,24 +32,24 @@ export class RouteStateService {
    * @param data route data
    * @param isParent is parent route
    */
-  add(title: string, path: string, data: any, isParent: boolean){
-    if(isParent){
+  add(title: string, path: string, data: any, isParent: boolean) {
+    if (isParent) {
       this.removeAll();
     }
 
     var routeStates = this.getFromStorage();
 
     const routeState = new RouteState();
-    routeState.title=title;
-    routeState.path=path;
-    routeState.data=data;
+    routeState.title = title;
+    routeState.path = path;
+    routeState.data = data;
 
     routeStates.push(routeState)
     this.saveToStorage(routeStates);
     this.navigate(routeState.path);
   }
 
-  loadPrevious(){
+  loadPrevious() {
     const routeStates = this.getFromStorage();
     routeStates.pop();
     this.saveToStorage(routeStates);
@@ -66,13 +66,13 @@ export class RouteStateService {
     var isFound = false;
     var routeStates = this.getFromStorage();
     routeStates.forEach(route => {
-        if (isFound) {
-            return;
-        }
-        result.push(route);
-        if (route.id === id) {
-            isFound = true;
-        }
+      if (isFound) {
+        return;
+      }
+      result.push(route);
+      if (route.id === id) {
+        isFound = true;
+      }
     });
     routeStates = result;
     this.saveToStorage(routeStates);
@@ -85,20 +85,20 @@ export class RouteStateService {
   }
 
   private saveToStorage(routeStates: any) {
-      localStorage.setItem("routeState", JSON.stringify(routeStates));
+    localStorage.setItem("routeState", JSON.stringify(routeStates));
   }
 
   private getFromStorage() {
-      var routeStates = JSON.parse(localStorage.getItem("routeState"));
-      return (routeStates === undefined || routeStates === null) ? [] : routeStates;
+    var routeStates = JSON.parse(localStorage.getItem("routeState"));
+    return (routeStates === undefined || routeStates === null) ? [] : routeStates;
   }
 
   private removeFromStorage() {
-      localStorage.removeItem("routeState");
+    localStorage.removeItem("routeState");
   }
 
   private navigate(path: string) {
-      this.router.navigate([path]);
+    this.router.navigate([path]);
   }
 
 
