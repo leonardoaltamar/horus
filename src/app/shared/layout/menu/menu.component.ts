@@ -17,12 +17,8 @@ export class MenuComponent {
 
   items: MenuItem[];
 
-  ngOnDestroy() {
-    this.menuDataService.toggleMenuBar.observers.forEach(function (element) { element.complete(); });
-  }
-
   ngOnInit() {
-    //Metodo de estado del menu
+    //Metodo de estado del
     var that = this;
     this.menuDataService.toggleMenuBar.subscribe(function (data: any) {
       if (data && data != null) {

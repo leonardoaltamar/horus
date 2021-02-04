@@ -28,15 +28,29 @@
   box-shadow: 0 0 0 0.01rem #3646cd;
 }
 
-:host/deep/ .p-button {
-  background: #3646CD;
-  border-color: #3646CD !important;
+:host/deep/ .p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: none;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: #495057;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
 }
 
-:host/deep/ .p-button:enabled:hover, .p-button:enabled:focus {
-  background: #3646CD;
-  border-color: #3646CD !important;
-  box-shadow: none;
+:host/deep/ .p-datatable .p-datatable-tbody > tr > td {
+  text-align: left;
+  border: none;
+}
+
+/* style component */
+.button-action {
+  width: 20px !important;
+  height: 20px;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(31, 45, 65, 0.5) !important;
 }
 
 .button-text{
@@ -46,11 +60,9 @@
   font-weight: bold;
 }
 
-/* style component */
-
 .p-button-close {
   color: #3646CD;
-  background: #3646CD2c;
+  background: rgba(54, 70, 205, 0.173);
   border-color: #3646CD !important;
 }
 
