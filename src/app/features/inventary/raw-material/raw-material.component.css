@@ -44,6 +44,28 @@
   border: none;
 }
 
+:host/deep/ .p-button {
+  background: rgba(54, 69, 205, 0.876);
+  border: 1px solid #3646CD;
+}
+
+:host/deep/ .p-button:enabled:hover{
+  background: rgba(54, 69, 205, 0.876);
+  border: 1px solid #3646CD;
+}
+
+:host/deep/ .p-button:enabled:active {
+  background: rgba(54, 69, 205, 0.876);
+  color: #ffffff;
+  border-color: #3646CD;
+}
+
+:host/deep/ .p-button:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.1rem #3645cd5e;
+}
+
 /* style component */
 .button-action {
   width: 20px !important;
