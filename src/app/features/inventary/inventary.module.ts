@@ -1,4 +1,4 @@
-import { InventaryComponent } from './inventary';
+import { InventaryComponent } from './inventary.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from "@angular/core";
 import { ProductsComponent } from './products/products.component';
