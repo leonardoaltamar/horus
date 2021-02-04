@@ -3,7 +3,7 @@ import { RouteStateService } from 'src/app/core/services/route-state.service';
 
 import { ConfirmationService } from 'primeng/api';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-
+import {PackingService } from '../../../core/services/packing.service';
 @Component({
   selector: 'app-packing',
   templateUrl: './packing.component.html',
@@ -14,7 +14,9 @@ export class PackingComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
 
-  constructor(private routeStateService: RouteStateService) { }
+  constructor(private routeStateService: RouteStateService,
+             private service: PackingService
+    ) { }
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/packings", null, false);
