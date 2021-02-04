@@ -242,6 +242,7 @@ input[type="radio"]:enabled:hover {
 .left {
   float: left;
 }
+
 .card {
   box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
   display: flex !important;
@@ -252,6 +253,8 @@ input[type="radio"]:enabled:hover {
   border: 1px solid #F2F2F2 !important;
   border-radius: 3px;
 }
+
+
 .card .card-header {
   padding: 1rem 1.35rem;
   margin-bottom: 0;

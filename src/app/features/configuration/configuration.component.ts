@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from '../../core/services/route-state.service';
 
 @Component({
-  selector: 'hr-inventary',
+  selector: 'hr-configuration',
   template: '<router-outlet></router-outlet>'
 
 })
-export class InventaryComponent {
+export class ConfigurationComponent {
 
   constructor(private routeStateService: RouteStateService) { }
 
   ngOnInit() {
-    this.routeStateService.add("Inventario", "inventary", null, true);
+    this.routeStateService.add("Configuration", "configuration", null, true);
   }
 
 }
