@@ -1,3 +1,4 @@
+import { rowMaterial } from './../../../core/models/raw-material.model';
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
@@ -11,6 +12,8 @@ import { ConfirmationService } from 'primeng/api';
 })
 
 export class RawMaterialComponent implements OnInit {
+  rowMaterial: rowMaterial[] = [];
+
   form_rowMaterial: FormGroup;
   dateAdd: Date;
   isLoading: boolean = false;
@@ -23,13 +26,19 @@ export class RawMaterialComponent implements OnInit {
     this.form_rowMaterial = this._formuilder.group({
       description: ['', [Validators.required], []],
       count: ['', [Validators.required], []],
-      amount: ['', [Validators.required], []]
+      price: ['', [Validators.required], []]
     })
   }
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/raw-materials", null, false);
     this.getAllMaterial();
+    this.rowMaterial.push({
+      description: 'carne guisada',
+      count: 23,
+      startAt: "12/03/2020",
+      price: 4300
+    })
   }
 
   //Metodo de recarga de informacion

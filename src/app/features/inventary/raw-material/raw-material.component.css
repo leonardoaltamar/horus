@@ -1,8 +1,31 @@
-.button-text{
-  float: right;
-  position: relative;
-  border: none;
-  font-weight: bold;
+/* Sobre escritura de style primeng */
+
+:host/deep/ .p-field {
+  margin-bottom: -0.5rem;
+}
+
+:host/deep/  .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.01rem #3646cd;
+}
+
+:host/deep/ .p-paginator .p-paginator-first,
+:host/deep/ .p-paginator .p-paginator-prev,
+:host/deep/ .p-paginator .p-paginator-next,
+:host/deep/ .p-paginator .p-paginator-last {
+  color: #3646cd;
+}
+
+:host/deep/ .p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 0.01rem #3646cd;
+  border-color: #3646cd;
+}
+
+:host/deep/ .p-link:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.01rem #3646cd;
 }
 
 :host/deep/ .p-button {
@@ -15,6 +38,15 @@
   border-color: #3646CD !important;
   box-shadow: none;
 }
+
+.button-text{
+  float: right;
+  position: relative;
+  border: none;
+  font-weight: bold;
+}
+
+/* style component */
 
 .p-button-close {
   color: #3646CD;
@@ -77,34 +109,4 @@
   float: left;
   height: 100%;
   width: 50%
-}
-
-/* Sobre escritura de style primeng */
-
-:host/deep/ .p-field {
-  margin-bottom: -0.5rem;
-}
-
-:host/deep/  .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
-  outline: 0 none;
-  outline-offset: 0;
-  box-shadow: 0 0 0 0.01rem #3646cd;
-}
-
-:host/deep/ .p-paginator .p-paginator-first,
-:host/deep/ .p-paginator .p-paginator-prev,
-:host/deep/ .p-paginator .p-paginator-next,
-:host/deep/ .p-paginator .p-paginator-last {
-  color: #3646cd;
-}
-
-:host/deep/ .p-inputtext:enabled:focus {
-  box-shadow: 0 0 0 0.01rem #3646cd;
-  border-color: #3646cd;
-}
-
-:host/deep/ .p-link:focus {
-  outline: 0 none;
-  outline-offset: 0;
-  box-shadow: 0 0 0 0.01rem #3646cd;
 }

@@ -45,7 +45,7 @@ body .ui-button {
 }
 
 .success-icon {
-  color: #27ae60;
+  color: #3646CD;
 }
 
 .error-icon {
@@ -139,7 +139,7 @@ input[type="radio"]:enabled:hover {
   height: 20px;
   background: transparent !important;
   border: none !important;
-  color: #327536 !important;
+  color: #3646CD !important;
 }
 .button-action:enabled:hover, .button-action:enabled:focus {
   box-shadow: none !important;
@@ -486,3 +486,4 @@ span.created-by {
   text-decoration: none;
   transition: color ease-out 0.1s;
 }
+

@@ -1,3 +1,44 @@
+/* Sobre escritura de style primeng */
+
+:host/deep/ .p-field {
+  margin-bottom: -0.5rem;
+}
+
+:host/deep/  .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.01rem #3646cd;
+}
+
+:host/deep/ .p-paginator .p-paginator-first,
+:host/deep/ .p-paginator .p-paginator-prev,
+:host/deep/ .p-paginator .p-paginator-next,
+:host/deep/ .p-paginator .p-paginator-last {
+  color: #3646cd;
+}
+
+:host/deep/ .p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 0.01rem #3646cd;
+  border-color: #3646cd;
+}
+
+:host/deep/ .p-link:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.01rem #3646cd;
+}
+
+:host/deep/ .p-button {
+  background: #3646CD;
+  border-color: #3646CD !important;
+}
+
+:host/deep/ .p-button:enabled:hover, .p-button:enabled:focus {
+  background: #3646CD;
+  border-color: #3646CD !important;
+  box-shadow: none;
+}
+
 .button-text{
   float: right;
   position: relative;
@@ -5,40 +46,30 @@
   font-weight: bold;
 }
 
-.p-button {
-  color: #4CAF50;
-  background: none;
-  border-color: #439D49 !important;
-}
-
-.p-button:enabled:hover, .p-button:enabled:focus {
-  color: #4CAF50;
-  background: #439d4913;
-  border-color: #4caf4f48 !important;
-}
+/* style component */
 
 .p-button-close {
-  color: #4CAF50;
-  background: #439d492c;
-  border-color: #439D49 !important;
+  color: #3646CD;
+  background: #3646CD2c;
+  border-color: #3646CD !important;
 }
 
 .p-button-close:enabled:hover, .p-button-close:enabled:focus {
-  color: #4CAF50;
-  background: #439d4949;
-  border-color: #4caf4f48 !important;
+  color: #3646CD;
+  background: #3646CD49;
+  border-color: #3646CD48 !important;
 }
 
 .p-button-save {
   color: #fff;
-  background: #439D49;
-  border-color: #439D49 !important;
+  background: #3646cd;
+  border-color: #3646cd !important;
 }
 
 .p-button-save:enabled:hover, .p-button-save:enabled:focus {
   color: #fff;
-  background: #419944ea;
-  border-color: #4caf4f48 !important;
+  background: #001f9b;
+  border-color: #001f9b !important;
 }
 
 .input-line {
@@ -50,7 +81,10 @@
 
 .input-line:enabled:focus {
   box-shadow: none ;
+  border-color: #3646cd;
 }
+
+/* Modal */
 
 .row:after {
   content: "";
