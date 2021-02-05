@@ -2,46 +2,46 @@ import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { packing } from '../models/packing.model';
+import { product } from '../models/product.model';
 import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class PackingService {
+export class ProductService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}box`;
+    this.endPoint = `${environment.apiUrl}product`;
   }
 
 
 
   async getAll() {
-    return this.http.get<packing[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<product[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<packing>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<product>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(packing: packing) {
-    return this.http.post<packing>(`${this.endPoint}`, packing);
+  create(product: product) {
+    return this.http.post<product>(`${this.endPoint}`, product);
   }
 
-  update(id: number, packing:packing) {
-    return this.http.patch(`${this.endPoint}/${id}`, packing);
+  update(id: number, product:product) {
+    return this.http.patch(`${this.endPoint}/${id}`, product);
       // .pipe(map(x => {
       //   return x;
       // }));
   }
 
-  delete(id: number,packing:packing) {
+  delete(id: number,product:product) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: packing
+      body: product
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {

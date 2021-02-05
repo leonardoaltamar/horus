@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http'
 //PrimeNG
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     RouterModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    MessageService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

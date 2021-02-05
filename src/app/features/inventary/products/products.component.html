@@ -25,7 +25,7 @@
             <th>#</th>
             <th>Descripcion</th>
             <th>Precio</th>
-            <th>Cantidad</th>
+            <th>Categorias</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -33,12 +33,12 @@
           <tr>
             <td>{{rowIndex+1}}</td>
             <td>{{dataRow.description}}</td>
-            <td>{{dataRow.price}}</td>
-            <td>{{dataRow.category}}</td>
+            <td>{{dataRow.salePrice}}</td>
+            <td>{{dataRow.category.description}}</td>
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
                 class="button-action"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProduct(dataRow)" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -53,22 +53,24 @@
   <div class="p-grid">
     <div class="p-field p-col-6 p-sm-6">
       <label for="description">Descripción</label>
-      <input id="description" type="text" pInputText>
+      <input id="description" type="text" [(ngModel)]="product.description" pInputText>
+    </div>
+
+    <div class="p-field p-col-6 p-sm-6">
+      <label for="packing">Precio</label>
+      <input id="packing" type="text" [(ngModel)]="product.salePrice" pInputText>
     </div>
     <div class="p-field p-col-6 p-sm-6">
-      <label for="content">Contenido Neto</label>
-      <input id="content" type="text" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="packing">Empaque</label>
-      <input id="packing" type="text" pInputText>
+      <label for="packing">Categorias</label>
+      <p-dropdown [options]="categories"  [(ngModel)]="product.category" optionLabel="description"></p-dropdown>
     </div>
   </div>
-
   <p-footer class="p-grid">
-    <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text"
+    <button pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text"
       (click)="showModal=false"></button>
     <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button"
-      (click)="newProduct()"></button>
+      (click)="saveProduct()"></button>
   </p-footer>
 </p-dialog>
+
+<p-confirmDialog class="dialog-small"></p-confirmDialog>

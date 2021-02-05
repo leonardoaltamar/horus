@@ -3,6 +3,8 @@ import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Category } from './../models/category.model';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +36,12 @@ export class CategoryService {
       }));
   }
 
-  delete(id: number) {
-    return this.http.delete(`${this.endPoint}/${id}`)
+  delete(id: number,category:Category) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      body: category
+    };
+    return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {
         return x;
       }));

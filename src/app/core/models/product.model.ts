@@ -1,13 +1,15 @@
+import { Category } from './category.model'
 export class product {
   id?: number;
   description: string;
-  price: number;
-  category: string
-
+  salePrice: number;
+  category: Category
+  auth: number;
   constructor() {
     this.id = null;
     this.description = '';
-    this.price = 0;
-    this.category = '';
+    this.salePrice = null;
+    this.category = new Category();
+    this.auth = 0;
   }
 }

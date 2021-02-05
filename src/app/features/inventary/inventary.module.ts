@@ -16,6 +16,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -36,9 +39,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    ConfirmDialogModule,
     CalendarModule,
     InputNumberModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ToastModule,
+    DropdownModule
   ],
   providers: [],
   entryComponents: []
