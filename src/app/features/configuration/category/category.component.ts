@@ -13,6 +13,7 @@ import { ConfirmationService } from 'primeng/api';
   styleUrls: ['./category.component.css'],
   providers: [ConfirmationService]
 })
+
 export class CategoryComponent {
   form_category: FormGroup;
   model: Category = new Category();
@@ -25,7 +26,7 @@ export class CategoryComponent {
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
     private _formuilder: FormBuilder,
-    private routeStateService: RouteStateService,) {
+    private routeStateService: RouteStateService) {
     this.form_category = this._formuilder.group({
       code: ['', [Validators.required], [this.validate_category.bind(this)]],
       description: ['', [Validators.required], []]
@@ -33,9 +34,8 @@ export class CategoryComponent {
   }
 
   ngOnInit(): void {
-    this.routeStateService.add("Configuration", "/configuration/categorys", null, false);
-    this.getAllCategory()
-    console.table(this.models);
+    this.routeStateService.add("Configuration", "/configuration/categories", null, false);
+    this.getAllCategory();
   }
 
   async validate_category(control: AbstractControl) {
@@ -53,6 +53,7 @@ export class CategoryComponent {
   }
 
   newCategory() {
+    this.model = new Category();
     this.showModal = true;
   }
 
@@ -70,7 +71,7 @@ export class CategoryComponent {
   saveCategory() {
     this.categoryService.create(this.model).subscribe(
       data => {
-        console.table(data)
+        this.models.push(this.model);
       },
       error => {
         console.error(`Error de guardado ${error}`);
@@ -87,12 +88,15 @@ export class CategoryComponent {
       accept: () => {
         this.categoryService.delete(category.id).pipe(first()).subscribe(
           data => {
+            console.log(data);
             if (data['success']) {
               this.models = this.models.filter((x) => x.id != category.id);
+              console.log(this.models);
             }
           },
           error => {
             console.log(error);
+            console.log(`no sirve esta monda`);
           });
       }
     });

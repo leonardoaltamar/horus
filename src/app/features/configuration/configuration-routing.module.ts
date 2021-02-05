@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       //Hijos del modulo de cofiguracion
       {
-        path: 'categorys',
+        path: 'categories',
         component: CategoryComponent,
       }
     ],

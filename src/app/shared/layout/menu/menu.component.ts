@@ -41,7 +41,7 @@ export class MenuComponent {
         items: [
           { label: 'Productos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ["/inventary/products"] },
           { separator: true },
-          { label: 'Categorias', icon: 'pi pi-fw pi-th-large', routerLink: ["/configuration/categorys"] },
+          { label: 'Categorias', icon: 'pi pi-fw pi-th-large', routerLink: ["/configuration/categories"] },
           { separator: true }
         ]
       }, {
