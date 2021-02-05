@@ -1,36 +1,51 @@
-import { product } from './../../../core/models/product.model';
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { first } from 'rxjs/operators';
+
+//
+import { product } from '@core/models/product.model';
+import { ProductService } from '@core/services/product.service';
 import { Category } from '@core/models/category.model';
 import { CategoryService } from '@core/services/category.service';
-import { ProductService } from '@core/services/product.service';
-import { first } from 'rxjs/operators';
+import { rawMaterial } from '@core/models/raw-material.model';
+import { RawMaterialService } from '@core/services/rawMaterial.service';
+import { SelectItem } from 'primeng/api';
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
   providers: [ConfirmationService]
 })
+
 export class ProductsComponent implements OnInit {
-  products: product[] = [];
-  product: product = new product();
-  categories: Category[] = [];
-  form_rowMaterial: FormGroup;
+  form_product: FormGroup;
   isLoading: boolean = false;
   showModal: boolean = false;
   selectedCity: Category;
+
+  //Modelos
+  products: product[] = [];
+  product: product = new product();
+  categories: Category[] = [];
+  rowMaterials: rawMaterial[] = [];
+  optionsRawMaterials: SelectItem[] = [];
+
+
   constructor(private routeStateService: RouteStateService,
     private _formuilder: FormBuilder,
     private categoryService: CategoryService,
     private productService: ProductService,
     private confirmationService: ConfirmationService,
-    ) {
-    this.form_rowMaterial = this._formuilder.group({
+    private rawMaterialService: RawMaterialService
+  ) {
+    this.form_product = this._formuilder.group({
       description: ['', [Validators.required], []],
       price: ['', [Validators.required], []],
-      category: ['', [Validators.required], []]
+      category: ['', [Validators.required], []],
+      rawMaterial: ['', [Validators.required], []]
     })
   }
 
@@ -38,8 +53,19 @@ export class ProductsComponent implements OnInit {
     this.routeStateService.add("Productos", "/inventary/products", null, false);
     this.getAllProducts();
     this.getAllCategory();
+    this.getAllRawMaterial();
   }
 
+  async getAllRawMaterial() {
+    try {
+      this.isLoading = true;
+      // this.rowMaterials = await this.rawMaterialService.getAll();
+      this.isLoading = false;
+    } catch (error) {
+      this.isLoading = false;
+      console.error(error);
+    }
+  }
 
   async getAllCategory() {
     try {
@@ -51,7 +77,6 @@ export class ProductsComponent implements OnInit {
       console.error(error);
     }
   }
-
 
   //Metodo de recarga de informacion
   async getAllProducts() {
@@ -78,7 +103,7 @@ export class ProductsComponent implements OnInit {
       }
     );
     this.showModal = false;
-   }
+  }
 
   newProduct() {
     this.showModal = true;
@@ -89,7 +114,7 @@ export class ProductsComponent implements OnInit {
     this.showModal = true;
   }
 
-  deleteProduct(product: product){
+  deleteProduct(product: product) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `Está eliminando: ${product.description}`,
@@ -97,7 +122,7 @@ export class ProductsComponent implements OnInit {
       accept: () => {
         this.productService.delete(product.id, product).pipe(first()).subscribe(
           data => {
-            if(data['success']){
+            if (data['success']) {
               this.products = this.products.filter((x) => x.id != product.id);
             }
           },

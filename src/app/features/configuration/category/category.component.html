@@ -3,6 +3,9 @@
     Categorias
   </div>
   <div class="card-body">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
     <div class="table-responsive" *ngIf="!isLoading">
       <p-table [value]="models" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['code']">

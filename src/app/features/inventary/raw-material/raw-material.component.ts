@@ -1,4 +1,4 @@
-import { rowMaterial } from './../../../core/models/raw-material.model';
+import { rawMaterial } from './../../../core/models/raw-material.model';
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
@@ -12,7 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 })
 
 export class RawMaterialComponent implements OnInit {
-  rowMaterial: rowMaterial[] = [];
+  rowMaterial: rawMaterial[] = [];
 
   form_rowMaterial: FormGroup;
   dateAdd: Date;

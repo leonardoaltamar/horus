@@ -1,6 +1,6 @@
 import { Data } from '@angular/router';
 
-export class rowMaterial {
+export class rawMaterial {
   id?: number;
   description: string;
   count: number;

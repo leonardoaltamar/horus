@@ -1,1 +1,20 @@
-<p>production works!</p>
+<div styleClass="ssw-panel" class="card scroll">
+  <div class="card-header">
+    Produccion
+  </div>
+  <div class="card-body">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
+    <div class="p-d-flex">
+      <div class="p-field p-col-4">
+        <label for="products" class="label-options">Producto</label>
+        <p-dropdown id="products" placeholder="Selecciona"></p-dropdown>
+      </div>
+      <div class="p-field p-col-4">
+        <label for="parking" class="label-options">Tipo de caja</label>
+        <p-dropdown id="parking" placeholder="Selecciona"></p-dropdown>
+      </div>
+    </div>
+  </div>
+</div>

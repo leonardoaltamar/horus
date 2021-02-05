@@ -38,7 +38,8 @@
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
                 class="button-action"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProduct(dataRow)" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProduct(dataRow)"
+                class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -48,29 +49,38 @@
 </div>
 
 
-<p-dialog header="Nuevo" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
-  [baseZIndex]="10000" [resizable]="false">
-  <div class="p-grid">
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="description">Descripción</label>
-      <input id="description" type="text" [(ngModel)]="product.description" pInputText>
+<p-dialog header="Ingreso de materia producto" [(visible)]="showModal" [style]="{width: '45em'}" [modal]="true"
+  [baseZIndex]="10" [resizable]="false">
+  <form [formGroup]="form_product" (ngSubmit)="saveProduct()" class="">
+    <div class="p-grid p-mt-2">
+      <div class="p-field p-col-6 p-sm-6">
+        <label for="description">Descripción</label>
+        <input id="description" type="text" [(ngModel)]="product.description" pInputText>
+      </div>
+      <div class="p-field p-col-6 p-sm-6">
+        <label for="packing">Precio</label>
+        <input id="packing" type="text" [(ngModel)]="product.salePrice" pInputText>
+      </div>
+      <div class="p-field p-col-6 p-sm-6">
+        <label for="packing">Categorias</label>
+        <p-dropdown [options]="categories" [(ngModel)]="product.category" optionLabel="description"></p-dropdown>
+      </div>
+      <div class="p-field p-col-6 p-sm-6">
+        <label for="rowMaterial">Materia prima</label>
+        <p-multiSelect [options]="optionsRawMaterials" defaultLabel="Selecciona la materia prima"
+          [(ngModel)]="rowMaterials">
+        </p-multiSelect>
+      </div>
     </div>
-
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="packing">Precio</label>
-      <input id="packing" type="text" [(ngModel)]="product.salePrice" pInputText>
-    </div>
-    <div class="p-field p-col-6 p-sm-6">
-      <label for="packing">Categorias</label>
-      <p-dropdown [options]="categories"  [(ngModel)]="product.category" optionLabel="description"></p-dropdown>
-    </div>
-  </div>
-  <p-footer class="p-grid">
-    <button pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text"
-      (click)="showModal=false"></button>
-    <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button"
-      (click)="saveProduct()"></button>
-  </p-footer>
+    <br>
+    <br>
+    <p-footer class="p-grid">
+      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"
+        (click)="saveProduct()"></button>
+      <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
+        (click)="showModal=false"></button>
+    </p-footer>
+  </form>
 </p-dialog>
 
 <p-confirmDialog class="dialog-small"></p-confirmDialog>

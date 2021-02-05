@@ -44,6 +44,32 @@
   border: none;
 }
 
+:host/deep/ .p-button {
+  background: rgba(54, 69, 205, 0.876);
+  border: 1px solid #3646CD;
+}
+
+:host/deep/ .p-button:enabled:hover{
+  background: rgba(54, 69, 205, 0.876);
+  border: 1px solid #3646CD;
+}
+
+:host/deep/ .p-button:enabled:active {
+  background: rgba(54, 69, 205, 0.876);
+  color: #ffffff;
+  border-color: #3646CD;
+}
+
+:host/deep/ .p-button:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.1rem #3645cd5e;
+}
+
+:host/deep/ .p-dialog .p-dialog-content {
+  height: auto;
+}
+
 /* style component */
 .button-action {
   width: 20px !important;
@@ -96,32 +122,6 @@
   border-color: #3646cd;
 }
 
-:host/deep/ .p-dialog .p-dialog-content {
-  height: 210px;
-}
-/* Modal */
-
-.row:after {
-  content: "";
-  display: bethe;
-  clear: both;
-}
-
-.mb-1{
-  margin-bottom: 1em;
-}
-
-.mr-05{
-  padding-right: 0.5em;
-}
-
-.ml-05{
-  padding-left: 0.5em;
-}
-
-.column {
-  display: flex;
-  float: left;
-  height: 100%;
-  width: 50%
+.mt-end{
+  margin-top: 40px;
 }

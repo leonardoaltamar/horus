@@ -6,7 +6,7 @@ import { RouteStateService } from 'src/app/core/services/route-state.service';
   styleUrls: ['./production.component.css']
 })
 export class ProductionComponent implements OnInit {
-
+  isLoading: boolean = false;
   constructor(private routeStateService: RouteStateService) { }
 
   ngOnInit(): void {
