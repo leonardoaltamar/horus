@@ -1,11 +1,12 @@
-export class Packing {
+export class packing {
   id?: number;
+  unities: number;
   description: string;
-  count: number;
-
+  auth:number;
   constructor() {
     this.id = null;
+    this.unities = null;
     this.description = '';
-    this.count = 0;
+    this.auth = 0;
   }
 }

@@ -86,7 +86,7 @@ export class CategoryComponent {
       message: `Está eliminando: ${category.code} - ${category.description}`,
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
-        this.categoryService.delete(category.id).pipe(first()).subscribe(
+        this.categoryService.delete(category.id,category).pipe(first()).subscribe(
           data => {
             console.log(data);
             if (data['success']) {

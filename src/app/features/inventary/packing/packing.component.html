@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="packings" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['title', 'activityType.name']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -32,10 +32,10 @@
           <tr>
             <td>{{rowIndex+1}}</td>
             <td>{{dataRow.description}}</td>
-            <td>{{dataRow.count}}</td>
+            <td>{{dataRow.unities}}</td>
             <td>
-              <button pButton pRipple type="button" icon="fa fa-pencil" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="fa fa-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"></button>
+              <button pButton pRipple type="button"  icon="pi pi-trash" (click)="deletedPacking(dataRow)" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -50,16 +50,16 @@
   <div class="p-grid">
     <div class="p-field p-col-6 p-sm-6">
       <label for="firstname2">Descripción</label>
-      <input id="firstname2" type="text" pInputText>
+      <input id="firstname2" [(ngModel)]="packing.description" type="text" pInputText>
     </div>
     <div class="p-field p-col-6 p-sm-6">
-      <label for="lastname2">Cantidad</label>
-      <input id="lastname2" type="text" pInputText>
+      <label for="lastname2">Unidades iniciales</label>
+      <input id="lastname2" type="text" pInputText [(ngModel)]="packing.unities">
     </div>
   </div>
 
   <p-footer class="p-grid">
-    <p-button type="submit" icon="fa fa-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar"></p-button>
+    <p-button type="submit" icon="fa fa-save" class="btns bt1 p-col-6" iconPos="left" label="Guardar" (click)="savePacking()"></p-button>
     <p-button icon="fa fa-times" class="btns bt1 p-col-6" iconPos="left" label="Cerrar" (click)="showModal=false">
     </p-button>
   </p-footer>
@@ -69,3 +69,5 @@
     <p-button icon="fas fa-times" iconPos="left" label="Cerrar" (click)="showModal=false"></p-button>
   </p-footer> -->
 </p-dialog>
+
+<p-confirmDialog class="dialog-small"></p-confirmDialog>
