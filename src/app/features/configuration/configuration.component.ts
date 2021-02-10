@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteStateService } from '../../core/services/route-state.service';
+import { RouteStateService } from '@core/services/route-state.service';
 
 @Component({
   selector: 'hr-configuration',

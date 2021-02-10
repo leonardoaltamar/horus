@@ -28,41 +28,45 @@ export class MenuComponent {
     this.items = [
       {
         label: 'Remisiones',
-        icon: 'pi pi-pw pi-users',
+        icon: 'fas pi-pw fa-list-alt',
         items: [
-          { label: 'Entrada', icon: 'pi pi-fw pi-sign-in', routerLink: [""] },
+          { label: 'Entrada', icon: 'fas pi-fw fa-sign-in-alt', routerLink: [""] },
           { separator: true },
-          { label: 'Salida', icon: 'pi pi-fw pi-sign-out', routerLink: [""] },
+          { label: 'Salida', icon: 'fas pi-fw fa-sign-out-alt', routerLink: [""] },
           { separator: true }
         ]
       }, {
         label: 'Ajustes',
-        icon: 'pi pi-pw pi-cog',
+        icon: 'fas fa-cogs',
         items: [
-          { label: 'Productos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ["/inventary/products"] },
+          { label: 'Productos', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/products"] },
           { separator: true },
-          { label: 'Categorias', icon: 'pi pi-fw pi-th-large', routerLink: ["/configuration/categories"] },
+          { label: 'Categorias', icon: 'fas fa-cubes', routerLink: ["/configuration/categories"] },
+          { separator: true },
+          { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
+          { separator: true },
+          { label: 'Vendedores', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/salesmen"] },
+          { separator: true },
+          { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
           { separator: true }
         ]
       }, {
         label: 'Inventario',
-        icon: 'pi pi-pw pi-sitemap',
+        icon: 'fas pi-pw fa-inventory',
         items: [
-          { label: 'Materia prima', icon: 'pi pi-fw pi-clone', routerLink: ["/inventary/raw-materials"] },
+          { label: 'Materia prima', icon: 'fas pi-fw fa-conveyor-belt-alt', routerLink: ["/inventary/raw-materials"] },
           { separator: true },
-          { label: 'Produccion', icon: 'pi pi-fw pi-send', routerLink: ["/inventary/productions"] },
+          { label: 'Produccion', icon: 'fas pi-fw fa-hand-holding-box', routerLink: ["/inventary/productions"] },
           { separator: true },
-          { label: 'Empaque', icon: 'pi pi-fw pi-briefcase', routerLink: ["/inventary/packings"] },
+          { label: 'Empaque', icon: 'fas pi-fw fa-box', routerLink: ["/inventary/packings"] },
           { separator: true }
         ]
       }, {
         label: 'Parametros',
-        icon: 'pi pi-pw pi-book',
+        icon: 'fas pi-pw fa-align-left',
         items: [
           { label: 'Entrada', icon: 'pi pi-fw pi-sign-in', routerLink: [""] },
-          { separator: true },
           { label: 'Salida', icon: 'pi pi-fw pi-sign-out', routerLink: [""] },
-          { separator: true }
         ]
       }
     ];

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { RouteStateService } from '../../../core/services/route-state.service';
-import { CategoryService } from './../../../core/services/category.service';
+import { Component } from '@angular/core';
+import { RouteStateService } from '@core/services/route-state.service';
+import { CategoryService } from '@core/services/category.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { first, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
-import { Category } from '../../../core/models/category.model'
+import { Category } from '@core/models/category.model'
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -72,6 +72,7 @@ export class CategoryComponent {
     this.categoryService.create(this.model).subscribe(
       data => {
         this.models.push(this.model);
+        console.log(data);
       },
       error => {
         console.error(`Error de guardado ${error}`);
@@ -96,7 +97,8 @@ export class CategoryComponent {
           },
           error => {
             console.log(error);
-          });
+          }
+        );
       }
     });
   }
