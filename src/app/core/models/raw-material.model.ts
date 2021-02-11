@@ -2,16 +2,16 @@ import { Data } from '@angular/router';
 
 export class rawMaterial {
   id?: number;
-  description: string;
-  count: number;
-  startAt: string;
-  price: number;
+  code: string;
+  name: string;
+  stock: number;
+  measure: string;
 
   constructor() {
     this.id = null;
-    this.description = '';
-    this.count = 0;
-    this.startAt = '';
-    this.price = 0;
+    this.code = '';
+    this.name = '';
+    this.stock = 0;
+    this.measure = '';
   }
 }

@@ -23,23 +23,24 @@
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Descripcion</th>
-            <th>Fecha de ingreso</th>
-            <th>Cantidad</th>
-            <th>Precio de compra</th>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Stock</th>
+            <th>Medida</th>
             <th>*</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.description}}</td>
-            <td>{{dataRow.startAt}}</td>
-            <td>{{dataRow.count}}</td>
-            <td>{{dataRow.price}}</td>
+            <td>{{dataRow.code}}</td>
+            <td>{{dataRow.name}}</td>
+            <td>{{dataRow.stock}}</td>
+            <td>{{dataRow.measure}}</td>
             <td>
-              <button pButton pRipple type="button" icon="fas fa-edit" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash-alt  " class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-eye" class="button-action"></button>
             </td>
           </tr>
         </ng-template>

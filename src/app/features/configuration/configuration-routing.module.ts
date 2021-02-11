@@ -1,12 +1,14 @@
-import { SupplierComponent } from './supplier/supplier.component';
-import { SalesmanComponent } from './salesman/salesman.component';
+import { MeasurementComponent } from './measurement/measurement.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfigurationComponent } from './configuration.component';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 
 //Importaciones:componentes de configuration
 import { CategoryComponent } from './category/category.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CityComponent } from './city/city.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { SalesmanComponent } from './salesman/salesman.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,14 @@ const routes: Routes = [
       {
         path: 'suppliers',
         component: SupplierComponent,
+      },
+      {
+        path: 'cities',
+        component: CityComponent,
+      },
+      {
+        path: 'measurements',
+        component: MeasurementComponent,
       }
     ],
   },

@@ -84,20 +84,23 @@
 
 .p-button-close {
   color: #3646CD;
-  background: rgba(54, 70, 205, 0.173);
+  background: rgba(54, 69, 205, 0);
   border-color: #3646CD !important;
+  padding: .5em .8em;
 }
 
 .p-button-close:enabled:hover, .p-button-close:enabled:focus {
   color: #3646CD;
-  background: #3646CD49;
+  background: #3645cd1c;
   border-color: #3646CD48 !important;
+  border: none;
 }
 
 .p-button-save {
   color: #fff;
   background: #3646cd;
   border-color: #3646cd !important;
+  padding: .5em .8em;
 }
 
 .p-button-save:enabled:hover, .p-button-save:enabled:focus {
@@ -118,29 +121,3 @@
   border-color: #3646cd;
 }
 
-/* Modal */
-
-.row:after {
-  content: "";
-  display: bethe;
-  clear: both;
-}
-
-.mb-1{
-  margin-bottom: 1em;
-}
-
-.mr-05{
-  padding-right: 0.5em;
-}
-
-.ml-05{
-  padding-left: 0.5em;
-}
-
-.column {
-  display: flex;
-  float: left;
-  height: 100%;
-  width: 50%
-}

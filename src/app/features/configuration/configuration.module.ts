@@ -19,6 +19,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
 import { SupplierComponent } from './supplier/supplier.component';
+import { CityComponent } from './city/city.component';
+import { MeasurementComponent } from './measurement/measurement.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { SupplierComponent } from './supplier/supplier.component';
     CategoryComponent,
     CustomerComponent,
     SalesmanComponent,
-    SupplierComponent
+    SupplierComponent,
+    CityComponent,
+    MeasurementComponent
   ],
   exports: [
   ],

@@ -1,6 +1,6 @@
-import { rawMaterial } from './../../../core/models/raw-material.model';
+import { rawMaterial } from '@core/models/raw-material.model';
 import { Component, OnInit } from '@angular/core';
-import { RouteStateService } from 'src/app/core/services/route-state.service';
+import { RouteStateService } from '@core/services/route-state.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
 
@@ -32,13 +32,27 @@ export class RawMaterialComponent implements OnInit {
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/raw-materials", null, false);
-    this.getAllMaterial();
-    this.rowMaterial.push({
-      description: 'carne guisada',
-      count: 23,
-      startAt: "12/03/2020",
-      price: 4300
-    })
+    this.getAllMaterial(); ``
+    this.rowMaterial.push(
+      {
+        code: '1234',
+        name: 'Tapas',
+        stock: 124,
+        measure: 'UNI'
+      },
+      {
+        code: '4312',
+        name: 'Aceite',
+        stock: 1342.43,
+        measure: 'LITRO'
+      },
+      {
+        code: '4313',
+        name: 'Aceite',
+        stock: 134.43,
+        measure: 'LITRO'
+      }
+    )
   }
 
   //Metodo de recarga de informacion
