@@ -5,16 +5,19 @@
       <img src="assets/images/bg.svg">
     </div>
     <div class="login-content">
-      <form action="index.html">
+      <form (ngSubmit)="onClickLogin()">
         <img src="assets/images/avatar.svg">
         <h2 class="title">Bienvenido</h2>
         <div class="input-div one" [ngClass]="focusUser">
           <div class="i">
             <i class="pi pi-user"></i>
           </div>
-          <div class="div" >
-            <h5>Usuario</h5>
-            <input type="text" class="input" (blur)="focusUser=''" (focus)="focusUser='focus'" >
+          <div class="div">
+            <span class="p-float-label">
+              <input name="userName" type="text" pInputText [(ngModel)]="userName" (blur)="focusUser=''"
+                (focus)="focusUser='focus'" (keyup.enter)="onClickLogin()" />
+              <label for="float-input" class="label">Username</label>
+            </span>
           </div>
         </div>
         <div class="input-div pass" [ngClass]="focusPassword">
@@ -22,8 +25,11 @@
             <i class="pi pi-lock"></i>
           </div>
           <div class="div">
-            <h5>Contraseña</h5>
-            <input type="password" class="input" (blur)="focusPassword=''" (focus)="focusPassword='focus'">
+            <span class="p-float-label">
+              <input name="userPassword" type="password" pInputText [(ngModel)]="userPassword" (blur)="focusPassword=''"
+                (focus)="focusPassword='focus'" (keyup.enter)="onClickLogin()" />
+              <label for="float-input" class="label">Password</label>
+            </span>
           </div>
         </div>
         <input type="submit" class="btn" value="Ingresar">

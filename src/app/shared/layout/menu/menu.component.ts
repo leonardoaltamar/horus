@@ -73,6 +73,8 @@ export class MenuComponent {
           { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
           { separator: true },
           { label: 'Ciudades', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/cities"] },
+          { separator: true },
+          { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] },
           { separator: true }
         ]
       }

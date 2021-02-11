@@ -55,8 +55,7 @@ form{
   width: 360px;
   border-radius: 5px;
   border: 1px solid rgb(218, 218, 218);
-  box-shadow: 2px 2px 4px rgba(213, 213, 213, 0.5),
-              -2px -2px 4px rgb(213, 213, 213, 0.5);
+  box-shadow: 2px 2px 4px rgba(213, 213, 213, 0.5), -2px -2px 4px rgb(213, 213, 213, 0.5);
 }
 
 .login-content img{
@@ -95,7 +94,7 @@ form{
 }
 
 .input-div > div{
-    position: relative;
+  position: relative;
 	height: 45px;
 }
 
@@ -190,10 +189,30 @@ a:hover{
 	cursor: pointer;
 	transition: .5s;
 }
+
 .btn:hover{
 	background-position: right;
 }
 
+.p-inputtext {
+  font-size: 16px;
+  width: 100%;
+  border: none;
+  margin-top: 7px;
+  color: rgb(128, 128, 128);
+}
+
+.label{
+  font-size: 17px;
+  margin-top: -1px;
+  font-weight: 400;
+  color: #999;
+	transition: .3s;
+}
+
+.label:hover{
+  font-size: 12px;
+}
 
 @media screen and (max-width: 1050px){
 	.container{
@@ -233,3 +252,4 @@ a:hover{
 		justify-content: center;
 	}
 }
+
