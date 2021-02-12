@@ -51,8 +51,7 @@
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
         <label for="code">Codigo</label>
-        <input id="code" formControlName="code" type="text" pInputText
-          onkeypress='return event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="model.code">
+        <input id="code" formControlName="code" type="text" pInputText [(ngModel)]="model.code">
         <ng-container *ngIf="form_category.get('code').hasError('required') && form_category.get('code').touched">
           <small class="p-invalid p-text-center">la descripcion es obligatoria</small>
         </ng-container>
