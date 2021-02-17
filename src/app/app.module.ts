@@ -13,10 +13,13 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 import { ErrorInterceptor } from './core/helpers/error.interceptor'
+
 //PrimeNG
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -33,12 +36,14 @@ import { MessageService } from 'primeng/api';
     OverlayPanelModule,
     PanelMenuModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    ProgressBarModule,
+    ToastModule
   ],
   providers: [
     MessageService,
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

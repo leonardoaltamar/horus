@@ -1,15 +1,12 @@
-import { Category } from './category.model'
-export class product {
+import { Artitle } from './artitle.model';
+export class Product {
   id?: number;
-  description: string;
-  salePrice: number;
-  category: Category
-  auth: number;
+  production_cost: number
+  artitle: Artitle;
+
   constructor() {
     this.id = null;
-    this.description = '';
-    this.salePrice = null;
-    this.category = new Category();
-    this.auth = 0;
+    this.production_cost = 0;
+    this.artitle = new Artitle();
   }
 }

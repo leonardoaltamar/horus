@@ -4,9 +4,10 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginRoutingModule } from './login-routing.module';
 import { AppCommonModule } from '../../app.common.module';
-import { ToastModule } from 'primeng/toast';
 
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+
 @NgModule({
   imports: [
     CommonModule,

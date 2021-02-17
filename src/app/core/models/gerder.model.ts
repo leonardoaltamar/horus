@@ -1,11 +1,11 @@
 export class Gender {
   id: number;
-  code: string;
   name: string;
+  code: string;
 
   constructor() {
-    this.id =  null;
-    this.code = '';
+    this.id = null;
     this.name = '';
+    this.code = '';
   }
 }

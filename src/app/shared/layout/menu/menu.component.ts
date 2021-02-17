@@ -25,15 +25,14 @@ export class MenuComponent {
         that.visible = !that.visible;
       }
     });
+
     this.items = [
       {
         label: 'Remisiones',
         icon: 'fas pi-pw fa-list-alt',
         items: [
           { label: 'Entrada', icon: 'fas pi-fw fa-sign-in-alt', routerLink: [""] },
-          { separator: true },
           { label: 'Salida', icon: 'fas pi-fw fa-sign-out-alt', routerLink: [""] },
-          { separator: true }
         ]
       },
       {
@@ -41,9 +40,7 @@ export class MenuComponent {
         icon: 'fas pi-pw fa-align-left',
         items: [
           { label: 'Entrada', icon: 'pi pi-fw pi-sign-in', routerLink: [""] },
-          { separator: true },
           { label: 'Salida', icon: 'pi pi-fw pi-sign-out', routerLink: [""] },
-          { separator: true }
         ]
       },
       {
@@ -51,13 +48,9 @@ export class MenuComponent {
         icon: 'fas pi-pw fa-inventory',
         items: [
           { label: 'Productos', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/products"] },
-          { separator: true },
           { label: 'Materia prima', icon: 'fas pi-fw fa-conveyor-belt-alt', routerLink: ["/inventary/raw-materials"] },
-          { separator: true },
           { label: 'Produccion', icon: 'fas pi-fw fa-hand-holding-box', routerLink: ["/inventary/productions"] },
-          { separator: true },
           { label: 'Empaque', icon: 'fas pi-fw fa-box', routerLink: ["/inventary/packings"] },
-          { separator: true }
         ]
       },
       {
@@ -65,17 +58,12 @@ export class MenuComponent {
         icon: 'fas fa-cogs',
         items: [
           { label: 'Categorias', icon: 'fas fa-cubes', routerLink: ["/configuration/categories"] },
-          { separator: true },
           { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
-          { separator: true },
           { label: 'Vendedores', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/salesmen"] },
-          { separator: true },
           { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
-          { separator: true },
-          { label: 'Ciudades', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/cities"] },
-          { separator: true },
-          { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] },
-          { separator: true }
+          { label: 'Departamentos', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/states"] },
+          { label: 'Ciudades', icon: 'fas pi-fw fa-building', routerLink: ["/configuration/cities"] },
+          { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] }
         ]
       }
     ];

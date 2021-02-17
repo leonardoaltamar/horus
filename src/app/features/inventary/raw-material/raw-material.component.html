@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="rowMaterial" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -33,10 +33,10 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.code}}</td>
-            <td>{{dataRow.name}}</td>
-            <td>{{dataRow.stock}}</td>
-            <td>{{dataRow.measure}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"></button>
               <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"></button>

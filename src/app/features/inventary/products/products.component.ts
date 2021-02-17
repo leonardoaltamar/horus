@@ -5,7 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { first } from 'rxjs/operators';
 
 //
-import { product } from '@core/models/product.model';
+import { Product } from '@core/models/product.model';
 import { ProductService } from '@core/services/product.service';
 import { Category } from '@core/models/category.model';
 import { CategoryService } from '@core/services/category.service';
@@ -27,8 +27,8 @@ export class ProductsComponent implements OnInit {
   selectedCity: Category;
 
   //Modelos
-  products: product[] = [];
-  product: product = new product();
+  products: Product[] = [];
+  product: Product = new Product();
   categories: Category[] = [];
   rowMaterials: rawMaterial[] = [];
   optionsRawMaterials: SelectItem[] = [];
@@ -51,21 +51,21 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/products", null, false);
-    this.getAllProducts();
-    this.getAllCategory();
-    this.getAllRawMaterial();
+    // this.getAllProducts();
+    // this.getAllCategory();
+    // this.getAllRawMaterial();
   }
 
-  async getAllRawMaterial() {
-    try {
-      this.isLoading = true;
-      // this.rowMaterials = await this.rawMaterialService.getAll();
-      this.isLoading = false;
-    } catch (error) {
-      this.isLoading = false;
-      console.error(error);
-    }
-  }
+  // async getAllRawMaterial() {
+  //   try {
+  //     this.isLoading = true;
+  //     this.rowMaterials = await this.rawMaterialService.getAll();
+  //     this.isLoading = false;
+  //   } catch (error) {
+  //     this.isLoading = false;
+  //     console.error(error);
+  //   }
+  // }
 
   async getAllCategory() {
     try {
@@ -79,30 +79,30 @@ export class ProductsComponent implements OnInit {
   }
 
   //Metodo de recarga de informacion
-  async getAllProducts() {
-    try {
-      this.isLoading = true;
-      this.products = await this.productService.getAll();
-      console.log(this.products);
-      this.isLoading = false;
-    } catch (error) {
-      this.isLoading = false;
-      console.error(error)
-    }
-  }
+  // async getAllProducts() {
+  //   try {
+  //     this.isLoading = true;
+  //     this.products = await this.productService.getAll();
+  //     console.log(this.products);
+  //     this.isLoading = false;
+  //   } catch (error) {
+  //     this.isLoading = false;
+  //     console.error(error)
+  //   }
+  // }
 
   //Guardar material
   saveProduct() {
-    console.log(this.product);
-    this.productService.create(this.product).subscribe(
-      data => {
-        this.products.push(this.product);
-      },
-      error => {
-        console.error(`Error de guardado ${error}`);
-      }
-    );
-    this.showModal = false;
+    // console.log(this.product);
+    // this.productService.create(this.product).subscribe(
+    //   data => {
+    //     this.products.push(this.product);
+    //   },
+    //   error => {
+    //     console.error(`Error de guardado ${error}`);
+    //   }
+    // );
+    // this.showModal = false;
   }
 
   newProduct() {
@@ -114,23 +114,23 @@ export class ProductsComponent implements OnInit {
     this.showModal = true;
   }
 
-  deleteProduct(product: product) {
-    this.confirmationService.confirm({
-      header: 'Alerta',
-      message: `Está eliminando: ${product.description}`,
-      icon: 'fas fa-exclamation-triangle',
-      accept: () => {
-        this.productService.delete(product.id, product).pipe(first()).subscribe(
-          data => {
-            if (data['success']) {
-              this.products = this.products.filter((x) => x.id != product.id);
-            }
-          },
-          error => {
-            console.log(error);
-          });
-      }
-    });
+  deleteProduct(product: Product) {
+    // this.confirmationService.confirm({
+    //   header: 'Alerta',
+    //   message: `Está eliminando: ${product.description}`,
+    //   icon: 'fas fa-exclamation-triangle',
+    //   accept: () => {
+    //     this.productService.delete(product.id, product).pipe(first()).subscribe(
+    //       data => {
+    //         if (data['success']) {
+    //           this.products = this.products.filter((x) => x.id != product.id);
+    //         }
+    //       },
+    //       error => {
+    //         console.log(error);
+    //       });
+    //   }
+    // });
   }
 
   async validate_products(control: AbstractControl) {

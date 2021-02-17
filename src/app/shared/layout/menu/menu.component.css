@@ -53,6 +53,10 @@
   box-shadow: none;
 }
 
+:host /deep/ .p-panelmenu .p-panelmenu-panel {
+  box-shadow: none;
+}
+
 .scroll {
   overflow-y: auto;
 }

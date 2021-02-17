@@ -32,27 +32,27 @@ export class RawMaterialComponent implements OnInit {
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/raw-materials", null, false);
-    this.getAllMaterial(); ``
-    this.rowMaterial.push(
-      {
-        code: '1234',
-        name: 'Tapas',
-        stock: 124,
-        measure: 'UNI'
-      },
-      {
-        code: '4312',
-        name: 'Aceite',
-        stock: 1342.43,
-        measure: 'LITRO'
-      },
-      {
-        code: '4313',
-        name: 'Aceite',
-        stock: 134.43,
-        measure: 'LITRO'
-      }
-    )
+    // this.getAllMaterial();
+    // this.rowMaterial.push(
+    //   {
+    //     code: '1234',
+    //     name: 'Tapas',
+    //     stock: 124,
+    //     measure: 'UNI'
+    //   },
+    //   {
+    //     code: '4312',
+    //     name: 'Aceite',
+    //     stock: 1342.43,
+    //     measure: 'LITRO'
+    //   },
+    //   {
+    //     code: '4313',
+    //     name: 'Aceite',
+    //     stock: 134.43,
+    //     measure: 'LITRO'
+    //   }
+    // )
   }
 
   //Metodo de recarga de informacion

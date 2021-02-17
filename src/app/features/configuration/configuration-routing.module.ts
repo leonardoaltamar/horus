@@ -8,6 +8,7 @@ import { CategoryComponent } from './category/category.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CityComponent } from './city/city.component';
 import { SupplierComponent } from './supplier/supplier.component';
+import { StateComponent } from './state/state.component';
 import { SalesmanComponent } from './salesman/salesman.component';
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: 'measurements',
         component: MeasurementComponent,
+      },
+      {
+        path: 'states',
+        component: StateComponent,
       }
     ],
   },

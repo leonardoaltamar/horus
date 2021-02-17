@@ -1,17 +1,19 @@
-import { Data } from '@angular/router';
+import { Measurement } from './measurement.model';
+import { Product } from './product.model';
+import { Artitle } from './artitle.model';
 
 export class rawMaterial {
   id?: number;
-  code: string;
-  name: string;
-  stock: number;
-  measure: string;
+  quantity: string;
+  artitle: Artitle;
+  measurement: Measurement;
+  product: Product;
 
   constructor() {
     this.id = null;
-    this.code = '';
-    this.name = '';
-    this.stock = 0;
-    this.measure = '';
+    this.quantity = '';
+    this.artitle = new Artitle();
+    this.measurement = new Measurement;
+    this.product = new Product;
   }
 }

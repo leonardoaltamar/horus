@@ -5,7 +5,8 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt [globalFilterFields]="['code']">
+      <p-table [value]="customers" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+        [globalFilterFields]="['code']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
             <span class="p-input-icon-right">
@@ -24,21 +25,23 @@
             <th>Nombre</th>
             <th>Correo</th>
             <th>Tefono</th>
-            <th>Direccion</th>
             <th>*</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-customer let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{customer.person.documentNumber}}</td>
             <td>
-              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
+              {{customer.person.name}}
+              {{customer.person.surname}}
+              {{customer.person.secondSurname}}
+            </td>
+            <td>{{customer.person?.emails}}</td>
+            <td>{{customer.person?.mobilePhones}}</td>
+            <td>
+              <button pButton pRipple type="button" icon="fas fa-pencil" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -47,62 +50,95 @@
   </div>
 </div>
 
-<div class="card scroll" *ngIf="showModal">
+<form class="card scroll" *ngIf="showModal" [formGroup]="form_customer">
   <div class="card-header p-d-flex p-jc-between p-ai-center">
     <span>Nuevo cliente</span>
     <button pButton pRipple icon="fas fa-times" class="p-button p-button-close" (click)="showModal=false"></button>
   </div>
-  <div class="card-body">
 
+  <div class="card-body">
     <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Tipo de documento</label>
-        <p-dropdown [options]="document" placeholder="Tipo de documento" optionLabel="tipe">
+        <label for="typeDocument">Tipo de documento</label>
+        <p-dropdown [(ngModel)]="customer.person.documentType" id="typeDocument" [options]="document"
+          placeholder="Tipo de documento" formControlName="typeDocument">
         </p-dropdown>
+        <ng-container
+          *ngIf="form_customer.get('typeDocument').hasError('required') && form_customer.get('typeDocument').touched">
+          <small class="p-invalid p-text-center">El tipo de documento es obligatoria</small>
+        </ng-container>
       </div>
+
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Numero de documento</label>
-        <input type="text" pInputText onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <label for="document">Numero de documento</label>
+        <input id="document" type="text" pInputText onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+          [(ngModel)]="customer.person.documentNumber" formControlName="document">
+        <ng-container
+          *ngIf="form_customer.get('document').hasError('required') && form_customer.get('document').touched">
+          <small class="caption p-text-center">Numero de Documento es obligatorio!</small>
+        </ng-container>
+        <ng-container *ngIf="form_customer.get('document').hasError('minlength')">
+          <small class="caption p-text-center">El numero de documento debe tener al menos 7 caracteres!</small>
+        </ng-container>
+        <ng-container *ngIf="form_customer.get('document').hasError('maxlength')">
+          <small class="caption p-text-center">El numero de documento no debe tener mas de 12 caracteres!</small>
+        </ng-container>
+        <ng-container *ngIf="form_customer.get('document').hasError('A') && form_customer.get('document').touched">
+          <small class="caption p-text-center">Esta documento ya está registrado</small>
+        </ng-container>
+        <ng-container *ngIf="form_customer.get('document').hasError('pattern')">
+          <small class="caption p-text-center">Solo puedes ingresar numeros en este campo!</small>
+        </ng-container>
       </div>
+
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Ciudad de expedicion</label>
-        <p-dropdown [options]="city" placeholder="Ciudad" optionLabel="name">
+        <label for="expeditionCity">Ciudad de expedicion</label>
+        <p-dropdown id="expeditionCity" [options]="cities" [(ngModel)]="customer.person.expeditionCity.id"
+          placeholder="Ciudad" formControlName="expeditionCity">
         </p-dropdown>
       </div>
     </div>
 
     <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Fecha de expedicion</label>
-        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030" inputId="navigators">
+        <label for="expeditionDate">Fecha de expedicion</label>
+        <p-calendar id="expeditionDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
+          [(ngModel)]="customer.person.expeditionDate" formControlName="expeditionDate">
         </p-calendar>
       </div>
+
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Fecha de nacimeinto</label>
-        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030" inputId="navigators">
+        <label for="date">Fecha de nacimeinto</label>
+        <p-calendar id="date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
+          [(ngModel)]="customer.person.birthDate" formControlName="birthDate">
         </p-calendar>
       </div>
+
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Genero</label>
-        <p-dropdown [options]="city" placeholder="Genero" optionLabel="name">
-        </p-dropdown>
+        <label for="gerder">Genero</label>
+        <p-dropdown id="gerder" [options]="gerder" placeholder="Genero" [(ngModel)]="customer.person.gender.id"
+          placeholder="Genero" formControlName="gender"></p-dropdown>
       </div>
     </div>
 
     <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-6">
-        <label for="username1">Nombre</label>
-        <input type="text" pInputText>
+        <label for="name">Nombre</label>
+        <input id="name" type="text" pInputText [(ngModel)]="customer.person.name" formControlName="name">
       </div>
+
       <div class="p-field p-col-12 p-md-3">
-        <label for="username1">Primer apellido</label>
-        <input type="text" pInputText>
+        <label for="Surname">Primer apellido</label>
+        <input id="Surname" type="text" pInputText [(ngModel)]="customer.person.surname" formControlName="surName">
       </div>
+
       <div class="p-field p-col-12 p-md-3">
-        <label for="username1">Segundo apellido</label>
-        <input type="text" pInputText>
+        <label for="secondSurname">Segundo apellido</label>
+        <input id="secondSurname" type="text" pInputText [(ngModel)]="customer.person.secondSurname"
+          formControlName="secondSurname">
       </div>
     </div>
+
     <!-- Panel de contacto y empresa -->
     <p-tabView styleClass="tabview-custom">
       <!-- Panel de contacto -->
@@ -110,6 +146,7 @@
         <ng-template pTemplate="header">
           <span>Datos de contacto</span>
         </ng-template>
+
         <div class="p-grid p-mt-1">
           <div class="p-col-12 p-sm-6">
             <div class="p-d-flex p-ai-center">
@@ -119,18 +156,20 @@
             </div>
             <div class="p-mt-1">
               <div class="p-d-flex p-ai-center p-mb-2">
-                <input id="email" type="text" pInputText class="p-mr-1" placeholder="Correo principal">
+                <input id="email" type="text" pInputText class="p-mr-1" placeholder="Correo principal"
+                  [(ngModel)]="customer.person.emails[0]" formControlName="mainMail">
               </div>
               <div class="p-mt-1" *ngIf="showEmail">
                 <div class="p-d-flex p-ai-center p-mb-2">
-                  <input id="number" type="text" pInputText class="p-mr-2" placeholder="Telefono secundario"
-                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                  <input id="email2" type="text" pInputText class="p-mr-2" placeholder="Correo secundario"
+                    [(ngModel)]="customer.person.emails[1]" formControlName="secondaryMail">
                   <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-1"
                     (click)="deleteEmail()"></button>
                 </div>
               </div>
             </div>
           </div>
+
           <div class="p-col-12 p-sm-6">
             <div class="p-d-flex p-ai-center">
               <h4 class="color-title">Telefonos</h4>
@@ -140,12 +179,14 @@
             <div class="p-mt-1">
               <div class="p-d-flex p-ai-center p-mb-2">
                 <input id="number" type="text" pInputText class="p-mr-2" placeholder="Telefono proncipal"
-                  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                  onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                  [(ngModel)]="customer.person.mobilePhones[0]" formControlName="mainPhone">
               </div>
               <div class="p-mt-1" *ngIf="showPhone">
                 <div class="p-d-flex p-ai-center p-mb-2">
-                  <input id="number" type="text" pInputText class="p-mr-2" placeholder="Telefono secundario"
-                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                  <input id="number2" type="text" pInputText class="p-mr-2" placeholder="Telefono secundario"
+                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                    [(ngModel)]="customer.person.mobilePhones[1]" formControlName="secondaryPhone">
                   <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-1"
                     (click)="deletePhone()"></button>
                 </div>
@@ -153,29 +194,98 @@
             </div>
           </div>
         </div>
-      </p-tabPanel>
+        <div class="p-d-flex p-jc-between p-ai-center p-mt-2">
+          <h4 class="color-title">Direcciones</h4>
+          <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
+            class="p-button button-text p-button-close" (click)="addRow()"></button>
+        </div>
+        <div class="table-responsive">
+          <p-table [value]="customer.person.locations" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
+            formArrayName="addresses">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 100px;">Ciudad</th>
+                <th style="width: 100px;">Barrio</th>
+                <th style="width: 100px;">Dirección</th>
+                <th style="width: 100px;">Numero de telefono</th>
+                <th style="width: 100px;">Principal</th>
+                <th style="width: 50px;">*</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+              <tr [formGroupName]="rowIndex">
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-dropdown [options]="cities" id="city" formControlName="city" placeholder="Selecciona"
+                        [(ngModel)]="dataRow.city" [style]="{ width: '100%' }"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.city.name }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
 
-      <!-- Panel datos empresariales -->
-      <p-tabPanel header="Header II">
-        <ng-template pTemplate="header">
-          <span>Datos de empresa</span>
-        </ng-template>
-        <div class="p-fluid p-grid p-mt-2">
-          <div class="p-field p-col-12 p-md-4">
-            <h4 class="color-title">Nit</h4>
-            <input id="email" type="text" pInputText class="p-mr-1" placeholder="Nit de la empresa">
-          </div>
-          <div class="p-field p-col-12 p-md-4">
-            <h4 class="color-title">Nombre</h4>
-            <input id="email" type="text" pInputText class="p-mr-1" placeholder="Nombre de la empresa">
-          </div>
-          <div class="p-field p-col-12 p-md-4">
-            <h4 class="color-title">Direccion</h4>
-            <input id="email" type="text" pInputText class="p-mr-1" placeholder="Direccion de la empresa">
-          </div>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" formControlName="neighborhood" [(ngModel)]="dataRow.neighborhood" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.neighborhood || "" }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" formControlName="address" [(ngModel)]="dataRow.address" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.address || "" }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" formControlName="phoneNumber" [(ngModel)]="dataRow.phoneNumber" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.phoneNumber || "" }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="dataRow.main"></p-checkbox>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      <i class="fas" [ngClass]="{
+                          'fa-check success-icon': dataRow.main,
+                          'fa-times error-icon': !dataRow.main
+                        }"></i>
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td>
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"
+                    (click)="deleteRow(dataRow, rowIndex)"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
       </p-tabPanel>
     </p-tabView>
+
+    <div class="p-mt-5">
+      <button pButton pRipple icon="fas fa-save" class="p-mr-3 p-button p-button-save" iconPos="left" label="Guardar"
+        (click)="saveCustomer()" [disabled]="form_customer.invalid"></button>
+      <button pButton pRipple icon="fas fa-times" class="p-button p-button-close" iconPos="left" label="Cerrar"
+        (click)="showModal=false"></button>
+    </div>
   </div>
-</div>
+</form>
 <p-confirmDialog class="dialog-small"></p-confirmDialog>

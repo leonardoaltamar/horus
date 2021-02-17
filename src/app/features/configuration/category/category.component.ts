@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 
 import { Category } from '@core/models/category.model'
 import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-category',
@@ -26,7 +27,8 @@ export class CategoryComponent {
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
     private _formuilder: FormBuilder,
-    private routeStateService: RouteStateService) {
+    private routeStateService: RouteStateService,
+    private messageService: MessageService) {
     this.form_category = this._formuilder.group({
       code: ['', [Validators.required], [this.validate_category.bind(this)]],
       description: ['', [Validators.required], []]
@@ -69,16 +71,37 @@ export class CategoryComponent {
   }
 
   saveCategory() {
-    this.categoryService.create(this.model).subscribe(
-      data => {
-        this.models.push(this.model);
-        console.log(data);
-      },
-      error => {
-        console.error(`Error de guardado ${error}`);
-      }
-    );
+    if (!this.model.id) {
+      this.categoryService.create(this.model).subscribe(
+        data => {
+          this.models.push(this.model);
+          this.messageService.add({ severity: 'success', summary: `Categoria creada con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+        },
+        error => {
+          this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
+        }
+      );
+    }
+    else {
+      this.categoryService.update(this.model.id, this.model).pipe(first()).subscribe(
+        data => {
+          if (data['success']) {
+            this.models = this.models.map(x => {
+              if (x.id == this.model.id)
+                x = this.model;
+              return x
+            });
+            this.messageService.add({ severity: 'success', summary: `Categoria actualizada con éxito` });
+          }
+        }
+      )
+    }
     this.showModal = false;
+  }
+
+  modifyCategory(category: Category) {
+    this.model = category;
+    this.showModal = true;
   }
 
   deletedCategory(category: Category) {
@@ -102,7 +125,5 @@ export class CategoryComponent {
       }
     });
   }
-
-  modifideOCategory() { }
 
 }

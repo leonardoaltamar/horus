@@ -2,46 +2,44 @@ import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../models/product.model';
+import { City } from './../models/city.model';
 import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class CityService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}product`;
+    this.endPoint = `${environment.apiUrl}city`;
   }
 
-
-
-  async getAll() {
-    return this.http.get<Product[]>(`${this.endPoint}`).toPromise();
+  getAll() {
+    return this.http.get<City[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<Product>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<City>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(product: Product) {
-    return this.http.post<Product>(`${this.endPoint}`, product);
+  create(city: City) {
+    return this.http.post<City>(`${this.endPoint}`, city);
   }
 
-  update(id: number, product: Product) {
-    return this.http.patch(`${this.endPoint}/${id}`, product);
-    // .pipe(map(x => {
-    //   return x;
-    // }));
+  update(id: number, city: City) {
+    return this.http.patch(`${this.endPoint}/${id}`, city)
+      .pipe(map(x => {
+        return x;
+      }));
   }
 
-  delete(id: number, product: Product) {
+  delete(id: number, city: City) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: product
+      body: city
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {
@@ -50,3 +48,5 @@ export class ProductService {
   }
 
 }
+
+

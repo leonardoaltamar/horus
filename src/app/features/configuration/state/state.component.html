@@ -1,13 +1,13 @@
 <div class="card scroll">
   <div class="card-header">
-    Ciudad
+    Departamentos
   </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="cities" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="states" [paginator]=" true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['code']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -17,29 +17,29 @@
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
             <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo"
-              class="p-button button-text p-button-close" (click)="newCity()"></button>
+              class="p-button button-text p-button-close" (click)="newState()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
             <th>Codigo</th>
-            <th>Nombre</th>
             <th>Departamento</th>
+            <th>Pais</th>
             <th>*</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-city let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-state let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{city.code}}</td>
-            <td>{{city.name}}</td>
-            <td>{{city.state.name}}</td>
+            <td>{{state.code}}</td>
+            <td>{{state.name}}</td>
+            <td>{{state.country}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"
-                (click)="modifyCity(city)"></button>
+                (click)="modifyState(state)"></button>
               <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"
-                (click)="deleteCity(city)"></button>
+                (click)="deleteState(state)"></button>
             </td>
           </tr>
         </ng-template>
@@ -48,42 +48,41 @@
   </div>
 </div>
 
-<p-dialog header="Nueva ciudad" [(visible)]="showModal" [style]="{width: '30em'}" class="dialog-small" [modal]="true"
+<p-dialog header="Nuevo estado" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
   [baseZIndex]="10000" [resizable]="false">
-  <form [formGroup]="form_city">
+  <form [formGroup]="form_state">
     <div class="p-grid">
       <div class="p-col-6 p-sm-6">
         <label for="code">Codigo</label>
-        <input id="code" type="text" [(ngModel)]="city.code" formControlName="code" pInputText>
-        <ng-container *ngIf="form_city.get('code').hasError('required') && form_city.get('code').touched">
+        <input id="code" [(ngModel)]="state.code" formControlName="code" type="text" pInputText>
+        <ng-container *ngIf="form_state.get('code').hasError('required') && form_state.get('code').touched">
           <small class="p-invalid p-text-center">El codigo es obligatoria</small>
         </ng-container>
-        <ng-container *ngIf="form_city.get('code').hasError('A') && form_city.get('code').touched">
+        <ng-container *ngIf="form_state.get('code').hasError('A') && form_state.get('code').touched">
           <small class="caption p-text-center">Esta codigo ya está registrada</small>
         </ng-container>
       </div>
       <div class="p-col-6 p-sm-6">
-        <label for="state">Departamento</label>
-        <p-dropdown id="state" [options]="states" [(ngModel)]="city.state.id" formControlName="state"
-          placeholder="Selecciona el departamento">
+        <label for="staet">Paise</label>
+        <p-dropdown [options]="country" [(ngModel)]="state.country" formControlName="country"
+          placeholder="Selecciona el pais" optionLabel="name" optionValue="name">
         </p-dropdown>
-        <ng-container *ngIf="form_city.get('state').hasError('required') && form_city.get('state').touched">
+        <ng-container *ngIf="form_state.get('country').hasError('required') && form_state.get('country').touched">
           <small class="p-invalid p-text-center">El pais es obligatoria</small>
         </ng-container>
       </div>
-      <div class="p-col-6 p-sm-6">
+      <div class="p-col-8 p-sm-8 ">
         <label for="name">Nombre</label>
-        <input id="name" [(ngModel)]="city.name" formControlName="name" type="text" pInputText>
-        <ng-container *ngIf="form_city.get('name').hasError('required') && form_city.get('name').touched">
+        <input id="name" [(ngModel)]="state.name" formControlName="name" type="text" pInputText>
+        <ng-container *ngIf="form_state.get('name').hasError('required') && form_state.get('name').touched">
           <small class="p-invalid p-text-center">El nombre es obligatoria</small>
         </ng-container>
       </div>
     </div>
     <br>
-    <br>
     <p-footer class="p-grid">
       <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"
-        (click)="saveCity()" [disabled]="form_city.invalid"></button>
+        (click)="saveState()" [disabled]="form_state.invalid"></button>
       <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
         (click)="showModal=false"></button>
     </p-footer>

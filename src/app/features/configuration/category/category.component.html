@@ -28,15 +28,16 @@
             <th>*</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-category let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.code}}</td>
-            <td>{{dataRow.description}}</td>
+            <td>{{category.code}}</td>
+            <td>{{category.description}}</td>
             <td>
-              <button pButton pRipple type="button" icon="fas fa-edit" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash" class="button-action"
-                (click)="deletedCategory(dataRow)"></button>
+              <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"
+                (click)="modifyCategory(category)"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"
+                (click)="deletedCategory(category)"></button>
             </td>
           </tr>
         </ng-template>
@@ -53,7 +54,7 @@
         <label for="code">Codigo</label>
         <input id="code" formControlName="code" type="text" pInputText [(ngModel)]="model.code">
         <ng-container *ngIf="form_category.get('code').hasError('required') && form_category.get('code').touched">
-          <small class="p-invalid p-text-center">la descripcion es obligatoria</small>
+          <small class="p-invalid p-text-center">El codigo es obligatoria</small>
         </ng-container>
         <ng-container *ngIf="form_category.get('code').hasError('A') && form_category.get('code').touched">
           <small class="caption p-text-center">Esta codigo ya está registrada</small>
@@ -71,11 +72,12 @@
     <br>
     <br>
     <p-footer class="p-grid">
-      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"
+      <button type="submit" pButton pRipple icon="far fa-save" label=" Guardar" class="p-button-save p-button p-ml-2"
         (click)="saveCategory()" [disabled]="form_category.invalid"></button>
-      <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
-        (click)="showModal=false"></button>
+      <button type="submit" pButton pRipple icon="fas fa-times" label=" Cerrar"
+        class="p-button-close button-text p-ml-2" (click)="showModal=false"></button>
     </p-footer>
   </form>
 </p-dialog>
 <p-confirmDialog class="dialog-small"></p-confirmDialog>
+<p-toast position="bottom-right"></p-toast>

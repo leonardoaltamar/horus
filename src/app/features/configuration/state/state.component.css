@@ -1,0 +1,97 @@
+/* Sobre escritura de style primeng */
+
+:host/deep/ .p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 0.01rem #3646cd;
+  border-color: #3646cd;
+}
+
+:host/deep/ .p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: none;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: #495057;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+
+:host/deep/ .p-datatable .p-datatable-tbody > tr > td {
+  text-align: left;
+  border: none;
+}
+
+:host/deep/ .p-inputtext:enabled:hover {
+  border-color: #3645cd98;
+}
+
+:host/deep/ .p-dropdown:not(.p-disabled):hover {
+  border-color: #3645cd98;
+}
+
+:host/deep/ .p-dropdown {
+  height: 2em;
+}
+
+:host/deep/ .p-dropdown-items-wrapper {
+  height: 130px;
+}
+
+/* style component */
+.button-action {
+  width: 20px !important;
+  height: 20px;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(31, 45, 65, 0.5) !important;
+}
+
+.button-text{
+  float: right;
+  position: relative;
+  border: none;
+  font-weight: bold;
+}
+
+.p-button-close {
+  color: #3646CD;
+  background: rgba(54, 69, 205, 0);
+  border-color: #3646CD !important;
+  padding: .5em .8em;
+}
+
+.p-button-close:enabled:hover, .p-button-close:enabled:focus {
+  color: #3646CD;
+  background: #3645cd1c;
+  border-color: #3646CD48 !important;
+}
+
+.p-button-save {
+  color: #fff;
+  background: #3646cd;
+  border-color: #3646cd !important;
+  padding: .5em .8em;
+}
+
+.p-button-save:enabled:hover, .p-button-save:enabled:focus {
+  color: #fff;
+  background: #001f9b;
+  border-color: #001f9b !important;
+}
+
+.input-line {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0px;
+  font-size: 14.5px;
+}
+
+.input-line:enabled:focus {
+  box-shadow: none ;
+  border-color: #3646cd;
+}
+
+.color-title{
+  padding: .1em 0;
+  margin: .5em 0;
+}

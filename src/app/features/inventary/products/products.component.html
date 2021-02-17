@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -32,9 +32,9 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.description}}</td>
-            <td>{{dataRow.salePrice}}</td>
-            <td>{{dataRow.category.description}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
                 class="button-action"></button>
@@ -55,20 +55,19 @@
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
         <label for="description">Descripción</label>
-        <input id="description" type="text" [(ngModel)]="product.description" pInputText>
+        <input id="description" type="text" pInputText>
       </div>
       <div class="p-field p-col-6 p-sm-6">
         <label for="packing">Precio</label>
-        <input id="packing" type="text" [(ngModel)]="product.salePrice" pInputText>
+        <input id="packing" type="text" pInputText>
       </div>
       <div class="p-field p-col-6 p-sm-6">
         <label for="packing">Categorias</label>
-        <p-dropdown [options]="categories" [(ngModel)]="product.category" optionLabel="description"></p-dropdown>
+        <p-dropdown [options]="categories" optionLabel="description"></p-dropdown>
       </div>
       <div class="p-field p-col-6 p-sm-6">
         <label for="rowMaterial">Materia prima</label>
-        <p-multiSelect [options]="optionsRawMaterials" defaultLabel="Selecciona la materia prima"
-          [(ngModel)]="rowMaterials">
+        <p-multiSelect [options]="optionsRawMaterials" defaultLabel="Selecciona la materia prima">
         </p-multiSelect>
       </div>
     </div>
@@ -82,5 +81,4 @@
     </p-footer>
   </form>
 </p-dialog>
-
 <p-confirmDialog class="dialog-small"></p-confirmDialog>

@@ -5,7 +5,7 @@
       <img src="assets/images/bg.svg">
     </div>
     <div class="login-content">
-      <form (ngSubmit)="onClickLogin()">
+      <form (ngSubmit)="onClickLogin()" [formGroup]="LoginForm">
         <img src="assets/images/avatar.svg">
         <h2 class="title">Bienvenido</h2>
         <div class="input-div one" [ngClass]="focusUser">
@@ -14,26 +14,36 @@
           </div>
           <div class="div">
             <span class="p-float-label">
-              <input name="userName" type="text" pInputText [(ngModel)]="userName" (blur)="focusUser=''"
-                (focus)="focusUser='focus'" (keyup.enter)="onClickLogin()" />
+              <input name="userName" formControlName="username" type="text" pInputText [(ngModel)]="userName"
+                (blur)="focusUser=''" (focus)="focusUser='focus'" (keyup.enter)="onClickLogin()" />
               <label for="float-input" class="label">Username</label>
             </span>
           </div>
         </div>
+        <ng-container *ngIf="LoginForm.get('username').hasError('required') && LoginForm.get('username').touched">
+          <small id="username2-help" class="p-invalid">Usuario obligatorio</small>
+        </ng-container>
         <div class="input-div pass" [ngClass]="focusPassword">
           <div class="i">
             <i class="pi pi-lock"></i>
           </div>
           <div class="div">
             <span class="p-float-label">
-              <input name="userPassword" type="password" pInputText [(ngModel)]="userPassword" (blur)="focusPassword=''"
-                (focus)="focusPassword='focus'" (keyup.enter)="onClickLogin()" />
+              <input name="userPassword" formControlName="userpassword" type="password" pInputText
+                [(ngModel)]="userPassword" (blur)="focusPassword=''" (focus)="focusPassword='focus'"
+                (keyup.enter)="onClickLogin()" />
               <label for="float-input" class="label">Password</label>
             </span>
           </div>
         </div>
-        <input type="submit" class="btn" value="Ingresar">
+        <ng-container
+          *ngIf="LoginForm.get('userpassword').hasError('required') && LoginForm.get('userpassword').touched">
+          <small class="caption">Contraseña obligatoria</small>
+        </ng-container>
+        <button type="submit" class="btn"
+          [disabled]="!LoginForm.valid">{{ !isLoading ? 'Iniciar sesión' : 'Cargando...' }}</button>
       </form>
     </div>
   </div>
 </div>
+<p-toast position="bottom-right"></p-toast>

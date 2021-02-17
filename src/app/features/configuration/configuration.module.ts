@@ -20,7 +20,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
 import { SupplierComponent } from './supplier/supplier.component';
 import { CityComponent } from './city/city.component';
+import { ToastModule } from 'primeng/toast';
 import { MeasurementComponent } from './measurement/measurement.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { StateComponent } from './state/state.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { MeasurementComponent } from './measurement/measurement.component';
     SalesmanComponent,
     SupplierComponent,
     CityComponent,
-    MeasurementComponent
+    MeasurementComponent,
+    StateComponent
   ],
   exports: [
   ],
@@ -49,7 +53,9 @@ import { MeasurementComponent } from './measurement/measurement.component';
     ConfirmDialogModule,
     DropdownModule,
     CalendarModule,
-    TabViewModule
+    TabViewModule,
+    ToastModule,
+    CheckboxModule
   ],
   providers: [],
   entryComponents: []

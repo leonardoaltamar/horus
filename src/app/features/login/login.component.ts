@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '@core/services/authentication.service';
-import { ToastService } from '@core/services/toast.service';
 import { RouteStateService } from '@core/services/route-state.service';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserContextService } from '@core/services/user-context.service';
-
-import { InputTextModule } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'hrs-login',
@@ -23,11 +21,16 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
-    private toastService: ToastService,
     private routeStateService: RouteStateService,
     private userContextService: UserContextService,
-    private _builder: FormBuilder
-  ) { }
+    private _builder: FormBuilder,
+    private messageService: MessageService
+  ) {
+    this.LoginForm = this._builder.group({
+      username: ['', Validators.required],
+      userpassword: ['', Validators.required]
+    });
+  }
   focusUser: string = "";
   focusPassword: string = "";
 
@@ -35,14 +38,13 @@ export class LoginComponent implements OnInit {
     this.userName = '';
     this.userPassword = '';
     this.msgs = [{ severity: 'info', detail: 'Username: admin' }, { severity: 'info', detail: 'Password: password' }];
-    console.log("estoy iniciando desde el ngOnInit");
   }
 
-  password(event) {
+  password() {
     this.focusPassword = "focus";
   }
 
-  user(event) {
+  user() {
     this.focusUser = "focus";
   }
 
@@ -57,7 +59,7 @@ export class LoginComponent implements OnInit {
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
-      this.toastService.addSingle('error', '', 'Usuario Invalido.');
+      this.messageService.add({ severity: 'error', summary: 'Usuario Invalido.', detail: 'Usuario o contraseña incorrecto' });
     }
   }
 
