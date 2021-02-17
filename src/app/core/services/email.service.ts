@@ -36,12 +36,8 @@ export class EmailService {
       }));
   }
 
-  delete(id: number, email: Email) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: email
-    };
-    return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
+  delete(id: number) {
+    return this.http.delete(`${this.endPoint}/${id}`)
       .pipe(map(x => {
         return x;
       }));

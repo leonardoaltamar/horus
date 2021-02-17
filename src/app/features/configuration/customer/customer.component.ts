@@ -16,6 +16,8 @@ import { LocationService } from '@core/services/location.service';
 import { EmailService } from '@core/services/email.service';
 import { MobilePhoneService } from '@core/services/mobile_phone.service';
 import { GerderService } from '@core/services/gerder.service';
+import { Email } from '@core/models/email.model';
+import { MobilePhone } from '@core/models/mobilePhone.model';
 
 @Component({
   selector: 'app-customer',
@@ -58,10 +60,17 @@ export class CustomerComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       secondSurname: [''],
-      mainMail: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-      secondaryMail: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-      mainPhone: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-      secondaryPhone: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
+
+      emails: this._formBuilder.array([this._formBuilder.group({
+        email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
+        main: [false]
+      })]),
+
+      mobilePhones: this._formBuilder.array([this._formBuilder.group({
+        number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
+        main: [false]
+      })]),
+
       addresses: this._formBuilder.array([this._formBuilder.group({
         city: [''],
         address: [''],
@@ -70,6 +79,7 @@ export class CustomerComponent implements OnInit {
         main: [false]
       })])
     });
+
   }
 
   ngOnInit(): void {
@@ -114,20 +124,21 @@ export class CustomerComponent implements OnInit {
   newCustomer() {
     this.customer = new Customer;
     this.showModal = true;
-    this.customer.person.emails[0] = null;
-    this.customer.person.mobilePhones[0] = null;
+    this.customer.person.emails[0] = new Email();
+    this.customer.person.mobilePhones[0] = new MobilePhone();
   }
 
   saveCustomer() {
+    this.customer.person.emails.forEach((item, index) => { this.customer.person.emails[index].main = item.main ? 1 : 0 });
+    this.customer.person.mobilePhones.forEach((item, index) => { this.customer.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.customer.person.locations.forEach((item, index) => { this.customer.person.locations[index].main = item.main ? 1 : 0 });
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
-          console.log(data);
+          console.log(data)
           this.customer = data;
-          console.log(this.customer.person.gender.id);
           this.customers.push(this.customer);
-          this.messageService.add({ severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${data.person.documentNumber} Nombre: ${data.person.name} ${data.person.surname}` });
+          this.messageService.add({ severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber} Nombre: ${this.customer.person.name} ${this.customer.person.surname}` });
           this.showModal = false;
         },
         error => {
@@ -158,35 +169,74 @@ export class CustomerComponent implements OnInit {
   //validations Phone
   addPhone() {
     this.showPhone = true;
-    this.customer.person.mobilePhones[1] = null;
+    this.customer.person.mobilePhones[1] = new MobilePhone();
+    this.customer.person.mobilePhones = [...this.customer.person.mobilePhones];
+    this.customer.person.mobilePhones.push(new MobilePhone())
+    this.mobilePhones.push(this._formBuilder.group({
+      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
+      main: [false]
+    }));
+  }
+  get mobilePhones(): FormArray {
+    return this.form_customer.get('mobilePhones') as FormArray;
   }
 
-  deletePhone() {
+  deletePhone(mobile: MobilePhone, rowIndex: number) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `¿Estas seguro que deseas eliminar este telefono?`,
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
-        this.showPhone = false;
-        this.customer.person.mobilePhones.pop();
+        if (!mobile.id) {
+          this.customer.person.mobilePhones.splice(rowIndex, 1);
+        } else {
+          this.mobilePhoneService.delete(mobile.id).pipe(first()).subscribe(
+            data => {
+              if (data['success']) {
+                this.customer.person.mobilePhones = this.customer.person.mobilePhones.filter((x) => x.id != mobile.id);
+              }
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
       }
     });
   }
 
   //validations Email
   addEmail() {
-    this.showEmail = true;
-    this.customer.person.emails[1] = null;
+    this.customer.person.emails = [...this.customer.person.emails];
+    this.customer.person.emails.push(new Email());
+    this.emails.push(this._formBuilder.group({
+      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
+      main: [false]
+    }));
+  }
+  get emails(): FormArray {
+    return this.form_customer.get('emails') as FormArray;
   }
 
-  deleteEmail() {
+  deleteEmail(email: Email, rowIndex: number) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `¿Estas seguro que deseas eliminar este correo?`,
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
-        this.showEmail = false;
-        this.customer.person.emails.pop();
+        if (!email.id) {
+          this.customer.person.emails.splice(rowIndex, 1);
+        } else {
+          this.emailService.delete(email.id).pipe(first()).subscribe(
+            data => {
+              if (data['success']) {
+                this.customer.person.emails = this.customer.person.emails.filter((x) => x.id != email.id);
+              }
+            },
+            error => {
+              console.log(error);
+            });
+        }
       }
     });
   }

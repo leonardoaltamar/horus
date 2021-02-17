@@ -37,7 +37,7 @@
               {{customer.person.surname}}
               {{customer.person.secondSurname}}
             </td>
-            <td>{{customer.person?.emails}}</td>
+            <td>{{customer.person?.emails[0]}}</td>
             <td>{{customer.person?.mobilePhones}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-pencil" class="button-action"></button>
@@ -149,47 +149,69 @@
 
         <div class="p-grid p-mt-1">
           <div class="p-col-12 p-sm-6">
+
             <div class="p-d-flex p-ai-center">
-              <h4 class="color-title">Correo</h4>
+              <h4 class="color-title">Correos</h4>
               <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
                 (click)="addEmail()"></button>
             </div>
-            <div class="p-mt-1">
-              <div class="p-d-flex p-ai-center p-mb-2">
-                <input id="email" type="text" pInputText class="p-mr-1" placeholder="Correo principal"
-                  [(ngModel)]="customer.person.emails[0]" formControlName="mainMail">
-              </div>
-              <div class="p-mt-1" *ngIf="showEmail">
-                <div class="p-d-flex p-ai-center p-mb-2">
-                  <input id="email2" type="text" pInputText class="p-mr-2" placeholder="Correo secundario"
-                    [(ngModel)]="customer.person.emails[1]" formControlName="secondaryMail">
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-1"
-                    (click)="deleteEmail()"></button>
+
+            <div formArrayName="emails">
+              <div class="p-mt-2" *ngFor=" let email of customer.person.emails; let rowIndexEmail = index"
+                [formGroupName]="rowIndexEmail">
+                <div class="p-d-flex p-mb-2">
+                  <div class="p-mr-2">
+                    <input id="email" formControlName="email" type="text" [(ngModel)]="email.email" pInputText
+                      class="p-mr-2" />
+                    <ng-container>
+                      <small class="caption p-text-center"
+                        *ngIf="emails.controls[rowIndexEmail].get('email').hasError('pattern')">
+                        Correo no valido
+                      </small>
+                    </ng-container>
+                  </div>
+                  <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="email.main"></p-checkbox>
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action p-ml-3"
+                    (click)="deleteEmail(email, rowIndexEmail)"></button>
                 </div>
               </div>
             </div>
+
           </div>
 
-          <div class="p-col-12 p-sm-6">
+          <div class="p-col-12 p-sm-6" formArrayName="mobilePhones">
             <div class="p-d-flex p-ai-center">
               <h4 class="color-title">Telefonos</h4>
               <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
                 (click)="addPhone()"></button>
             </div>
-            <div class="p-mt-1">
-              <div class="p-d-flex p-ai-center p-mb-2">
-                <input id="number" type="text" pInputText class="p-mr-2" placeholder="Telefono proncipal"
-                  onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                  [(ngModel)]="customer.person.mobilePhones[0]" formControlName="mainPhone">
-              </div>
-              <div class="p-mt-1" *ngIf="showPhone">
-                <div class="p-d-flex p-ai-center p-mb-2">
-                  <input id="number2" type="text" pInputText class="p-mr-2" placeholder="Telefono secundario"
-                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                    [(ngModel)]="customer.person.mobilePhones[1]" formControlName="secondaryPhone">
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-1"
-                    (click)="deletePhone()"></button>
+
+            <div class="p-mt-2" *ngFor="let mobilePhone of customer.person.mobilePhones; let rowIndexMobile = index"
+              [formGroupName]="rowIndexMobile">
+              <div class="p-d-flex p-mb-2">
+                <div class="p-mr-2">
+                  <input id="number" type="text" formControlName="number" [(ngModel)]="mobilePhone.number" pInputText
+                    class="p-mr-2" />
+                  <ng-container>
+                    <small class="caption p-text-center"
+                      *ngIf="mobilePhones.controls[rowIndexMobile].get('number').hasError('pattern')">
+                      Numero de telefono no valido!
+                    </small>
+                    <small class="caption p-text-center"
+                      *ngIf="mobilePhones.controls[rowIndexMobile].get('number').hasError('minlength')">
+                      Numero de telefono no cumple con los caracteres
+                      requeridos!
+                    </small>
+                    <small class="caption p-text-center"
+                      *ngIf="mobilePhones.controls[rowIndexMobile].get('number').hasError('maxlength')">
+                      Numero de telefono excede el maximo de caracteres
+                      requeridos!
+                    </small>
+                  </ng-container>
                 </div>
+                <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="mobilePhone.main"></p-checkbox>
+                <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action p-ml-3"
+                  (click)="deletePhone(mobilePhone, rowIndexMobile)"></button>
               </div>
             </div>
           </div>

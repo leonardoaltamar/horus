@@ -1,21 +1,21 @@
-import { Category } from './category.model'
+import { Category } from './category.model';
 
 export class Artitle {
   id?: number;
   name: string;
-  data_expiry: Date;
+  date_expire: string;
   stock: number;
-  acquisition: string;
+  acquisition_value: number;
   unit_value: number;
   bar_code: string;
-  category: Category
+  category: Category;
 
   constructor() {
     this.id = null;
     this.name = '';
-    this.data_expiry = null;
+    this.date_expire = '';
     this.stock = 0;
-    this.acquisition = '';
+    this.acquisition_value = 0;
     this.unit_value = 0;
     this.bar_code = '';
     this.category = new Category();

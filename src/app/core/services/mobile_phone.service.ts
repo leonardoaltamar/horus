@@ -36,12 +36,8 @@ export class MobilePhoneService {
       }));
   }
 
-  delete(id: number, mobilePhone: MobilePhone) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: mobilePhone
-    };
-    return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
+  delete(id: number) {
+    return this.http.delete(`${this.endPoint}/${id}`)
       .pipe(map(x => {
         return x;
       }));

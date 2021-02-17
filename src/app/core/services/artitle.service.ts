@@ -1,4 +1,4 @@
-import { rawMaterial } from '../models/raw-material.model';
+import { Artitle } from './../models/artitle.model';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -9,39 +9,39 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 
-export class RawMaterialService {
+export class ArtitleService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}rawMaterial`;
+    this.endPoint = `${environment.apiUrl}artitle`;
   }
 
 
 
   async getAll() {
-    return this.http.get<rawMaterial[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<Artitle[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<rawMaterial>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<Artitle>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(rawMaterial: rawMaterial) {
-    return this.http.post<rawMaterial>(`${this.endPoint}`, rawMaterial);
+  create(artitle: Artitle) {
+    return this.http.post<Artitle>(`${this.endPoint}`, artitle);
   }
 
-  update(id: number, rawMaterial: rawMaterial) {
-    return this.http.patch(`${this.endPoint}/${id}`, rawMaterial);
+  update(id: number, artitle: Artitle) {
+    return this.http.patch(`${this.endPoint}/${id}`, artitle);
     // .pipe(map(x => {
     //   return x;
     // }));
   }
 
-  delete(id: number, rawMaterial: rawMaterial) {
+  delete(id: number, artitle: Artitle) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: rawMaterial
+      body: artitle
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {

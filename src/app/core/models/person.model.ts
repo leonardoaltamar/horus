@@ -12,7 +12,6 @@ export class Person {
   documentType: string;
   documentNumber: number;
   expeditionDate: string;
-  bloodType: string;
   expeditionCity: City;
   birthDate: string;
   imageUrl: string;
@@ -34,7 +33,6 @@ export class Person {
     this.expeditionCity = new City();
     this.gender = new Gender();
     this.expeditionDate = '';
-    this.bloodType = '';
     this.birthDate = '';
     this.imageUrl = '';
   }

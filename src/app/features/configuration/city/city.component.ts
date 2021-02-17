@@ -114,6 +114,7 @@ export class CityComponent implements OnInit {
       this.cityService.create(this.city).pipe(first()).subscribe(
         data => {
           this.city = data;
+          console.log(data);
           this.cities.push(this.city);
           this.messageService.add({ severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${data.code} Nombre: ${data.name}` });
         },
