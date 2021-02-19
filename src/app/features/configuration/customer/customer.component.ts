@@ -30,8 +30,6 @@ import { MobilePhone } from '@core/models/mobilePhone.model';
 export class CustomerComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
-  showPhone: boolean = false;
-  showEmail: boolean = false;
   form_customer: FormGroup;
 
   //Customer
@@ -53,10 +51,9 @@ export class CustomerComponent implements OnInit {
     private _formBuilder: FormBuilder) {
     this.form_customer = this._formBuilder.group({
       typeDocument: ['', [Validators.required]],
-      document: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(12), Validators.pattern(/^([0-9])*$/)]],
+      document: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(12), Validators.pattern(/^([0-9])*$/)], [this.validate_document.bind(this)]],
       expeditionCity: [''],
-      expeditionDate: [''],
-      birthDate: ['', [Validators.required]],
+      birthDate: [''],
       gender: [''],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
@@ -122,14 +119,16 @@ export class CustomerComponent implements OnInit {
 
   saveCustomer() {
     this.customer.person.emails.forEach((item, index) => { this.customer.person.emails[index].main = item.main ? 1 : 0 });
-    this.customer.person.mobilePhones.forEach((item, index) => { this.customer.person.mobilePhones[index].main = item.main ? 1 : 0 });
+    this.customer.person.mobilesPhones.forEach((item, index) => { this.customer.person.mobilesPhones[index].main = item.main ? 1 : 0 });
     this.customer.person.locations.forEach((item, index) => { this.customer.person.locations[index].main = item.main ? 1 : 0 });
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
+          console.log(" 1 ", this.customer.person.mobilesPhones);
           console.log(data);
           console.log(this.customer);
           this.customer = data;
+          console.log(" 2 ", this.customer.person.mobilesPhones);
           this.customers.push(this.customer);
           this.messageService.add({
             severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber}
@@ -188,14 +187,15 @@ export class CustomerComponent implements OnInit {
   }
 
   //validations Phone
-  addPhone() {
-    this.customer.person.mobilePhones = [...this.customer.person.mobilePhones];
-    this.customer.person.mobilePhones.push(new MobilePhone())
+  addMobile() {
+    this.customer.person.mobilesPhones = [...this.customer.person.mobilesPhones];
+    this.customer.person.mobilesPhones.push(new MobilePhone());
     this.mobilePhones.push(this._formBuilder.group({
       number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
       main: [false]
     }));
   }
+
   get mobilePhones(): FormArray {
     return this.form_customer.get('mobilePhones') as FormArray;
   }
@@ -207,12 +207,12 @@ export class CustomerComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!mobile.id) {
-          this.customer.person.mobilePhones.splice(rowIndex, 1);
+          this.customer.person.mobilesPhones.splice(rowIndex, 1);
         } else {
           this.mobilePhoneService.delete(mobile.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.customer.person.mobilePhones = this.customer.person.mobilePhones.filter((x) => x.id != mobile.id);
+                this.customer.person.mobilesPhones = this.customer.person.mobilesPhones.filter((x) => x.id != mobile.id);
               }
             },
             error => {
