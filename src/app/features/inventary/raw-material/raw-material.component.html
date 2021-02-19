@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="rawMaterials" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -23,24 +23,21 @@
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Codigo</th>
-            <th>Nombre</th>
-            <th>Stock</th>
-            <th>Medida</th>
+            <th>Descripcion</th>
+            <th>valor de adquisición</th>
+            <th>Categorias</th>
             <th>*</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{dataRow.article.name}}</td>
+            <td>{{dataRow.article.acquisitionValue || ""}}</td>
+            <td>{{dataRow.article.category.name || ""}}</td>
             <td>
-              <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"></button>
-              <button pButton pRipple type="button" icon="fas fa-eye" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-edit" (click)="modifyMaterial(dataRow)" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteMaterial(dataRow)" class="button-action"></button>
             </td>
           </tr>
         </ng-template>
@@ -52,11 +49,11 @@
 
 <p-dialog header="Ingreso de materia prima" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small"
   [modal]="true" [baseZIndex]="10000" [resizable]="false">
-  <form [formGroup]="form_product" class="">
+  <form [formGroup]="form_product" (ngSubmit)="saveRawMaterial()" class="">
     <div class="p-grid p-mt-2">
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-5 p-sm-5">
         <label for="description">Nombre</label>
-        <input id="description" formControlName="name"  type="text" pInputText>
+        <input id="description" [(ngModel)]="rawMaterial.article.name" formControlName="name"  type="text" pInputText>
         <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
           <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
         </ng-container>
@@ -64,37 +61,30 @@
           <small class="caption p-text-center">Este nombre ya está en uso</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-3 p-sm-3">
         <label for="stock">Stock</label>
-        <input id="stock"  formControlName="stock" type="text" pInputText>
+        <input id="stock"  formControlName="stock" [(ngModel)]="rawMaterial.article.stock" type="text" pInputText>
         <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
           <small class="p-invalid p-text-center">El stock es obligatorio</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-6">
-        <label for="unitValue">Valor unitario</label>
-        <input id="unitValue"  type="text" formControlName="unitValue" pInputText>
-        <ng-container *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
+      <div class="p-field p-col-3 p-sm-3">
+        <label for="acquisitionValue">Valor de adquisición</label>
+        <input id="acquisitionValue"  type="text" formControlName="acquisitionValue" [(ngModel)]="rawMaterial.article.acquisitionValue" pInputText>
+        <ng-container *ngIf="form_product.get('acquisitionValue').hasError('required') && form_product.get('acquisitionValue').touched">
           <small class="p-invalid p-text-center">El valor unitario del producto es obligatorio</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-5 p-sm-5">
         <label for="categories">Categorias</label>
-        <p-dropdown [options]=""  formControlName="category" placeholder="Seleccione"></p-dropdown>
+        <p-dropdown [options]="categories" [(ngModel)]="rawMaterial.article.category" formControlName="category" placeholder="Seleccione"></p-dropdown>
         <ng-container *ngIf="form_product.get('category').hasError('required') && form_product.get('category').touched">
           <small class="p-invalid p-text-center">La categoria es obligatoria</small>
         </ng-container>
       </div>
       <div class="p-field p-col-12 p-md-4">
         <label for="expeditionDate">Fecha de expedicion</label>
-        <input id="expeditionDate" type="date" formControlName="expeditionDate" pInputText>
-      </div>
-      <div class="p-field p-col-12 p-md-4">
-        <label for="productionCost">Costo de produción</label>
-        <input id="productionCost" formControlName="productionCost" type="text" pInputText>
-        <ng-container *ngIf="form_product.get('productionCost').hasError('required') && form_product.get('productionCost').touched">
-          <small class="p-invalid p-text-center">El costo de producción es oblogatorio</small>
-        </ng-container>
+        <input id="expeditionDate" type="date" [(ngModel)]="rawMaterial.article.dateExpiry" formControlName="expeditionDate" pInputText>
       </div>
     </div>
     <br>
@@ -106,3 +96,4 @@
     </p-footer>
   </form>
 </p-dialog>
+<p-confirmDialog class="dialog-small"></p-confirmDialog>

@@ -1,5 +1,5 @@
 export class Measurement {
-  id: number;
+  id?: number;
   code: string;
   description: string;
 

@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
   imports: [
     InventaryRoutingModule,
     TableModule,
+    TabViewModule,
     ButtonModule,
     DialogModule,
     InputTextModule,

@@ -10,8 +10,7 @@ import { Product } from '@core/models/product.model';
 import { ProductService } from '@core/services/product.service';
 import { Category } from '@core/models/category.model';
 import { CategoryService } from '@core/services/category.service';
-import { rawMaterial } from '@core/models/raw-material.model';
-import { RawMaterialService } from '@core/services/rawMaterial.service';
+
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -31,7 +30,7 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   product: Product = new Product();
   categories: SelectItem[] = [];
-  rowMaterials: rawMaterial[] = [];
+
   optionsRawMaterials: SelectItem[] = [];
 
 
@@ -41,7 +40,6 @@ export class ProductsComponent implements OnInit {
     private productService: ProductService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private rawMaterialService: RawMaterialService
   ) {
     this.form_product = this._formuilder.group({
       name: ['', [Validators.required], []],
@@ -130,7 +128,6 @@ export class ProductsComponent implements OnInit {
   }
 
   deleteProduct(product: Product) {
-    console.log(product);
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `Está eliminando: ${product.article.name}`,
