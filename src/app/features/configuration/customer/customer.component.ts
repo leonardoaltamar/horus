@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 
 //Models
 import { Customer } from '@core/models/customer.model';
+import { City } from '@core/models/city.model';
 import { Location } from '@core/models/location.model';
 
 //Services
@@ -36,8 +37,8 @@ export class CustomerComponent implements OnInit {
   //Customer
   customer: Customer = new Customer();
   customers: Customer[] = [];
-  cities: SelectItem[] = [];
-  gerder: SelectItem[] = [];
+  cities: City[] = [];
+  gender: SelectItem[] = [];
   document: SelectItem[] = [];
 
   constructor(private routeStateService: RouteStateService,
@@ -86,20 +87,13 @@ export class CustomerComponent implements OnInit {
     this.routeStateService.add("Configuration", "/configuration/customers", null, false);
     this.getAllCustomer();
 
-    this.cityService.getAll().then(data =>
-      data.forEach(x =>
-        this.cities.push({
-          label: x.name,
-          value: x.id
-        })
-      )
-    );
+    this.cityService.getAll().then(data => { this.cities = data; });
 
     this.gerderService.getAll().then(data =>
       data.forEach(x =>
-        this.gerder.push({
+        this.gender.push({
           label: x.name,
-          value: x.id
+          value: x
         })
       )
     );
@@ -117,15 +111,13 @@ export class CustomerComponent implements OnInit {
         label: 'Pasaporte',
         value: 'Pasaporte'
       }
-
     )
   }
 
   newCustomer() {
     this.customer = new Customer;
+    this.form_customer.reset();
     this.showModal = true;
-    this.customer.person.emails[0] = new Email();
-    this.customer.person.mobilePhones[0] = new MobilePhone();
   }
 
   saveCustomer() {
@@ -135,10 +127,14 @@ export class CustomerComponent implements OnInit {
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
-          console.log(data)
+          console.log(data);
+          console.log(this.customer);
           this.customer = data;
           this.customers.push(this.customer);
-          this.messageService.add({ severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber} Nombre: ${this.customer.person.name} ${this.customer.person.surname}` });
+          this.messageService.add({
+            severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber}
+          Nombre: ${this.customer.person.name} ${this.customer.person.surname}`
+          });
           this.showModal = false;
         },
         error => {
@@ -166,10 +162,33 @@ export class CustomerComponent implements OnInit {
     }
   }
 
+  modifyCustomer(customer: Customer) {
+    this.customer = customer;
+    this.showModal = true;
+  }
+
+  deleteCustomer(customer: Customer) {
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `Está eliminando: ${customer.person.name} ${customer.person.surname} ${customer.person.secondSurname}`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.customerService.delete(customer.id, customer).pipe(first()).subscribe(
+          data => {
+            if (data['success']) {
+              this.customers = this.customers.filter((x) => x.id != customer.id);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+    });
+  }
+
   //validations Phone
   addPhone() {
-    this.showPhone = true;
-    this.customer.person.mobilePhones[1] = new MobilePhone();
     this.customer.person.mobilePhones = [...this.customer.person.mobilePhones];
     this.customer.person.mobilePhones.push(new MobilePhone())
     this.mobilePhones.push(this._formBuilder.group({
@@ -302,6 +321,7 @@ export class CustomerComponent implements OnInit {
     try {
       this.isLoading = true;
       this.customers = await this.customerService.getAll();
+      console.log(this.customers);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
