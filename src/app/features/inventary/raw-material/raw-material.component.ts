@@ -14,7 +14,7 @@ import { ConfirmationService } from 'primeng/api';
 export class RawMaterialComponent implements OnInit {
   rowMaterial: rawMaterial[] = [];
 
-  form_rowMaterial: FormGroup;
+  form_product: FormGroup;
   dateAdd: Date;
   isLoading: boolean = false;
   showModal: boolean = false;
@@ -23,36 +23,20 @@ export class RawMaterialComponent implements OnInit {
   constructor(private routeStateService: RouteStateService,
     private confirmationService: ConfirmationService,
     private _formuilder: FormBuilder) {
-    this.form_rowMaterial = this._formuilder.group({
-      description: ['', [Validators.required], []],
-      count: ['', [Validators.required], []],
-      price: ['', [Validators.required], []]
-    })
+      this.form_product = this._formuilder.group({
+        name: ['', [Validators.required], []],
+        stock:['', [Validators.required], []],
+        unitValue:['', [Validators.required], []],
+        price: ['', [Validators.required], []],
+        category: ['', [Validators.required], []],
+        productionCost: ['', [Validators.required], []],
+        expeditionDate: [ ]
+      })
   }
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/raw-materials", null, false);
-    // this.getAllMaterial();
-    // this.rowMaterial.push(
-    //   {
-    //     code: '1234',
-    //     name: 'Tapas',
-    //     stock: 124,
-    //     measure: 'UNI'
-    //   },
-    //   {
-    //     code: '4312',
-    //     name: 'Aceite',
-    //     stock: 1342.43,
-    //     measure: 'LITRO'
-    //   },
-    //   {
-    //     code: '4313',
-    //     name: 'Aceite',
-    //     stock: 134.43,
-    //     measure: 'LITRO'
-    //   }
-    // )
+
   }
 
   //Metodo de recarga de informacion
@@ -80,24 +64,7 @@ export class RawMaterialComponent implements OnInit {
     this.showModal = true;
   }
 
-  // deleteAcademicField(academicField: AcademicField){
-  //   this.confirmationService.confirm({
-  //     header: 'Alerta',
-  //     message: `Está eliminando: ${academicField.code} - ${academicField.name}`,
-  //     icon: 'fas fa-exclamation-triangle',
-  //     accept: () => {
-  //       this.service.delete(academicField.id).pipe(first()).subscribe(
-  //         data => {
-  //           if(data['success']){
-  //             this.academicFields = this.academicFields.filter((x) => x.id != academicField.id);
-  //           }
-  //         },
-  //         error => {
-  //           console.log(error);
-  //         });
-  //     }
-  //   });
-  // }
+
 
   async validate_rawMaterial(control: AbstractControl) {
     const val = control.value;

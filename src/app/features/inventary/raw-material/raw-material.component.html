@@ -52,47 +52,57 @@
 
 <p-dialog header="Ingreso de materia prima" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small"
   [modal]="true" [baseZIndex]="10000" [resizable]="false">
-  <form [formGroup]="form_rowMaterial" (ngSubmit)="saveRawMaterial()" class="">
+  <form [formGroup]="form_product" class="">
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
-        <label for="description">Descripción</label>
-        <input id="description" formControlName="description" type="text" pInputText>
-        <ng-container
-          *ngIf="form_rowMaterial.get('description').hasError('required') && form_rowMaterial.get('description').touched">
-          <small class="p-invalid p-text-center">la descripcion es obligatoria</small>
+        <label for="description">Nombre</label>
+        <input id="description" formControlName="name"  type="text" pInputText>
+        <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
+          <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
         </ng-container>
-        <ng-container
-          *ngIf="form_rowMaterial.get('description').hasError('A') && form_rowMaterial.get('description').touched">
-          <small class="p-invalid p-text-center">Esta materia prima ya está registrada</small>
+        <ng-container *ngIf="form_product.get('name').hasError('A') && form_product.get('name').touched">
+          <small class="caption p-text-center">Este nombre ya está en uso</small>
         </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="count">Cantidad</label>
-        <p-inputNumber formControlName="count" [style]="{width: '100%'}" mode="decimal" [showButtons]="true"
-          inputId="count" [min]="0"></p-inputNumber>
-        <ng-container
-          *ngIf="form_rowMaterial.get('count').hasError('required') && form_rowMaterial.get('count').touched">
-          <small class="p-invalid p-text-center">La cantidad es obligatoria</small>
+        <label for="stock">Stock</label>
+        <input id="stock"  formControlName="stock" type="text" pInputText>
+        <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
+          <small class="p-invalid p-text-center">El stock es obligatorio</small>
         </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="price">Precio de compra</label>
-        <p-inputNumber formControlName="price" [style]="{width: '100%'}" inputId="locale-us" mode="decimal"
-          locale="en-US" [minFractionDigits]="0" [min]="0">
-        </p-inputNumber>
-        <ng-container
-          *ngIf="form_rowMaterial.get('price').hasError('required') && form_rowMaterial.get('price').touched">
-          <small class="p-invalid p-text-center">El importe es obligatorio</small>
+        <label for="unitValue">Valor unitario</label>
+        <input id="unitValue"  type="text" formControlName="unitValue" pInputText>
+        <ng-container *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
+          <small class="p-invalid p-text-center">El valor unitario del producto es obligatorio</small>
+        </ng-container>
+      </div>
+      <div class="p-field p-col-6 p-sm-6">
+        <label for="categories">Categorias</label>
+        <p-dropdown [options]=""  formControlName="category" placeholder="Seleccione"></p-dropdown>
+        <ng-container *ngIf="form_product.get('category').hasError('required') && form_product.get('category').touched">
+          <small class="p-invalid p-text-center">La categoria es obligatoria</small>
+        </ng-container>
+      </div>
+      <div class="p-field p-col-12 p-md-4">
+        <label for="expeditionDate">Fecha de expedicion</label>
+        <input id="expeditionDate" type="date" formControlName="expeditionDate" pInputText>
+      </div>
+      <div class="p-field p-col-12 p-md-4">
+        <label for="productionCost">Costo de produción</label>
+        <input id="productionCost" formControlName="productionCost" type="text" pInputText>
+        <ng-container *ngIf="form_product.get('productionCost').hasError('required') && form_product.get('productionCost').touched">
+          <small class="p-invalid p-text-center">El costo de producción es oblogatorio</small>
         </ng-container>
       </div>
     </div>
     <br>
     <br>
     <p-footer class="p-grid">
-      <button type="submit" pButton pRipple icon="far fa-save" label=" Guardar" class="p-button-save p-button p-ml-2"
-        (click)="newRawMaterial()" [disabled]="form_rowMaterial.invalid"></button>
-      <button type="submit" pButton pRipple icon="fas fa-times" label=" Cerrar"
-        class="p-button-close button-text p-ml-2" (click)="showModal=false"></button>
+      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"></button>
+      <button  pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
+        (click)="showModal=false"></button>
     </p-footer>
   </form>
 </p-dialog>

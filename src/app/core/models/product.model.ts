@@ -1,12 +1,12 @@
-import { Artitle } from './artitle.model';
+import { Article } from './article.model';
 export class Product {
   id?: number;
-  production_cost: number
-  artitle: Artitle;
+  productionCost: number
+  article: Article;
 
   constructor() {
     this.id = null;
-    this.production_cost = 0;
-    this.artitle = new Artitle();
+    this.productionCost = 0;
+    this.article = new Article();
   }
 }

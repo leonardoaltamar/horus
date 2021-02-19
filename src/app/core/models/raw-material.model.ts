@@ -1,16 +1,16 @@
 import { Measurement } from './measurement.model';
-import { Artitle } from './artitle.model';
+import { Article } from './article.model';
 
 export class rawMaterial {
   id?: number;
   quantity: string;
   measurement: Measurement;
-  artitle: Artitle;
+  article: Article;
 
   constructor() {
     this.id = null;
     this.quantity = '';
     this.measurement = new Measurement;
-    this.artitle = new Artitle();
+    this.article = new Article();
   }
 }

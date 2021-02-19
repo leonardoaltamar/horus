@@ -1,23 +1,23 @@
 import { Category } from './category.model';
 
-export class Artitle {
+export class Article {
   id?: number;
   name: string;
-  date_expire: string;
+  dateExpiry: string;
   stock: number;
-  acquisition_value: number;
-  unit_value: number;
-  bar_code: string;
+  acquisitionValue: number;
+  unitValue: number;
+  barCode: string;
   category: Category;
 
   constructor() {
     this.id = null;
     this.name = '';
-    this.date_expire = '';
+    this.dateExpiry = '';
     this.stock = 0;
-    this.acquisition_value = 0;
-    this.unit_value = 0;
-    this.bar_code = '';
+    this.acquisitionValue = 0;
+    this.unitValue = 0;
+    this.barCode = '';
     this.category = new Category();
   }
 }

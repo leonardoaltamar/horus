@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -29,16 +29,16 @@
             <th>*</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{product.article.name}}</td>
+            <td>{{product.article.unitValue || ""}} </td>
+            <td>{{product.article.category.name}}</td>
             <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
+              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyProduct(product)" icon="pi pi-pencil"
                 class="button-action"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProduct(dataRow)"
+              <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProduct(product)"
                 class="button-action"></button>
             </td>
           </tr>
@@ -54,29 +54,53 @@
   <form [formGroup]="form_product" (ngSubmit)="saveProduct()" class="">
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
-        <label for="description">Descripción</label>
-        <input id="description" type="text" pInputText>
+        <label for="description">Nombre</label>
+        <input id="description" formControlName="name" [(ngModel)]="product.article.name" type="text" pInputText>
+        <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
+          <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
+        </ng-container>
+        <ng-container *ngIf="form_product.get('name').hasError('A') && form_product.get('name').touched">
+          <small class="caption p-text-center">Este nombre ya está en uso</small>
+        </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="packing">Precio</label>
-        <input id="packing" type="text" pInputText>
+        <label for="stock">Stock</label>
+        <input id="stock" [(ngModel)]="product.article.stock" formControlName="stock" type="text" pInputText>
+        <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
+          <small class="p-invalid p-text-center">El stock es obligatorio</small>
+        </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="packing">Categorias</label>
-        <p-dropdown [options]="categories" optionLabel="description"></p-dropdown>
+        <label for="unitValue">Valor unitario</label>
+        <input id="unitValue"  [(ngModel)]="product.article.unitValue" type="text" formControlName="unitValue" pInputText>
+        <ng-container *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
+          <small class="p-invalid p-text-center">El valor unitario del producto es obligatorio</small>
+        </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="rowMaterial">Materia prima</label>
-        <p-multiSelect [options]="optionsRawMaterials" defaultLabel="Selecciona la materia prima">
-        </p-multiSelect>
+        <label for="categories">Categorias</label>
+        <p-dropdown [options]="categories" [(ngModel)]="product.article.category" formControlName="category" placeholder="Seleccione"></p-dropdown>
+        <ng-container *ngIf="form_product.get('category').hasError('required') && form_product.get('category').touched">
+          <small class="p-invalid p-text-center">La categoria es obligatoria</small>
+        </ng-container>
+      </div>
+      <div class="p-field p-col-12 p-md-4">
+        <label for="expeditionDate">Fecha de expedicion</label>
+        <input id="expeditionDate" type="date" formControlName="expeditionDate" [(ngModel)]="product.article.dateExpiry" pInputText>
+      </div>
+      <div class="p-field p-col-12 p-md-4">
+        <label for="productionCost">Costo de produción</label>
+        <input id="productionCost" [(ngModel)]="product.productionCost" formControlName="productionCost" type="text" pInputText>
+        <ng-container *ngIf="form_product.get('productionCost').hasError('required') && form_product.get('productionCost').touched">
+          <small class="p-invalid p-text-center">El costo de producción es oblogatorio</small>
+        </ng-container>
       </div>
     </div>
     <br>
     <br>
     <p-footer class="p-grid">
-      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"
-        (click)="saveProduct()"></button>
-      <button type="submit" pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
+      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"></button>
+      <button  pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
         (click)="showModal=false"></button>
     </p-footer>
   </form>
