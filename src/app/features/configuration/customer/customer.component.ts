@@ -129,6 +129,7 @@ export class CustomerComponent implements OnInit {
         data => {
           console.log(data);
           console.log(this.customer);
+          this.customer = data;
           this.customers.push(this.customer);
           this.messageService.add({
             severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber}

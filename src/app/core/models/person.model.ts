@@ -13,7 +13,6 @@ export class Person {
   documentNumber: number;
   expeditionDate: string;
   expeditionCity: City;
-  birthDate: string;
   imageUrl: string;
   locations?: Location[];
   emails?: Email[];

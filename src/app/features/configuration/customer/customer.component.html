@@ -31,20 +31,14 @@
         <ng-template pTemplate="body" let-customer let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{customer.documentNumber}}</td>
+            <td>{{customer.person.documentNumber}}</td>
             <td>
-              {{customer.name}}
-              {{customer.surname}}
-              {{customer.secondSurname}}
+              {{customer.person.name}}
+              {{customer.person.surname}}
+              {{customer.person.secondSurname}}
             </td>
-            <td>
-              {{customer.emails?.length > 0 ? customer.emails[0].email : ""}}
-            </td>
-            <td>
-              {{customer.mobilePhones?.length > 0
-              ? customer.mobilePhones[0].number
-              : ""}}
-            </td>
+            <td>{{customer.person.emails?.length > 0 ? customer.person.emails[0].email : ""}}</td>
+            <td>{{customer.person.mobilePhones?.length > 0 ? customer.person.mobilePhones[0].number : ""}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-pencil" class="button-action"
                 (click)="modifyCustomer(customer)"></button>
@@ -98,21 +92,14 @@
           <small class="caption p-text-center">Solo puedes ingresar numeros en este campo!</small>
         </ng-container>
       </div>
+    </div>
 
+    <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-4">
         <label for="expeditionCity">Ciudad de expedicion</label>
         <p-dropdown id="expeditionCity" [options]="cities" optionLabel="name"
           [(ngModel)]="customer.person.expeditionCity" placeholder="Ciudad" formControlName="expeditionCity">
         </p-dropdown>
-      </div>
-    </div>
-
-    <div class="p-fluid p-grid">
-      <div class="p-field p-col-12 p-md-4">
-        <label for="expeditionDate">Fecha de expedicion</label>
-        <p-calendar id="expeditionDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
-          [(ngModel)]="customer.person.expeditionDate" formControlName="expeditionDate">
-        </p-calendar>
       </div>
 
       <div class="p-field p-col-12 p-md-4">
@@ -245,7 +232,7 @@
                   <p-cellEditor>
                     <ng-template pTemplate="input">
                       <p-dropdown [options]="cities" id="city" formControlName="city" placeholder="Selecciona"
-                        [(ngModel)]="dataRow.city" [style]="{ width: '100%' }"></p-dropdown>
+                        [(ngModel)]="dataRow.city" optionLabel="name" [style]="{ width: '100%' }"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                       {{ dataRow.city.name }}
