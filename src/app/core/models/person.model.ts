@@ -32,7 +32,6 @@ export class Person {
     this.expeditionCity = new City();
     this.gender = new Gender();
     this.expeditionDate = '';
-    this.birthDate = '';
     this.imageUrl = '';
   }
 }
