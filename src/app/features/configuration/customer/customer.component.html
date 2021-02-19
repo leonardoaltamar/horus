@@ -38,7 +38,7 @@
               {{customer.person.secondSurname}}
             </td>
             <td>{{customer.person.emails?.length > 0 ? customer.person.emails[0].email : ""}}</td>
-            <td>{{customer.person.mobilePhones?.length > 0 ? customer.person.mobilePhones[0].number : ""}}</td>
+            <td>{{customer.person.mobilesPhones?.length > 0 ? customer.person.mobilesPhones[0].number : ""}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-pencil" class="button-action"
                 (click)="modifyCustomer(customer)"></button>
@@ -174,11 +174,11 @@
             <div class="p-d-flex p-ai-center">
               <h4 class="color-title">Telefonos</h4>
               <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
-                (click)="addPhone()"></button>
+                (click)="addMobile()"></button>
             </div>
 
             <div formArrayName="mobilePhones">
-              <div class="p-mt-2" *ngFor="let mobilePhone of customer.person.mobilePhones; let rowIndexMobile = index"
+              <div class="p-mt-2" *ngFor="let mobilePhone of customer.person.mobilesPhones; let rowIndexMobile = index"
                 [formGroupName]="rowIndexMobile">
                 <div class="p-d-flex p-mb-2">
                   <input id="number" type="text" formControlName="number" [(ngModel)]="mobilePhone.number" pInputText
