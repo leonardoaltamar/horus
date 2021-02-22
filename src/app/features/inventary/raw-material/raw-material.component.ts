@@ -1,8 +1,11 @@
-import { rawMaterial } from '@core/models/raw-material.model';
+import { RawMaterial } from '@core/models/raw-material.model';
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
+import { CategoryService } from '@core/services/category.service';
+import { ConfirmationService, SelectItem, MessageService } from 'primeng/api';
+import { RawMaterialService } from '@core/services/raw-material.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-raw-material',
@@ -12,9 +15,10 @@ import { ConfirmationService } from 'primeng/api';
 })
 
 export class RawMaterialComponent implements OnInit {
-  rowMaterial: rawMaterial[] = [];
-
-  form_rowMaterial: FormGroup;
+  rawMaterials: RawMaterial[] = [];
+  categories: SelectItem[] = [];
+  rawMaterial: RawMaterial = new RawMaterial();
+  form_product: FormGroup;
   dateAdd: Date;
   isLoading: boolean = false;
   showModal: boolean = false;
@@ -22,44 +26,32 @@ export class RawMaterialComponent implements OnInit {
 
   constructor(private routeStateService: RouteStateService,
     private confirmationService: ConfirmationService,
+    private categoryService: CategoryService,
+    private service: RawMaterialService,
+    private messageService: MessageService,
     private _formuilder: FormBuilder) {
-    this.form_rowMaterial = this._formuilder.group({
-      description: ['', [Validators.required], []],
-      count: ['', [Validators.required], []],
-      price: ['', [Validators.required], []]
-    })
+      this.form_product = this._formuilder.group({
+        name: ['', [Validators.required], []],
+        stock:['', [Validators.required], []],
+        acquisitionValue:['', [Validators.required], []],
+        price: ['', [Validators.required], []],
+        category: ['', [Validators.required], []],
+        expeditionDate: [ ]
+      })
   }
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/raw-materials", null, false);
-    // this.getAllMaterial();
-    // this.rowMaterial.push(
-    //   {
-    //     code: '1234',
-    //     name: 'Tapas',
-    //     stock: 124,
-    //     measure: 'UNI'
-    //   },
-    //   {
-    //     code: '4312',
-    //     name: 'Aceite',
-    //     stock: 1342.43,
-    //     measure: 'LITRO'
-    //   },
-    //   {
-    //     code: '4313',
-    //     name: 'Aceite',
-    //     stock: 134.43,
-    //     measure: 'LITRO'
-    //   }
-    // )
+    this.getAllMaterial();
+    this.getAllCategory();
   }
 
   //Metodo de recarga de informacion
   async getAllMaterial() {
     try {
       this.isLoading = true;
-      // this.academicFields = await this.service.getAll();
+       this.rawMaterials = await this.service.getAll();
+       console.log(this.rawMaterials);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -67,37 +59,90 @@ export class RawMaterialComponent implements OnInit {
     }
   }
 
+  async getAllCategory() {
+    try {
+      this.isLoading = true;
+      let data =  await this.categoryService.getAll();
+      data.forEach(item=>{
+          this.categories.push({ value: item, label: item.description})
+      })
+      console.log(this.categories);
+      this.isLoading = false;
+    } catch (error) {
+      this.isLoading = false;
+      console.error(error);
+    }
+  }
+
+  addRow(){
+
+  }
+
   //Guardar material
-  saveRawMaterial() { }
+  saveRawMaterial() {
+    console.log(this.rawMaterial);
+    if(!this.rawMaterial.id){
+      this.service.create(this.rawMaterial).subscribe(
+        data => {
+          console.log(data);
+          this.rawMaterial = data;
+          this.rawMaterials.push(this.rawMaterial);
+          this.messageService.add({ severity: 'success', summary: `producto creada con éxito`, detail: `Nombre: ${this.rawMaterial.article.name}` });
+        },
+        error => {
+          console.error(`Error de guardado ${error}`);
+        }
+      );
+    }else{
+      this.service.update(this.rawMaterial.id, this.rawMaterial).pipe(first()).subscribe(
+        data => {
+          if (data['success']) {
+            this.rawMaterials = this.rawMaterials.map(x => {
+              if (x.id == this.rawMaterial.id)
+                x = this.rawMaterial;
+              return x
+            });
+            this.messageService.add({ severity: 'success', summary: `Producto actualizado con exito` });
+          }
+        }
+      )
+    }
+    this.showModal = false;
+  }
 
   newRawMaterial() {
     this.showModal = true;
     // this.model = new AcademicField();
   }
 
-  modifyMateiral() {
-    // this.model = academicField;
+  modifyMaterial(dataRow: RawMaterial) {
+    this.rawMaterial = dataRow;
     this.showModal = true;
   }
 
-  // deleteAcademicField(academicField: AcademicField){
-  //   this.confirmationService.confirm({
-  //     header: 'Alerta',
-  //     message: `Está eliminando: ${academicField.code} - ${academicField.name}`,
-  //     icon: 'fas fa-exclamation-triangle',
-  //     accept: () => {
-  //       this.service.delete(academicField.id).pipe(first()).subscribe(
-  //         data => {
-  //           if(data['success']){
-  //             this.academicFields = this.academicFields.filter((x) => x.id != academicField.id);
-  //           }
-  //         },
-  //         error => {
-  //           console.log(error);
-  //         });
-  //     }
-  //   });
-  // }
+  deleteMaterial(dataRow: RawMaterial){
+    console.log(dataRow);
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `Está eliminando: ${dataRow.article.name}`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.service.delete(dataRow.id, dataRow).pipe(first()).subscribe(
+          data => {
+            console.log(data['success']);
+            if (data['success']) {
+              this.messageService.add({ severity: 'success', summary: `producto borrado con éxito`, detail: `producto: ${dataRow.article.name} ` });
+              this.rawMaterials = this.rawMaterials.filter((x) => x.id != dataRow.id);
+            }
+          },
+          error => {
+            console.log(error);
+          });
+      }
+    });
+  }
+
+
 
   async validate_rawMaterial(control: AbstractControl) {
     const val = control.value;

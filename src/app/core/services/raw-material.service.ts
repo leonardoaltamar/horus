@@ -1,4 +1,4 @@
-import { rawMaterial } from '../models/raw-material.model';
+import { RawMaterial } from '../models/raw-material.model';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -14,31 +14,31 @@ export class RawMaterialService {
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}rawMaterial`;
+    this.endPoint = `${environment.apiUrl}raw_material`;
   }
 
 
 
   async getAll() {
-    return this.http.get<rawMaterial[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<RawMaterial[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<rawMaterial>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<RawMaterial>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(rawMaterial: rawMaterial) {
-    return this.http.post<rawMaterial>(`${this.endPoint}`, rawMaterial);
+  create(rawMaterial: RawMaterial) {
+    return this.http.post<RawMaterial>(`${this.endPoint}`, rawMaterial);
   }
 
-  update(id: number, rawMaterial: rawMaterial) {
+  update(id: number, rawMaterial: RawMaterial) {
     return this.http.patch(`${this.endPoint}/${id}`, rawMaterial);
     // .pipe(map(x => {
     //   return x;
     // }));
   }
 
-  delete(id: number, rawMaterial: rawMaterial) {
+  delete(id: number, rawMaterial: RawMaterial) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       body: rawMaterial

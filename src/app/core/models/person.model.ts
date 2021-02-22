@@ -11,12 +11,12 @@ export class Person {
   secondSurname: string;
   documentType: string;
   documentNumber: number;
-  expeditionDate: string;
+  birthDate: string;
   expeditionCity: City;
   imageUrl: string;
   locations?: Location[];
   emails?: Email[];
-  mobilePhones?: MobilePhone[];
+  mobilesPhones?: MobilePhone[];
   gender: Gender;
 
   constructor() {
@@ -28,10 +28,10 @@ export class Person {
     this.documentNumber = null;
     this.locations = [];
     this.emails = [];
-    this.mobilePhones = [];
+    this.mobilesPhones = [];
     this.expeditionCity = new City();
     this.gender = new Gender();
-    this.expeditionDate = '';
+    this.birthDate = '';
     this.imageUrl = '';
   }
 }
