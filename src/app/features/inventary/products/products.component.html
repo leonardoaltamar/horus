@@ -70,7 +70,7 @@
       <div class="p-field p-col-6 p-sm-6">
         <label for="description">Nombre</label>
         <input id="description" formControlName="name"
-          [(ngModel)]="show ? product.article.name : rawMaterial.article.name" type="text" pInputText>
+          [(ngModel)]="checked ? product.article.name : rawMaterial.article.name" type="text" pInputText>
         <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
           <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
         </ng-container>
@@ -80,8 +80,8 @@
       </div>
       <div class="p-field p-col-3 p-sm-3">
         <label for="stock">Stock</label>
-        <input id="stock" [(ngModel)]="show ? product.article.stock : rawMaterial.article.stock" formControlName="stock"
-          type="text" pInputText>
+        <input id="stock" [(ngModel)]="checked ? product.article.stock : rawMaterial.article.stock"
+          formControlName="stock" type="text" pInputText>
         <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
           <small class="p-invalid p-text-center">El stock es obligatorio</small>
         </ng-container>
