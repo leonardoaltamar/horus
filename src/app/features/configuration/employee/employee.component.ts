@@ -6,45 +6,49 @@ import { ConfirmationService, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 
 //Models
-import { SalesMan } from '@core/models/salesMan.model';
 import { City } from '@core/models/city.model';
 import { Location } from '@core/models/location.model';
 
 //Services
 import { PersonService } from '@core/services/person.service';
-import { SalesManService } from '@core/services/sales-man.service';
 import { CityService } from '@core/services/city.service';
 import { LocationService } from '@core/services/location.service';
 import { EmailService } from '@core/services/email.service';
+import { EmployeeService } from './../../../core/services/employee.service';
 import { MobilePhoneService } from '@core/services/mobile_phone.service';
 import { GerderService } from '@core/services/gerder.service';
 import { Email } from '@core/models/email.model';
 import { MobilePhone } from '@core/models/mobilePhone.model';
+import { Employee } from '../../../core/models';
 
 @Component({
-  selector: 'app-salesman',
-  templateUrl: './salesman.component.html',
-  styleUrls: ['./salesman.component.css'],
+  selector: 'app-employee',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.css'],
   providers: [ConfirmationService]
 })
-export class SalesmanComponent implements OnInit {
+export class EmployeeComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
   form_salesman: FormGroup;
 
   //Customer
-  salesMan: SalesMan = new SalesMan();
-  salesMen: SalesMan[] = [];
+  employee: Employee = new Employee();
+  employees: Employee[] = [];
   cities: City[] = [];
   gender: SelectItem[] = [];
   document: SelectItem[] = [];
   imageUrl: any;
+  types: SelectItem[] = [
+    {label: 'Vendedor' , value: 'S' },
+    {label: 'Transportista' , value: 'C' },
+  ]
 
   city: { name: string }[];
 
   constructor(private routeStateService: RouteStateService,
     private confirmationService: ConfirmationService,
-    private salesManService: SalesManService,
+    private employeeService: EmployeeService,
     private personService: PersonService,
     private cityService: CityService,
     private locationService: LocationService,
@@ -62,6 +66,8 @@ export class SalesmanComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       secondSurname: [''],
+      type: [''],
+      licensePlate: [''],
 
       emails: this._formBuilder.array([this._formBuilder.group({
         email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
@@ -84,7 +90,7 @@ export class SalesmanComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.routeStateService.add("Configuration", "/configuration/salesmen", null, false);
+    this.routeStateService.add("Configuration", "/configuration/employee", null, false);
     this.getAllSalesMan();
 
     this.cityService.getAll().then(data => { this.cities = data; });
@@ -131,21 +137,17 @@ export class SalesmanComponent implements OnInit {
   }
 
   saveSalesMan() {
-    this.salesMan.person.emails.forEach((item, index) => { this.salesMan.person.emails[index].main = item.main ? 1 : 0 });
-    this.salesMan.person.mobilesPhones.forEach((item, index) => { this.salesMan.person.mobilesPhones[index].main = item.main ? 1 : 0 });
-    this.salesMan.person.locations.forEach((item, index) => { this.salesMan.person.locations[index].main = item.main ? 1 : 0 });
-    if (!this.salesMan.id) {
-      this.salesManService.create(this.salesMan).pipe(first()).subscribe(
+    this.employee.person.emails.forEach((item, index) => { this.employee.person.emails[index].main = item.main ? 1 : 0 });
+    this.employee.person.mobilesPhones.forEach((item, index) => { this.employee.person.mobilesPhones[index].main = item.main ? 1 : 0 });
+    this.employee.person.locations.forEach((item, index) => { this.employee.person.locations[index].main = item.main ? 1 : 0 });
+    if (!this.employee.id) {
+      this.employeeService.create(this.employee).pipe(first()).subscribe(
         data => {
-          console.log(" 1 ", this.salesMan.person.mobilesPhones);
-          console.log(data);
-          console.log(this.salesMan);
-          this.salesMan = data;
-          console.log(" 2 ", this.salesMan.person.mobilesPhones);
-          this.salesMen.push(this.salesMan);
+          this.employee = data;
+          this.employees.push(this.employee);
           this.messageService.add({
-            severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.salesMan.person.documentNumber}
-          Nombre: ${this.salesMan.person.name} ${this.salesMan.person.surname}`
+            severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.employee.person.documentNumber}
+          Nombre: ${this.employee.person.name} ${this.employee.person.surname}`
           });
           this.showModal = false;
         },
@@ -155,12 +157,12 @@ export class SalesmanComponent implements OnInit {
       );
     }
     else {
-      this.salesManService.update(this.salesMan.id, this.salesMan).pipe(first()).subscribe(
+      this.employeeService.update(this.employee.id, this.employee).pipe(first()).subscribe(
         data => {
           if (data['success']) {
-            this.salesMen = this.salesMen.map(x => {
-              if (x.id == this.salesMan.id)
-                x = this.salesMan;
+            this.employees = this.employees.map(x => {
+              if (x.id == this.employee.id)
+                x = this.employee;
               return x
             });
             this.showModal = false;
@@ -174,10 +176,15 @@ export class SalesmanComponent implements OnInit {
     }
   }
 
+  modifyEmployee(employee: Employee) {
+    this.employee = employee;
+    this.showModal = true;
+  }
+
   //validations Phone
   addMobile() {
-    this.salesMan.person.mobilesPhones = [...this.salesMan.person.mobilesPhones];
-    this.salesMan.person.mobilesPhones.push(new MobilePhone());
+    this.employee.person.mobilesPhones = [...this.employee.person.mobilesPhones];
+    this.employee.person.mobilesPhones.push(new MobilePhone());
     this.mobilePhones.push(this._formBuilder.group({
       number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
       main: [false]
@@ -195,12 +202,12 @@ export class SalesmanComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!mobile.id) {
-          this.salesMan.person.mobilesPhones.splice(rowIndex, 1);
+          this.employee.person.mobilesPhones.splice(rowIndex, 1);
         } else {
           this.mobilePhoneService.delete(mobile.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.salesMan.person.mobilesPhones = this.salesMan.person.mobilesPhones.filter((x) => x.id != mobile.id);
+                this.employee.person.mobilesPhones = this.employee.person.mobilesPhones.filter((x) => x.id != mobile.id);
               }
             },
             error => {
@@ -214,8 +221,8 @@ export class SalesmanComponent implements OnInit {
 
   //validations Email
   addEmail() {
-    this.salesMan.person.emails = [...this.salesMan.person.emails];
-    this.salesMan.person.emails.push(new Email());
+    this.employee.person.emails = [...this.employee.person.emails];
+    this.employee.person.emails.push(new Email());
     this.emails.push(this._formBuilder.group({
       email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
       main: [false]
@@ -232,12 +239,12 @@ export class SalesmanComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!email.id) {
-          this.salesMan.person.emails.splice(rowIndex, 1);
+          this.employee.person.emails.splice(rowIndex, 1);
         } else {
           this.emailService.delete(email.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.salesMan.person.emails = this.salesMan.person.emails.filter((x) => x.id != email.id);
+                this.employee.person.emails = this.employee.person.emails.filter((x) => x.id != email.id);
               }
             },
             error => {
@@ -250,8 +257,8 @@ export class SalesmanComponent implements OnInit {
 
   //validations addresses
   addRow() {
-    this.salesMan.person.locations = [...this.salesMan.person.locations];
-    this.salesMan.person.locations.push(new Location());
+    this.employee.person.locations = [...this.employee.person.locations];
+    this.employee.person.locations.push(new Location());
     this.addresses.push(this._formBuilder.group({
       city: [''],
       address: [''],
@@ -272,12 +279,12 @@ export class SalesmanComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!row.id) {
-          this.salesMan.person.locations.splice(rowIndex, 1);
+          this.employee.person.locations.splice(rowIndex, 1);
         } else {
           this.locationService.delete(row.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.salesMan.person.locations = this.salesMan.person.locations.filter((x) => x.id != row.id);
+                this.employee.person.locations = this.employee.person.locations.filter((x) => x.id != row.id);
               }
             },
             error => {
@@ -292,8 +299,8 @@ export class SalesmanComponent implements OnInit {
   //validations Document Student
   async validate_document(control: AbstractControl) {
     const val = control.value;
-    const response = await this.salesManService.getAll();
-    if (this.salesMan.id) {
+    const response = await this.employeeService.getAll();
+    if (this.employee.id) {
       return null;
     } else {
       for (let i = 0; i < response.length; i++) {
@@ -308,8 +315,7 @@ export class SalesmanComponent implements OnInit {
   async getAllSalesMan() {
     try {
       this.isLoading = true;
-      this.salesMen = await this.salesManService.getAll();
-      console.log(this.salesMen);
+      this.employees = await this.employeeService.getAll();
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;

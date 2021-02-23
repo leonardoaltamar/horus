@@ -1,4 +1,4 @@
-import { SalesMan } from './../models/salesMan.model';
+import { Employee } from './../models/employee.model';
 import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -9,37 +9,37 @@ import { HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class SalesManService {
+export class EmployeeService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}seller`;
+    this.endPoint = `${environment.apiUrl}employee`;
   }
 
   getAll() {
-    return this.http.get<SalesMan[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<Employee[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<SalesMan>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<Employee>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(salesMan: SalesMan) {
-    return this.http.post<SalesMan>(`${this.endPoint}`, salesMan);
+  create(employee: Employee) {
+    return this.http.post<Employee>(`${this.endPoint}`, employee);
   }
 
-  update(id: number, salesMan: SalesMan) {
-    return this.http.patch(`${this.endPoint}/${id}`, salesMan)
+  update(id: number, employee: Employee) {
+    return this.http.patch(`${this.endPoint}/${id}`, employee)
       .pipe(map(x => {
         return x;
       }));
   }
 
-  delete(id: number, salesMan: SalesMan) {
+  delete(id: number, employee: Employee) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: salesMan
+      body: employee
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {
@@ -48,5 +48,4 @@ export class SalesManService {
   }
 
 }
-
 

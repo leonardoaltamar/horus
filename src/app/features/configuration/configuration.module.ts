@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from "@angular/core";
 import { CategoryComponent } from './category/category.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SalesmanComponent } from './salesman/salesman.component';
+import { EmployeeComponent } from './employee/employee.component';
 import { CustomerComponent } from './customer/customer.component';
 
 //Importaciones primeng
@@ -30,7 +30,7 @@ import { StateComponent } from './state/state.component';
     ConfigurationComponent,
     CategoryComponent,
     CustomerComponent,
-    SalesmanComponent,
+    EmployeeComponent,
     SupplierComponent,
     CityComponent,
     MeasurementComponent,

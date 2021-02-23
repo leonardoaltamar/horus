@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ProcessComponent } from './process.component';
 import { SalesComponent } from './sales/sales.component';
+import { purchasesComponent } from './purchases/purchases.component';
 import { ProcessRoutingModule } from './process-routing.module';
 
 //Theme Primeng
@@ -25,6 +26,7 @@ import { MessagesModule } from 'primeng/messages';
 @NgModule({
   declarations: [
     ProcessComponent,
+    purchasesComponent,
     SalesComponent
   ],
   exports: [

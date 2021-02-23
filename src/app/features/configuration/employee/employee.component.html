@@ -1,11 +1,11 @@
 <div class="card scroll" *ngIf="!showModal">
-  <div class="card-header"> Vendedores </div>
+  <div class="card-header"> Empleados </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="salesMen" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="employees" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['code']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -23,7 +23,7 @@
             <th>#</th>
             <th>Documento</th>
             <th>Nombre</th>
-            <th>Correo</th>
+            <th>Tipo de empleado</th>
             <th>Tefono</th>
             <th>*</th>
           </tr>
@@ -35,12 +35,12 @@
             <td>
               {{salesmen.person.name}}
               {{salesmen.person.surname}}
-              {{salesmen.person.secondSurname}}
+              {{salesmen.person.secondSurname || ''}}
             </td>
-            <td>{{salesmen.person.emails?.length > 0 ? salesmen.person.emails[0].email : ""}}</td>
+            <td>{{salesmen.type === 'S' ? 'Vendedor' : 'Transportista'}}</td>
             <td>{{salesmen.person.mobilesPhones?.length > 0 ? salesmen.person.mobilesPhones[0].number : ""}}</td>
             <td>
-              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"></button>
+              <button pButton pRipple type="button" icon="pi pi-pencil" (click)="modifyEmployee(salesmen)" class="button-action p-mr-3"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
             </td>
           </tr>
@@ -52,7 +52,7 @@
 
 <div class="card scroll" *ngIf="showModal" [formGroup]="form_salesman">
   <div class="card-header p-d-flex p-jc-between p-ai-center">
-    <span>Nuevo vendedor</span>
+    <span>Nuevo Empleado</span>
     <button pButton pRipple icon="fas fa-times" class="p-button p-button-close" (click)="showModal=false"></button>
   </div>
   <div class="card-body">
@@ -61,7 +61,7 @@
         <div class="p-fluid p-formgrid p-grid">
           <div class="p-field p-col-12 p-md-4">
             <label for="typeDocument">Tipo de documento</label>
-            <p-dropdown [(ngModel)]="salesMan.person.documentType" id="typeDocument" [options]="document"
+            <p-dropdown [(ngModel)]="employee.person.documentType" id="typeDocument" [options]="document"
               placeholder="Tipo de documento" formControlName="typeDocument">
             </p-dropdown>
             <ng-container
@@ -72,7 +72,7 @@
           <div class="p-field p-col-12 p-md-4">
             <label for="document">Numero de documento</label>
             <input id="document" type="text" pInputText onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-              [(ngModel)]="salesMan.person.documentNumber" formControlName="document">
+              [(ngModel)]="employee.person.documentNumber" formControlName="document">
             <ng-container
               *ngIf="form_salesman.get('document').hasError('required') && form_salesman.get('document').touched">
               <small class="caption p-text-center">Numero de Documento es obligatorio!</small>
@@ -95,20 +95,20 @@
           <div class="p-field p-col-12 p-md-4">
             <label for="expeditionCity">Ciudad de expedicion</label>
             <p-dropdown id="expeditionCity" [options]="cities" optionLabel="name"
-              [(ngModel)]="salesMan.person.expeditionCity" placeholder="Ciudad" formControlName="expeditionCity">
+              [(ngModel)]="employee.person.expeditionCity" placeholder="Ciudad" formControlName="expeditionCity">
             </p-dropdown>
           </div>
 
           <div class="p-field p-col-12 p-md-4">
             <label for="date">Fecha de nacimeinto</label>
             <p-calendar id="date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
-              [(ngModel)]="salesMan.person.birthDate" formControlName="birthDate">
+              [(ngModel)]="employee.person.birthDate" formControlName="birthDate">
             </p-calendar>
           </div>
 
           <div class="p-field p-col-12 p-md-4">
             <label for="gerder">Genero</label>
-            <p-dropdown id="gender" [options]="gender" placeholder="Genero" [(ngModel)]="salesMan.person.gender"
+            <p-dropdown id="gender" [options]="gender" placeholder="Genero" [(ngModel)]="employee.person.gender"
               placeholder="Genero" formControlName="gender"></p-dropdown>
           </div>
         </div>
@@ -116,19 +116,32 @@
         <div class="p-fluid p-formgrid p-grid">
           <div class="p-field p-col-12 p-md-6">
             <label for="name">Nombre</label>
-            <input id="name" type="text" pInputText [(ngModel)]="salesMan.person.name" formControlName="name">
+            <input id="name" type="text" pInputText [(ngModel)]="employee.person.name" formControlName="name">
           </div>
 
           <div class="p-field p-col-12 p-md-3">
             <label for="Surname">Primer apellido</label>
-            <input id="Surname" type="text" pInputText [(ngModel)]="salesMan.person.surname" formControlName="surName">
+            <input id="Surname" type="text" pInputText [(ngModel)]="employee.person.surname" formControlName="surName">
           </div>
 
           <div class="p-field p-col-12 p-md-3">
             <label for="secondSurname">Segundo apellido</label>
-            <input id="secondSurname" type="text" pInputText [(ngModel)]="salesMan.person.secondSurname"
+            <input id="secondSurname" type="text" pInputText [(ngModel)]="employee.person.secondSurname"
               formControlName="secondSurname">
           </div>
+
+          <div class="p-field p-col-12 p-md-4">
+           <label for="type">Tipo de empleado</label>
+            <p-dropdown id="gender" [options]="types" placeholder="Seleccione" [(ngModel)]="employee.type"
+              formControlName="type"></p-dropdown>
+          </div>
+
+          <div class="p-field p-col-12 p-md-4" *ngIf="employee.type === 'C'">
+            <label for="licensePlate">Placa</label>
+            <input id="licensePlate" type="text" pInputText [(ngModel)]="employee.licensePlate"
+              formControlName="licensePlate">
+          </div>
+
         </div>
       </div>
 
@@ -164,7 +177,7 @@
             </div>
 
             <div formArrayName="emails">
-              <div class="p-mt-2" *ngFor=" let email of salesMan.person.emails; let rowIndexEmail = index"
+              <div class="p-mt-2" *ngFor=" let email of employee.person.emails; let rowIndexEmail = index"
                 [formGroupName]="rowIndexEmail">
                 <div class="p-d-flex p-mb-2">
                   <input id="email" type="text" formControlName="email" [(ngModel)]="email.email" pInputText
@@ -193,7 +206,7 @@
             </div>
 
             <div formArrayName="mobilePhones">
-              <div class="p-mt-2" *ngFor="let mobilePhone of salesMan.person.mobilesPhones; let rowIndexMobile = index"
+              <div class="p-mt-2" *ngFor="let mobilePhone of employee.person.mobilesPhones; let rowIndexMobile = index"
                 [formGroupName]="rowIndexMobile">
                 <div class="p-d-flex p-mb-2">
                   <input id="number" type="text" formControlName="number" [(ngModel)]="mobilePhone.number" pInputText
@@ -230,7 +243,7 @@
             class="p-button button-text p-button-close" (click)="addRow()"></button>
         </div>
         <div class="table-responsive">
-          <p-table [value]="salesMan.person.locations" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
+          <p-table [value]="employee.person.locations" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
             formArrayName="addresses">
             <ng-template pTemplate="header">
               <tr>

@@ -60,14 +60,14 @@
       </div>
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
-          <label for="salesman">Vendedor</label>
-          <p-dropdown placeholder="Selecciona" id="salesman"></p-dropdown>
+          <label for="seller">Vendedor</label>
+          <p-dropdown [options]="sellers" placeholder="Selecciona" id="seller"></p-dropdown>
         </div>
       </div>
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
           <label for="carrier">Transportista</label>
-          <p-dropdown placeholder="Selecciona" id="carrier"></p-dropdown>
+          <p-dropdown [options]="carriers" placeholder="Selecciona" id="carrier"></p-dropdown>
         </div>
       </div>
     </div>

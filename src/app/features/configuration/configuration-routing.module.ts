@@ -9,7 +9,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { CityComponent } from './city/city.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { StateComponent } from './state/state.component';
-import { SalesmanComponent } from './salesman/salesman.component';
+import { EmployeeComponent } from './employee/employee.component';
 
 const routes: Routes = [
   {
@@ -26,8 +26,8 @@ const routes: Routes = [
         component: CustomerComponent,
       },
       {
-        path: 'salesmen',
-        component: SalesmanComponent,
+        path: 'employee',
+        component: EmployeeComponent,
       },
       {
         path: 'suppliers',

@@ -7,6 +7,7 @@ import { RouteStateService } from '@core/services/route-state.service';
 import { ArticleService } from '@core/services/article.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
 import { Message, MessageService } from 'primeng/api';
+import { EmployeeService } from '@core/services/employee.service';
 
 @Component({
   selector: 'sales',
@@ -17,6 +18,7 @@ import { Message, MessageService } from 'primeng/api';
 export class SalesComponent {
 
   constructor(private routeStateService: RouteStateService,
+    private serviceEmployee: EmployeeService,
     private serviceCustomer: CustomerService,
     private serviceArticle: ArticleService){}
 
@@ -26,10 +28,13 @@ export class SalesComponent {
   showModalArticles: boolean = false;
   details: InventoryMovement[] = [];
   messageError: boolean = false;
+  sellers: SelectItem[] = [];
+  carriers: SelectItem[] = [];
 
   ngOnInit(): void {
     this.routeStateService.add("Ventas", "/process/sales", null, false);
     this.getAllCustomer();
+    this.getAllEmployee();
     this.getAllProducts();
   }
 
@@ -43,6 +48,23 @@ export class SalesComponent {
     })
   }
 
+  async getAllEmployee() {
+    const data = await this.serviceEmployee.getAll();
+    data.forEach( item => {
+      if(item.type === 'C') {
+        this.carriers.push({
+          label: `${item.person.name} ${item.person.surname} ${item.person.secondSurname}`,
+          value: item.id
+        })
+      } else {
+        this.sellers.push({
+          label: `${item.person.name} ${item.person.surname} ${item.person.secondSurname}`,
+          value: item.id
+        })
+      }
+    })
+  }
+
   async getAllProducts() {
     const data = await this.serviceArticle.getAll();
     data.forEach((item: Article) => {
@@ -53,8 +75,8 @@ export class SalesComponent {
   }
 
   onChangeQuantity(dataRow: any) {
-    const { quantity, product } = dataRow;
-    if(quantity > product.article.stock) {
+    const { quantity, article } = dataRow;
+    if(quantity > article.stock) {
       dataRow.quantity = 0;
       this.messageError = true;
       setTimeout(() => {

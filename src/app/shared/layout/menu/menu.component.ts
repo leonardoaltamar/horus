@@ -31,8 +31,8 @@ export class MenuComponent {
         label: 'Remisiones',
         icon: 'fas pi-pw fa-list-alt',
         items: [
-          { label: 'Compras', icon: 'fas pi-fw fa-shopping-cart', routerLink: [""] },
-          { label: 'Ventas', icon: 'fas pi-fw fa-truck', routerLink: [""] },
+          { label: 'Compras', icon: 'fas pi-fw fa-shopping-cart', routerLink: ["/process/purchases"] },
+          { label: 'Ventas', icon: 'fas pi-fw fa-truck', routerLink: ["/process/sales"] },
         ]
       },
       {
@@ -58,7 +58,7 @@ export class MenuComponent {
         items: [
           { label: 'Categorias', icon: 'fas fa-cubes', routerLink: ["/configuration/categories"] },
           { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
-          { label: 'Vendedores', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/salesmen"] },
+          { label: 'Empleados', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/employee"] },
           { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
           { label: 'Departamentos', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/states"] },
           { label: 'Ciudades', icon: 'fas pi-fw fa-building', routerLink: ["/configuration/cities"] },
