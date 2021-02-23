@@ -3,6 +3,7 @@ import { Article } from './article.model';
 
 export class RawMaterial {
   id?: number;
+  quantity?: number;
   measurement?: Measurement;
   article: Article;
 

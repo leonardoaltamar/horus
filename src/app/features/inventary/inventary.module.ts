@@ -1,10 +1,9 @@
+import { ArticlesComponent } from './articles/articles.component';
 import { InventaryComponent } from './inventary.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from "@angular/core";
-import { ProductsComponent } from './products/products.component';
 import { InventaryRoutingModule } from './inventary-routing.module';
 import { PackingComponent } from './packing/packing.component';
-import { RawMaterialComponent } from './raw-material/raw-material.component';
 import { ProductionComponent } from './production/production.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,9 +25,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 @NgModule({
   declarations: [
     InventaryComponent,
-    ProductsComponent,
+    ArticlesComponent,
     PackingComponent,
-    RawMaterialComponent,
     ProductionComponent
   ],
   exports: [

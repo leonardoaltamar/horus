@@ -47,8 +47,7 @@ export class MenuComponent {
         label: 'Inventario',
         icon: 'fas pi-pw fa-inventory',
         items: [
-          { label: 'Productos', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/products"] },
-          { label: 'Materia prima', icon: 'fas pi-fw fa-conveyor-belt-alt', routerLink: ["/inventary/raw-materials"] },
+          { label: 'Articulos', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/articles"] },
           { label: 'Produccion', icon: 'fas pi-fw fa-hand-holding-box', routerLink: ["/inventary/productions"] },
           { label: 'Empaque', icon: 'fas pi-fw fa-box', routerLink: ["/inventary/packings"] },
         ]

@@ -1,7 +1,7 @@
 import { first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
-import { FormBuilder, Validators, FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 

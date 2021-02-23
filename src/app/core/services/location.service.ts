@@ -38,6 +38,7 @@ export class LocationService {
     return this.http.delete(`${this.endPoint}/${id}`)
       .pipe(map(x => {
         return x;
-      }));
+      }
+      ));
   }
 }

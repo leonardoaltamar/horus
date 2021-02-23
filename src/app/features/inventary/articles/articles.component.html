@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="articles" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -29,16 +29,16 @@
             <th>*</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-article let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{product.article.name}}</td>
-            <td>{{product.article.unitValue || ""}} </td>
-            <td>{{product.article.category.name}}</td>
+            <td>{{article.name}}</td>
+            <td>{{article.unitValue || ""}} </td>
+            <td>{{article.category.name}}</td>
             <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyProduct(product)"
+              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyProduct(article)"
                 icon="fas fa-pencil" class="button-action"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteProduct(product)"
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteProduct(article)"
                 class="button-action"></button>
             </td>
           </tr>
@@ -56,68 +56,76 @@
           Ingreso de articulos
         </div>
         <div class="p-ai-center p-d-flex p-mt-3">
-          <label for="productionCost" class="p-ml-4 p-mr-2 p-ml-auto">¿El articulo es un producto?</label>
-          <p-toggleButton (onChange)="handleChange($event)" [(ngModel)]="checked" onIcon="pi pi-check"
-            offIcon="pi pi-times" #show class="p-mr-2" [style]="{'width': '1.2em', 'height': '1.2em', 'padding': '0'}">
+          <label for="check" class="p-ml-4 p-mr-2 p-ml-auto">¿El articulo es un producto?</label>
+          <p-toggleButton [(ngModel)]="checked" onIcon="pi pi-check" offIcon="pi pi-times" class="p-mr-2"
+            [style]="{'width': '1.2em', 'height': '1.2em', 'padding': '0'}">
           </p-toggleButton>
         </div>
       </div>
     </div>
   </ng-template>
 
-  <form [formGroup]="form_product" (ngSubmit)="saveArtitle()" class="">
+  <form [formGroup]="form_product" class="">
     <div class="p-grid p-mt-2">
+
+      <div class="p-field p-col-3 p-sm-3">
+        <label for="code">Codigo</label>
+        <input id="code" formControlName="code" [(ngModel)]="article.code" type="text"
+          onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
+        <ng-container *ngIf="form_product.get('code').hasError('required') && form_product.get('code').touched">
+          <small class="p-invalid p-text-center">El codigo es obligatorio</small>
+        </ng-container>
+        <ng-container *ngIf="form_product.get('code').hasError('A') && form_product.get('code').touched">
+          <small class="caption p-text-center">Este codigo ya está en uso</small>
+        </ng-container>
+      </div>
+
       <div class="p-field p-col-6 p-sm-6">
         <label for="description">Nombre</label>
-        <input id="description" formControlName="name"
-          [(ngModel)]="checked ? product.article.name : rawMaterial.article.name" type="text" pInputText>
+        <input id="description" formControlName="name" [(ngModel)]="article.name" type="text" pInputText>
         <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
           <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
         </ng-container>
-        <ng-container *ngIf="form_product.get('name').hasError('A') && form_product.get('name').touched">
-          <small class="caption p-text-center">Este nombre ya está en uso</small>
-        </ng-container>
       </div>
+
       <div class="p-field p-col-3 p-sm-3">
         <label for="stock">Stock</label>
-        <input id="stock" [(ngModel)]="checked ? product.article.stock : rawMaterial.article.stock"
-          formControlName="stock" type="text" pInputText>
+        <input id="stock" [(ngModel)]="article.stock " formControlName="stock" type="text" pInputText>
         <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
           <small class="p-invalid p-text-center">El stock es obligatorio</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-3 p-sm-3" *ngIf="!checked">
-        <label for="categories">Unidad de medida</label>
-        <p-dropdown [options]="measurements" [(ngModel)]="rawMaterial.article.measurement" formControlName="measurement"
-          placeholder="Seleccione"></p-dropdown>
-        <ng-container
-          *ngIf="form_product.get('measurement').hasError('required') && form_product.get('measurement').touched">
-          <small class="p-invalid p-text-center">La categoria es obligatoria</small>
-        </ng-container>
-      </div>
-      <div class="p-field p-col-3 p-sm-3">
-        <label for="unitValue">{{checked ? "Valor unitario" : "Valor de adquisicion"}}</label>
-        <input id="unitValue" [(ngModel)]="checked ? product.article.unitValue : rawMaterial.article.acquisitionValue"
-          formControlName="unitValue" type="text" pInputText>
+
+      <div class="p-field p-col-4 p-sm-4" *ngIf="checked">
+        <label for="unitValue">Valor unitario</label>
+        <input id="unitValue" [(ngModel)]="article.unitValue" formControlName="unitValue" type="text" pInputText>
         <ng-container
           *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
           <small class="p-invalid p-text-center">El stock es obligatorio</small>
         </ng-container>
       </div>
 
-      <div class="p-field p-col-3 p-sm-3">
+      <div class="p-field p-col-4 p-sm-4">
+        <label for="acquisitionValue">Valor de adquisicion</label>
+        <input id="acquisitionValue" [(ngModel)]="article.acquisitionValue" formControlName="unitValue" type="text"
+          pInputText>
+        <ng-container
+          *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
+          <small class="p-invalid p-text-center">El stock es obligatorio</small>
+        </ng-container>
+      </div>
+
+      <div class="p-field p-col-4 p-sm-4">
         <label for="categories">Categorias</label>
-        <p-dropdown [options]="categories"
-          [(ngModel)]="checked ? product.article.category : rawMaterial.article.category" formControlName="category"
-          placeholder="Seleccione"></p-dropdown>
+        <p-dropdown [options]="categories" [(ngModel)]="article.category" formControlName="category"
+          placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
         <ng-container *ngIf="form_product.get('category').hasError('required') && form_product.get('category').touched">
           <small class="p-invalid p-text-center">La categoria es obligatoria</small>
         </ng-container>
       </div>
       <div class="p-field p-col-12 p-md-4">
         <label for="expeditionDate">Fecha de expedicion</label>
-        <input id="expeditionDate" type="date" formControlName="expeditionDate"
-          [(ngModel)]="checked ? product.article.dateExpiry : rawMaterial.article.dateExpiry"
+        <input id="expeditionDate" type="date" formControlName="expeditionDate" [(ngModel)]="article.dateExpiry"
           formControlName="expeditionDate" pInputText>
       </div>
     </div>
@@ -126,28 +134,29 @@
       <div class="p-d-flex p-jc-between p-ai-center p-mb-1">
         <h4 class="color-title">Materia prima</h4>
         <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
-          class="p-button button-text p-button-close"></button>
+          class="p-button button-text p-button-close" (click)="addRow()"></button>
       </div>
       <div class="table-responsive p-mb-3">
-        <p-table [value]="" dataKey="id" styleClass="p-datatable-gridlines" formArrayName="rawMaterial">
+        <p-table [value]="rawMaterials" dataKey="id" styleClass="p-datatable-gridlines" formArrayName="materials">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 100px;">Descripcion</th>
               <th style="width: 100px;">Cantidad necesaria</th>
+              <th style="width: 100px;">Unidad de medida</th>
               <th style="width: 50px;">*</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-rowIndex="rowIndex">
+          <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
             <tr [formGroupName]="rowIndex">
 
               <td pEditableColumn>
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <p-dropdown id="city" formControlName="description" placeholder="Selecciona" optionLabel="name"
-                      [style]="{ width: '100%' }"></p-dropdown>
+                    <p-dropdown [options]="articles" id="rowMaterial" formControlName="description"
+                      placeholder="Selecciona" [(ngModel)]="dataRow.article" [style]="{ width: '100%' }"></p-dropdown>
                   </ng-template>
                   <ng-template pTemplate="output">
-                    <!-- {{ dataRow.city.name }} -->
+                    {{ dataRow.article.name }}
                   </ng-template>
                 </p-cellEditor>
               </td>
@@ -155,16 +164,30 @@
               <td pEditableColumn>
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <input pInputText type="text" formControlName="quantity" />
+                    <input pInputText type="text" formControlName="quantity" [(ngModel)]="dataRow.quantity" />
                   </ng-template>
                   <ng-template pTemplate="output">
-                    <!-- {{ dataRow.neighborhood || "" }} -->
+                    {{ dataRow.quantity || "" }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown [options]="measurements" id="rowMaterial" formControlName="measurement"
+                      placeholder="Selecciona" [(ngModel)]="dataRow.measurement" [style]="{ width: '100%' }">
+                    </p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ dataRow.measurement.description }}
                   </ng-template>
                 </p-cellEditor>
               </td>
 
               <td>
-                <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"></button>
+                <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"
+                  (click)="deleteRow(dataRow, rowIndex)"></button>
               </td>
             </tr>
           </ng-template>
@@ -175,8 +198,8 @@
 
     <br>
     <p-footer class="p-grid">
-      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar"
-        class="p-button-save p-button p-ml-2"></button>
+      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" (click)="saveArtitle()"
+        [disabled]="form_product.invalid"></button>
       <button pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
         (click)="showModal=false"></button>
     </p-footer>
