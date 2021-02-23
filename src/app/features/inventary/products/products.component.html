@@ -1,6 +1,6 @@
 <div styleClass="ssw-panel" class="card scroll">
   <div class="card-header">
-    Productos
+    Articulos
   </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
@@ -36,9 +36,9 @@
             <td>{{product.article.unitValue || ""}} </td>
             <td>{{product.article.category.name}}</td>
             <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyProduct(product)" icon="pi pi-pencil"
-                class="button-action"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProduct(product)"
+              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyProduct(product)"
+                icon="fas fa-pencil" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteProduct(product)"
                 class="button-action"></button>
             </td>
           </tr>
@@ -48,14 +48,29 @@
   </div>
 </div>
 
+<p-dialog [(visible)]="showModal" [style]="{width: '45em'}" [modal]="true" [baseZIndex]="10" [resizable]="false">
+  <ng-template pTemplate="header" class="p-mb-0 p-pb-0">
+    <div class="p-grid">
+      <div class="p-col-12 p-sm-12">
+        <div>
+          Ingreso de articulos
+        </div>
+        <div class="p-ai-center p-d-flex p-mt-3">
+          <label for="productionCost" class="p-ml-4 p-mr-2 p-ml-auto">¿El articulo es un producto?</label>
+          <p-toggleButton (onChange)="handleChange($event)" [(ngModel)]="checked" onIcon="pi pi-check"
+            offIcon="pi pi-times" #show class="p-mr-2" [style]="{'width': '1.2em', 'height': '1.2em', 'padding': '0'}">
+          </p-toggleButton>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 
-<p-dialog header="Ingreso de articulos" [(visible)]="showModal" [style]="{width: '45em'}" [modal]="true"
-  [baseZIndex]="10" [resizable]="false">
-  <form [formGroup]="form_product" (ngSubmit)="saveProduct()" class="">
+  <form [formGroup]="form_product" (ngSubmit)="saveArtitle()" class="">
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
         <label for="description">Nombre</label>
-        <input id="description" formControlName="name" [(ngModel)]="product.article.name" type="text" pInputText>
+        <input id="description" formControlName="name"
+          [(ngModel)]="checked ? product.article.name : rawMaterial.article.name" type="text" pInputText>
         <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
           <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
         </ng-container>
@@ -63,99 +78,106 @@
           <small class="caption p-text-center">Este nombre ya está en uso</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-3 p-sm-3">
         <label for="stock">Stock</label>
-        <input id="stock" [(ngModel)]="product.article.stock" formControlName="stock" type="text" pInputText>
+        <input id="stock" [(ngModel)]="checked ? product.article.stock : rawMaterial.article.stock"
+          formControlName="stock" type="text" pInputText>
         <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
           <small class="p-invalid p-text-center">El stock es obligatorio</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-6">
-        <label for="unitValue">Valor unitario</label>
-        <input id="unitValue"  [(ngModel)]="product.article.unitValue" type="text" formControlName="unitValue" pInputText>
-        <ng-container *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
-          <small class="p-invalid p-text-center">El valor unitario del producto es obligatorio</small>
+      <div class="p-field p-col-3 p-sm-3" *ngIf="!checked">
+        <label for="categories">Unidad de medida</label>
+        <p-dropdown [options]="measurements" [(ngModel)]="rawMaterial.article.measurement" formControlName="measurement"
+          placeholder="Seleccione"></p-dropdown>
+        <ng-container
+          *ngIf="form_product.get('measurement').hasError('required') && form_product.get('measurement').touched">
+          <small class="p-invalid p-text-center">La categoria es obligatoria</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-3 p-sm-3">
+        <label for="unitValue">{{checked ? "Valor unitario" : "Valor de adquisicion"}}</label>
+        <input id="unitValue" [(ngModel)]="checked ? product.article.unitValue : rawMaterial.article.acquisitionValue"
+          formControlName="unitValue" type="text" pInputText>
+        <ng-container
+          *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
+          <small class="p-invalid p-text-center">El stock es obligatorio</small>
+        </ng-container>
+      </div>
+
+      <div class="p-field p-col-3 p-sm-3">
         <label for="categories">Categorias</label>
-        <p-dropdown [options]="categories" [(ngModel)]="product.article.category" formControlName="category" placeholder="Seleccione"></p-dropdown>
+        <p-dropdown [options]="categories"
+          [(ngModel)]="checked ? product.article.category : rawMaterial.article.category" formControlName="category"
+          placeholder="Seleccione"></p-dropdown>
         <ng-container *ngIf="form_product.get('category').hasError('required') && form_product.get('category').touched">
           <small class="p-invalid p-text-center">La categoria es obligatoria</small>
         </ng-container>
       </div>
       <div class="p-field p-col-12 p-md-4">
         <label for="expeditionDate">Fecha de expedicion</label>
-        <input id="expeditionDate" type="date" formControlName="expeditionDate" [(ngModel)]="product.article.dateExpiry" pInputText>
-      </div>
-      <div class="p-field p-col-12 p-md-4">
-        <label for="productionCost">Costo de produción</label>
-        <input id="productionCost" [(ngModel)]="product.productionCost" formControlName="productionCost" type="text" pInputText>
-        <ng-container *ngIf="form_product.get('productionCost').hasError('required') && form_product.get('productionCost').touched">
-          <small class="p-invalid p-text-center">El costo de producción es oblogatorio</small>
-        </ng-container>
+        <input id="expeditionDate" type="date" formControlName="expeditionDate"
+          [(ngModel)]="checked ? product.article.dateExpiry : rawMaterial.article.dateExpiry"
+          formControlName="expeditionDate" pInputText>
       </div>
     </div>
-    <br>
-    <br>
-    <p-tabView styleClass="tabview-custom">
-      <!-- Panel de materia prima -->
-      <p-tabPanel>
-        <div class="p-d-flex p-jc-between p-ai-center p-mt-2">
-          <h4 class="color-title">Materia prima</h4>
-          <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
-            class="p-button button-text p-button-close"></button>
-        </div>
-        <div class="table-responsive">
-          <p-table [value]="" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
-            formArrayName="addresses">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 100px;">Producto</th>
-                <th style="width: 100px;">Cantidad necesaria</th>
-                <th style="width: 50px;">*</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowIndex="rowIndex">
-              <tr [formGroupName]="rowIndex">
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <p-dropdown  id="city" formControlName="city" placeholder="Selecciona"
-                         optionLabel="name" [style]="{ width: '100%' }"></p-dropdown>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      <!-- {{ dataRow.city.name }} -->
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
 
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input pInputText type="text" formControlName="neighborhood"/>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      <!-- {{ dataRow.neighborhood || "" }} -->
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
+    <div *ngIf="checked" class="p-mt-2">
+      <div class="p-d-flex p-jc-between p-ai-center p-mb-1">
+        <h4 class="color-title">Materia prima</h4>
+        <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
+          class="p-button button-text p-button-close"></button>
+      </div>
+      <div class="table-responsive p-mb-3">
+        <p-table [value]="" dataKey="id" styleClass="p-datatable-gridlines" formArrayName="rawMaterial">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 100px;">Descripcion</th>
+              <th style="width: 100px;">Cantidad necesaria</th>
+              <th style="width: 50px;">*</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowIndex="rowIndex">
+            <tr [formGroupName]="rowIndex">
 
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown id="city" formControlName="description" placeholder="Selecciona" optionLabel="name"
+                      [style]="{ width: '100%' }"></p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    <!-- {{ dataRow.city.name }} -->
+                  </ng-template>
+                </p-cellEditor>
+              </td>
 
-                <td>
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"
-                    ></button>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </p-tabPanel>
-    </p-tabView>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" formControlName="quantity" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    <!-- {{ dataRow.neighborhood || "" }} -->
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td>
+                <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="p-text-right">Costo de produccion: {{cost}}</div>
+    </div>
+
     <br>
     <p-footer class="p-grid">
-      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" class="p-button-save p-button p-ml-2"></button>
-      <button  pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
+      <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar"
+        class="p-button-save p-button p-ml-2"></button>
+      <button pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
         (click)="showModal=false"></button>
     </p-footer>
   </form>

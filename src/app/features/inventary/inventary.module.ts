@@ -21,6 +21,7 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TabViewModule } from 'primeng/tabview';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TabViewModule } from 'primeng/tabview';
     ProgressSpinnerModule,
     ToastModule,
     DropdownModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ToggleButtonModule
   ],
   providers: [],
   entryComponents: []

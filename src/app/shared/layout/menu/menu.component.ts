@@ -31,8 +31,8 @@ export class MenuComponent {
         label: 'Remisiones',
         icon: 'fas pi-pw fa-list-alt',
         items: [
-          { label: 'Entrada', icon: 'fas pi-fw fa-sign-in-alt', routerLink: [""] },
-          { label: 'Salida', icon: 'fas pi-fw fa-sign-out-alt', routerLink: [""] },
+          { label: 'Compras', icon: 'fas pi-fw fa-shopping-cart', routerLink: [""] },
+          { label: 'Ventas', icon: 'fas pi-fw fa-truck', routerLink: [""] },
         ]
       },
       {
