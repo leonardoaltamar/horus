@@ -18,6 +18,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
     ProgressSpinnerModule,
     ToastModule,
     DropdownModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CheckboxModule,
+    MessageModule,
+    MessagesModule
   ],
   providers: [],
   entryComponents: []

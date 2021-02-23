@@ -17,8 +17,6 @@ export class ProductService {
     this.endPoint = `${environment.apiUrl}product`;
   }
 
-
-
   async getAll() {
     return this.http.get<Product[]>(`${this.endPoint}`).toPromise();
   }
