@@ -22,6 +22,15 @@ const appRoutes: Routes = [
     ]
   },
   {
+    path: 'process',
+    component: LayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: () => import('./features/process/process.module').then(m => m.ProcessModule)
+    }
+    ]
+  },
+  {
     path: 'configuration',
     component: LayoutComponent,
     children: [{
