@@ -1,10 +1,10 @@
+import { Article } from './../../../core/models/article.model';
 import { Sale } from '@core/models/sales.model';
-import { Product } from '@core/models/product.model';
 import { SelectItem } from 'primeng/api';
 import { CustomerService } from './../../../core/services/customer.service';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
-import { ProductService } from '@core/services/product.service';
+import { ArticleService } from '@core/services/article.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
 import { Message, MessageService } from 'primeng/api';
 
@@ -18,13 +18,12 @@ export class SalesComponent {
 
   constructor(private routeStateService: RouteStateService,
     private serviceCustomer: CustomerService,
-    private serviceProduct: ProductService){}
+    private serviceArticle: ArticleService){}
 
   model: Sale = new Sale();
   customers: SelectItem[] = [];
-  products: Product[] = [];
   showModal: boolean = false;
-  showModalProducts: boolean = false;
+  showModalArticles: boolean = false;
   details: InventoryMovement[] = [];
   messageError: boolean = false;
 
@@ -45,10 +44,10 @@ export class SalesComponent {
   }
 
   async getAllProducts() {
-    const data = await this.serviceProduct.getAll();
-    data.forEach((item: Product) => {
+    const data = await this.serviceArticle.getAll();
+    data.forEach((item: Article) => {
       const detail = new InventoryMovement();
-      detail.product = item;
+      detail.article = item;
       this.details.push(detail);
     })
   }
@@ -71,10 +70,10 @@ export class SalesComponent {
   addInventoryMovement() {
     this.model.details = this.details.filter(item => item.quantity != 0);
     this.model.details = this.model.details.map(item=> {
-      item.total = item.product.article.unitValue * item.quantity;
+      item.total = item.article.unitValue * item.quantity;
       this.model.total = this.model.total + item.total;
       return item;
     })
-    this.showModalProducts = false;
+    this.showModalArticles = false;
   }
 }

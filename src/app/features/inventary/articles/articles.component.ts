@@ -12,7 +12,7 @@ import { Category } from '@core/models/category.model';
 
 //services
 import { CategoryService } from '@core/services/category.service';
-import { ArticleService } from '@core/services/artitle.service';
+import { ArticleService } from '@core/services/article.service';
 import { RawMaterialService } from '@core/services/raw-material.service';
 import { MeasurementService } from '@core/services/measurement.service';
 

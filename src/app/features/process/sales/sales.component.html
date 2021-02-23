@@ -88,7 +88,7 @@
 
   <div class="card-header p-d-flex p-jc-between p-ai-center">
     <span>Detalle de venta</span>
-    <button pButton type="button" icon="pi pi-plus" label="Agregar" (click)="showModalProducts=true" class="p-button-outlined"></button>
+    <button pButton type="button" icon="pi pi-plus" label="Agregar" (click)="showModalArticles=true" class="p-button-outlined"></button>
   </div>
 
   <p-table [value]="model.details">
@@ -102,10 +102,10 @@
     </ng-template>
     <ng-template pTemplate="body" let-detail>
         <tr>
-            <td>{{detail.product.article.name}}</td>
-            <td>$ {{detail.product.article.unitValue}}</td>
+            <td>{{detail.article.name}}</td>
+            <td>$ {{detail.article.unitValue}}</td>
             <td>{{detail.quantity}}</td>
-            <td>$ {{detail.product.article.unitValue*detail.quantity}}</td>
+            <td>$ {{detail.article.unitValue*detail.quantity}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="footer">
@@ -118,7 +118,7 @@
 </div>
 
 
-<p-dialog header="Productos" [(visible)]="showModalProducts" [style]="{width: '45em'}" [baseZIndex]="10000">
+<p-dialog header="Productos" [(visible)]="showModalArticles" [style]="{width: '45em'}" [baseZIndex]="10000">
   <p-messages severity="error" *ngIf="messageError">
     <ng-template pTemplate>
         <div class="p-ml-2">La cantidad ingresada es mayor que el stock actual.</div>
@@ -146,9 +146,9 @@
     <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
         <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.product.article.name}}</td>
-            <td>{{dataRow.product.article.unitValue}}</td>
-            <td>{{dataRow.product.article.stock - dataRow.quantity}}</td>
+            <td>{{dataRow.article.name}}</td>
+            <td>{{dataRow.article.unitValue}}</td>
+            <td>{{dataRow.article.stock - dataRow.quantity}}</td>
             <td style="width: 80px;"><input type="text" pInputText class="quantity-product" [(ngModel)]="dataRow.quantity" (keyup)="onChangeQuantity(dataRow)"></td>
             <td><p-checkbox binary="true" inputId="binary"></p-checkbox></td>
         </tr>
