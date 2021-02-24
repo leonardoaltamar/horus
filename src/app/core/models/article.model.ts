@@ -12,7 +12,7 @@ export class Article {
   unitValue?: number;
   barCode?: string;
   category?: Category;
-  rawMaterial?: RawMaterial[];
+  rawMaterials?: RawMaterial[];
 
   constructor() {
     this.id = null;
@@ -25,6 +25,6 @@ export class Article {
     this.unitValue = 0;
     this.barCode = '';
     this.category = new Category();
-    this.rawMaterial = [];
+    this.rawMaterials = [];
   }
 }

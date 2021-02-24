@@ -36,14 +36,6 @@ export class MenuComponent {
         ]
       },
       {
-        label: 'Parametros',
-        icon: 'fas pi-pw fa-align-left',
-        items: [
-          { label: 'Entrada', icon: 'pi pi-fw pi-sign-in', routerLink: [""] },
-          { label: 'Salida', icon: 'pi pi-fw pi-sign-out', routerLink: [""] },
-        ]
-      },
-      {
         label: 'Inventario',
         icon: 'fas pi-pw fa-inventory',
         items: [

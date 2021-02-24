@@ -124,11 +124,7 @@ export class CustomerComponent implements OnInit {
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
-          console.log(" 1 ", this.customer.person.mobilesPhones);
-          console.log(data);
-          console.log(this.customer);
           this.customer = data;
-          console.log(" 2 ", this.customer.person.mobilesPhones);
           this.customers.push(this.customer);
           this.messageService.add({
             severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber}

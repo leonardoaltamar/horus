@@ -17,12 +17,13 @@
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
             <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button-close"
-              (click)="newProduct()"></button>
+              (click)="newArticle()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
+            <th>Codigo</th>
             <th>Descripcion</th>
             <th>Precio</th>
             <th>Categorias</th>
@@ -32,13 +33,14 @@
         <ng-template pTemplate="body" let-article let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
+            <td>{{article.code}}</td>
             <td>{{article.name}}</td>
             <td>{{article.unitValue || ""}} </td>
-            <td>{{article.category.name}}</td>
+            <td>{{article.category.description}}</td>
             <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyProduct(article)"
+              <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyArticle(article)"
                 icon="fas fa-pencil" class="button-action"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteProduct(article)"
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteArticle(article)"
                 class="button-action"></button>
             </td>
           </tr>
@@ -105,7 +107,7 @@
         </ng-container>
       </div>
 
-      <div class="p-field p-col-4 p-sm-4">
+      <div class="p-field p-col-4 p-sm-4" *ngIf="!checked">
         <label for="acquisitionValue">Valor de adquisicion</label>
         <input id="acquisitionValue" [(ngModel)]="article.acquisitionValue" formControlName="unitValue" type="text"
           pInputText>
@@ -137,7 +139,8 @@
           class="p-button button-text p-button-close" (click)="addRow()"></button>
       </div>
       <div class="table-responsive p-mb-3">
-        <p-table [value]="rawMaterials" dataKey="id" styleClass="p-datatable-gridlines" formArrayName="materials">
+        <p-table [value]="article.rawMaterials" dataKey="id" styleClass="p-datatable-gridlines"
+          formArrayName="materials">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 100px;">Descripcion</th>
@@ -152,7 +155,7 @@
               <td pEditableColumn>
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <p-dropdown [options]="articles" id="rowMaterial" formControlName="description"
+                    <p-dropdown [options]="articles" optionLabel="name" id="rowMaterial" formControlName="description"
                       placeholder="Selecciona" [(ngModel)]="dataRow.article" [style]="{ width: '100%' }"></p-dropdown>
                   </ng-template>
                   <ng-template pTemplate="output">

@@ -5,7 +5,8 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt [globalFilterFields]="['code']">
+      <p-table [value]="suppliers" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+        [globalFilterFields]="['code']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
             <span class="p-input-icon-right">
@@ -31,11 +32,14 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{dataRow.person.documentNumber}}</td>
+            <td>
+              {{dataRow.person.name}}
+              {{dataRow.person.surname}}
+              {{dataRow.person.secondSurname || ''}}
+            </td>
+            <td>{{dataRow.person.emails?.length > 0 ? dataRow.person.emails[0].email : ""}}</td>
+            <td>{{dataRow.person.mobilesPhones?.length > 0 ? dataRow.person.mobilesPhones[0].number : ""}}</td>
             <td>
               <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
@@ -52,57 +56,89 @@
     <span>Nuevo proveedor</span>
     <button pButton pRipple icon="fas fa-times" class="p-button p-button-close" (click)="showModal=false"></button>
   </div>
-  <div class="card-body">
+  <form class="card-body" [formGroup]="form_supplier">
 
     <div class="p-fluid p-grid">
+
       <div class="p-field p-col-12 p-md-4">
         <label for="typeDocument">Tipo de documento</label>
-        <p-dropdown [options]="document" placeholder="Tipo de documento" optionLabel="tipe">
-        </p-dropdown>
+        <p-dropdown [options]="documentType" placeholder="Tipo de documento" formControlName="typeDocument"
+          [(ngModel)]="supplier.person.documentType"></p-dropdown>
+        <ng-container
+          *ngIf="form_supplier.get('typeDocument').hasError('required') && form_supplier.get('typeDocument').touched">
+          <small class="p-invalid p-text-center">El tipo de documento es obligatoria</small>
+        </ng-container>
       </div>
+
       <div class="p-field p-col-12 p-md-4">
         <label for="document">Numero de documento</label>
-        <input type="text" pInputText onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input type="text" formControlName="document" pInputText
+          onkeypress='return event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="supplier.person.documentNumber">
+        <ng-container
+          *ngIf="form_supplier.get('document').hasError('required') && form_supplier.get('document').touched">
+          <small class="caption p-text-center">Numero de Documento es obligatorio!</small>
+        </ng-container>
+        <ng-container *ngIf="form_supplier.get('document').hasError('minlength')">
+          <small class="caption p-text-center">El numero de documento debe tener al menos 7 caracteres!</small>
+        </ng-container>
+        <ng-container *ngIf="form_supplier.get('document').hasError('maxlength')">
+          <small class="caption p-text-center">El numero de documento no debe tener mas de 12 caracteres!</small>
+        </ng-container>
+        <ng-container *ngIf="form_supplier.get('document').hasError('A') && form_supplier.get('document').touched">
+          <small class="caption p-text-center">Esta documento ya está registrado</small>
+        </ng-container>
+        <ng-container *ngIf="form_supplier.get('document').hasError('pattern')">
+          <small class="caption p-text-center">Solo puedes ingresar numeros en este campo!</small>
+        </ng-container>
       </div>
-      <div class="p-field p-col-12 p-md-4">
-        <label for="city">Ciudad de expedicion</label>
-        <p-dropdown [options]="city" placeholder="Ciudad" optionLabel="name">
-        </p-dropdown>
-      </div>
+
     </div>
 
-    <div class="p-fluid p-grid">
+    <div class="p-fluid p-formgrid p-grid">
       <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Fecha de expedicion</label>
-        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030" inputId="date">
-        </p-calendar>
-      </div>
-      <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Fecha de nacimeinto</label>
-        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030" inputId="date2">
-        </p-calendar>
-      </div>
-      <div class="p-field p-col-12 p-md-4">
-        <label for="username1">Genero</label>
-        <p-dropdown [options]="city" placeholder="Genero" optionLabel="name">
+        <label for="expeditionCity">Ciudad de expedicion</label>
+        <p-dropdown id="expeditionCity" [options]="cities" [(ngModel)]="supplier.person.expeditionCity"
+          placeholder="Ciudad" formControlName="expeditionCity">
         </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="date">Fecha de nacimeinto</label>
+        <p-calendar id="date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
+          [(ngModel)]="supplier.person.birthDate" formControlName="birthDate">
+        </p-calendar>
+      </div>
+
+      <div class="p-field p-col-12 p-md-4">
+        <label for="gerder">Genero</label>
+        <p-dropdown id="gender" [options]="gender" placeholder="Genero" [(ngModel)]="supplier.person.gender"
+          placeholder="Genero" formControlName="gender"></p-dropdown>
       </div>
     </div>
 
     <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-6">
         <label for="username1">Nombre</label>
-        <input type="text" pInputText>
+        <input type="text" formControlName="name" [(ngModel)]="supplier.person.name" pInputText>
       </div>
       <div class="p-field p-col-12 p-md-3">
         <label for="username1">Primer apellido</label>
-        <input type="text" pInputText>
+        <input type="text" formControlName="surName" [(ngModel)]="supplier.person.surname" pInputText>
       </div>
       <div class="p-field p-col-12 p-md-3">
         <label for="username1">Segundo apellido</label>
-        <input type="text" pInputText>
+        <input type="text" formControlName="secondSurname" [(ngModel)]="supplier.person.secondSurname" pInputText>
       </div>
     </div>
+
+    <div class="p-fluid p-grid">
+      <div class="p-field p-col-12 p-md-4">
+        <label for="typeSupplier">Tipo de proveedor</label>
+        <p-dropdown id="typeSupplier" [options]="typeSupplier" placeholder="Genero" [(ngModel)]="supplier.typeSupplier"
+          placeholder="Genero" formControlName="typeSupplier"></p-dropdown>
+      </div>
+    </div>
+
     <!-- Panel de contacto y empresa -->
     <p-tabView styleClass="tabview-custom">
       <!-- Panel de contacto -->
@@ -111,46 +147,158 @@
           <span>Datos de contacto</span>
         </ng-template>
         <div class="p-grid p-mt-1">
+
           <div class="p-col-12 p-sm-6">
+
             <div class="p-d-flex p-ai-center">
-              <h4 class="color-title">Correo</h4>
+              <h4 class="color-title">Correos</h4>
               <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
                 (click)="addEmail()"></button>
             </div>
-            <div class="p-mt-1">
-              <div class="p-d-flex p-ai-center p-mb-2">
-                <input id="email" type="text" pInputText class="p-mr-1" placeholder="Correo principal">
-              </div>
-              <div class="p-mt-1" *ngIf="showEmail">
-                <div class="p-d-flex p-ai-center p-mb-2">
-                  <input id="email2" type="text" pInputText class="p-mr-1" placeholder="Correo secundario">
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-1"
-                    (click)="deleteEmail()"></button>
+
+            <div formArrayName="emails">
+              <div class="p-mt-2" *ngFor=" let email of supplier.person.emails; let rowIndexEmail = index"
+                [formGroupName]="rowIndexEmail">
+                <div class="p-d-flex p-mb-2">
+                  <input id="email" type="text" formControlName="email" [(ngModel)]="email.email" pInputText
+                    class="p-mr-2" style="max-width: 30em;" />
+                  <ng-container>
+                    <small class="caption p-text-center"
+                      *ngIf="emails.controls[rowIndexEmail].get('email').hasError('pattern')">
+                      Correo no valido
+                    </small>
+                  </ng-container>
+                  <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="email.main"></p-checkbox>
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-2"
+                    (click)="deleteEmail(email, rowIndexEmail)"></button>
                 </div>
               </div>
             </div>
+
           </div>
+
           <div class="p-col-12 p-sm-6">
+
             <div class="p-d-flex p-ai-center">
               <h4 class="color-title">Telefonos</h4>
               <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
-                (click)="addPhone()"></button>
+                (click)="addMobile()"></button>
             </div>
-            <div class="p-mt-1">
-              <div class="p-d-flex p-ai-center p-mb-2">
-                <input id="phone" type="text" pInputText class="p-mr-2" placeholder="Telefono proncipal"
-                  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-              </div>
-              <div class="p-mt-1" *ngIf="showPhone">
-                <div class="p-d-flex p-ai-center p-mb-2">
-                  <input id="phone2" type="text" pInputText class="p-mr-2" placeholder="Telefono secundario"
-                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-1"
-                    (click)="deletePhone()"></button>
+
+            <div formArrayName="mobilePhones">
+              <div class="p-mt-2" *ngFor="let mobilePhone of supplier.person.mobilesPhones; let rowIndexMobile = index"
+                [formGroupName]="rowIndexMobile">
+                <div class="p-d-flex p-mb-2">
+                  <input id="number" type="text" formControlName="number" [(ngModel)]="mobilePhone.number" pInputText
+                    class="p-mr-2" style="max-width: 30em;" />
+                  <ng-container>
+                    <small class="caption p-text-center"
+                      *ngIf="mobilePhones.controls[rowIndexMobile].get('number').hasError('pattern')">
+                      Numero de telefono no valido!
+                    </small>
+                    <small class="caption p-text-center"
+                      *ngIf="mobilePhones.controls[rowIndexMobile].get('number').hasError('minlength')">
+                      Numero de telefono no cumple con los caracteres
+                      requeridos!
+                    </small>
+                    <small class="caption p-text-center"
+                      *ngIf="mobilePhones.controls[rowIndexMobile].get('number').hasError('maxlength')">
+                      Numero de telefono excede el maximo de caracteres
+                      requeridos!
+                    </small>
+                  </ng-container>
+                  <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="mobilePhone.main"></p-checkbox>
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-2"
+                    (click)="deletePhone(mobilePhone, rowIndexMobile)"></button>
                 </div>
               </div>
             </div>
+
           </div>
+        </div>
+
+        <div class="p-d-flex p-jc-between p-ai-center p-mt-2">
+          <h4 class="color-title">Direcciones</h4>
+          <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
+            class="p-button button-text p-button-close" (click)="addRow()"></button>
+        </div>
+        <div class="table-responsive">
+          <p-table [value]="supplier.person.locations" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
+            formArrayName="addresses">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 100px;">Ciudad</th>
+                <th style="width: 100px;">Barrio</th>
+                <th style="width: 100px;">Dirección</th>
+                <th style="width: 100px;">Numero de telefono</th>
+                <th style="width: 100px;">Principal</th>
+                <th style="width: 50px;">*</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+              <tr [formGroupName]="rowIndex">
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-dropdown [options]="cities" id="city" formControlName="city" placeholder="Selecciona"
+                        [(ngModel)]="dataRow.city" optionLabel="name" [style]="{ width: '100%' }"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.city.name }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" formControlName="neighborhood" [(ngModel)]="dataRow.neighborhood" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.neighborhood || "" }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" formControlName="address" [(ngModel)]="dataRow.address" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.address || "" }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" formControlName="phoneNumber" [(ngModel)]="dataRow.phoneNumber" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ dataRow.phoneNumber || "" }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="dataRow.main"></p-checkbox>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      <i class="fas" [ngClass]="{
+                          'fa-check success-icon': dataRow.main,
+                          'fa-times error-icon': !dataRow.main
+                        }"></i>
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td>
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"
+                    (click)="deleteRow(dataRow, rowIndex)"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
       </p-tabPanel>
 
@@ -162,19 +310,28 @@
         <div class="p-fluid p-grid p-mt-2">
           <div class="p-field p-col-12 p-md-4">
             <h4 class="color-title">Nit</h4>
-            <input id="nit" type="text" pInputText class="p-mr-1" placeholder="Nit de la empresa">
+            <input id="nit" type="text" pInputText class="p-mr-1" placeholder="Nit de la empresa"
+              formControlName="businesNit" [(ngModel)]="supplier.busines.nit">
           </div>
           <div class="p-field p-col-12 p-md-4">
             <h4 class="color-title">Nombre</h4>
-            <input id="name" type="text" pInputText class="p-mr-1" placeholder="Nombre de la empresa">
+            <input id="name" type="text" pInputText class="p-mr-1" placeholder="Nombre de la empresa"
+              formControlName="businesName" [(ngModel)]="supplier.busines.name">
           </div>
           <div class="p-field p-col-12 p-md-4">
-            <h4 class="color-title">Direccion</h4>
-            <input id="direction" type="text" pInputText class="p-mr-1" placeholder="Direccion de la empresa">
+            <h4 class="color-title">Dane</h4>
+            <input id="direction" type="text" pInputText class="p-mr-1" placeholder="Direccion de la empresa"
+              formControlName="businesDane" [(ngModel)]="supplier.busines.dane">
           </div>
         </div>
       </p-tabPanel>
     </p-tabView>
-  </div>
+    <div class="p-mt-5">
+      <button pButton pRipple icon="fas fa-save" class="p-mr-3 p-button p-button-save" iconPos="left" label="Guardar"
+        (click)="saveSupplier()" [disabled]="form_supplier.invalid"></button>
+      <button pButton pRipple icon="fas fa-times" class="p-button p-button-close" iconPos="left" label="Cerrar"
+        (click)="showModal=false"></button>
+    </div>
+  </form>
 </div>
 <p-confirmDialog class="dialog-small"></p-confirmDialog>

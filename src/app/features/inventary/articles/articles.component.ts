@@ -8,7 +8,6 @@ import { first } from 'rxjs/operators';
 //models
 import { Article } from '@core/models/article.model';
 import { RawMaterial } from '@core/models/raw-material.model';
-import { Category } from '@core/models/category.model';
 
 //services
 import { CategoryService } from '@core/services/category.service';
@@ -34,7 +33,6 @@ export class ArticlesComponent implements OnInit {
   //Modelos
   article: Article = new Article();
   articles: Article[] = [];
-  rawMaterials: RawMaterial[] = [];
   categories: SelectItem[] = [];
   measurements: SelectItem[] = [];
 
@@ -71,13 +69,13 @@ export class ArticlesComponent implements OnInit {
     this.getAllMeasurement();
   }
 
-  newProduct() {
+  //Method article
+  newArticle() {
     this.article = new Article();
     this.form_product.reset();
     this.showModal = true;
   }
 
-  //Guardar material
   saveArtitle() {
     if (!this.article.id) {
       this.articleService.create(this.article).subscribe(
@@ -108,12 +106,13 @@ export class ArticlesComponent implements OnInit {
     this.showModal = false;
   }
 
-  modifyProduct(dataRow: Article) {
+  modifyArticle(dataRow: Article) {
     this.article = dataRow;
+    this.checked = (this.article.rawMaterials.length == 0) ? false : true;
     this.showModal = true;
   }
 
-  deleteProduct(article: Article) {
+  deleteArticle(article: Article) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `Está eliminando: ${article.name}`,
@@ -129,15 +128,16 @@ export class ArticlesComponent implements OnInit {
           },
           error => {
             console.log(error);
-          });
+          }
+        );
       }
     });
   }
 
   //validations rawMaterials
   addRow() {
-    this.rawMaterials = [...this.rawMaterials];
-    this.rawMaterials.push(new RawMaterial());
+    this.article.rawMaterials = [...this.article.rawMaterials];
+    this.article.rawMaterials.push(new RawMaterial());
     this.materials.push(this._formuilder.group({
       description: [''],
       measurement: [],
@@ -151,12 +151,12 @@ export class ArticlesComponent implements OnInit {
 
   deleteRow(row: RawMaterial, rowIndex: number) {
     if (!row.id) {
-      this.rawMaterials.splice(rowIndex, 1);
+      this.article.rawMaterials.splice(rowIndex, 1);
     } else {
       this.rawMaterialService.delete(row.id).pipe(first()).subscribe(
         data => {
           if (data['success']) {
-            this.rawMaterials = this.rawMaterials.filter((x) => x.id != row.id);
+            this.article.rawMaterials = this.article.rawMaterials.filter((x) => x.id != row.id);
           }
         },
         error => {
@@ -198,7 +198,7 @@ export class ArticlesComponent implements OnInit {
     try {
       this.isLoading = true;
       this.articles = await this.articleService.getAll();
-      console.log(this.articles);
+      console.table(this.articles);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -213,12 +213,11 @@ export class ArticlesComponent implements OnInit {
       return null;
     } else {
       for (let i = 0; i < response.length; i++) {
-        if (response[i].code = val) {
+        if (response[i].code == val) {
           return { A: true }
         }
       }
     }
     return null;
   }
-
 }

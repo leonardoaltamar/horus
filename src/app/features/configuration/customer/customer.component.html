@@ -105,7 +105,7 @@
       <div class="p-field p-col-12 p-md-4">
         <label for="date">Fecha de nacimeinto</label>
         <p-calendar id="date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
-          formControlName="birthDate">
+          formControlName="birthDate" [(ngModel)]="customer.person.birthDate">
         </p-calendar>
       </div>
 
