@@ -145,6 +145,7 @@ export class ArticlesComponent implements OnInit {
       main: [false]
     }))
   }
+
   get materials(): FormArray {
     return this.form_product.get('materials') as FormArray;
   }
