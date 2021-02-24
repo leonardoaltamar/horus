@@ -4,9 +4,9 @@ import { TypeSupplier } from "./type_supplier.model";
 
 export class Supplier {
   id: number;
-  typePerson: string;
+  typePerson?: string;
   person: Person;
-  typeSupplier: TypeSupplier
+  typeSupplier: TypeSupplier;
   busines: Busines;
 
   constructor() {

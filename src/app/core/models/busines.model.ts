@@ -9,5 +9,5 @@ export class Busines {
     this.nit = '';
     this.name = '';
     this.dane = '';
-    }
+  }
 }

@@ -40,8 +40,8 @@ export class EmployeeComponent implements OnInit {
   document: SelectItem[] = [];
   imageUrl: any;
   types: SelectItem[] = [
-    {label: 'Vendedor' , value: 'S' },
-    {label: 'Transportista' , value: 'C' },
+    { label: 'Vendedor', value: 'S' },
+    { label: 'Transportista', value: 'C' },
   ]
 
   city: { name: string }[];
