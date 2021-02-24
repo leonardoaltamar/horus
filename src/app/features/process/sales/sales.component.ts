@@ -89,13 +89,27 @@ export class SalesComponent {
     this.showModal = true;
   }
 
-  addInventoryMovement() {
-    this.model.details = this.details.filter(item => item.quantity != 0);
-    this.model.details = this.model.details.map(item=> {
-      item.total = item.article.unitValue * item.quantity;
-      this.model.total = this.model.total + item.total;
+  deleteInventoryMovement(index: number){
+    console.log(index)
+    this.model.details.splice(index,1);
+  }
+
+  addInventoryMovement(inventoryMovement: InventoryMovement) {
+    inventoryMovement.article.stock = inventoryMovement.article.stock - inventoryMovement.quantity;
+    const inventoryMovementDestructuring = {...inventoryMovement};
+    let isExit = false;
+    this.model.details = this.model.details.map(item => {
+      if(item.article.id === inventoryMovementDestructuring.article.id) {
+        isExit = true;
+        item.quantity = (item.quantity + inventoryMovementDestructuring.quantity);
+        item.total = item.quantity * item.article.unitValue;
+      }
       return item;
     })
-    this.showModalArticles = false;
+    if(!isExit) {
+      inventoryMovementDestructuring.total = inventoryMovementDestructuring.article.unitValue * inventoryMovementDestructuring.quantity;
+      this.model.details.push(inventoryMovementDestructuring);
+    }
+    this.model.details.forEach(item => this.model.total = this.model.total + item.total);
   }
 }
