@@ -24,7 +24,7 @@
             <th>Documento</th>
             <th>Nombre</th>
             <th>Tipo de empleado</th>
-            <th>Tefono</th>
+            <th>Telefono</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -38,9 +38,10 @@
               {{salesmen.person.secondSurname || ''}}
             </td>
             <td>{{salesmen.type === 'S' ? 'Vendedor' : 'Transportista'}}</td>
-            <td>{{salesmen.person.mobilesPhones?.length > 0 ? salesmen.person.mobilesPhones[0].number : ""}}</td>
+            <td>{{salesmen.person.mobilePhones?.length > 0 ? salesmen.person.mobilePhones[0].number : ""}}</td>
             <td>
-              <button pButton pRipple type="button" icon="pi pi-pencil" (click)="modifyEmployee(salesmen)" class="button-action p-mr-3"></button>
+              <button pButton pRipple type="button" icon="pi pi-pencil" (click)="modifyEmployee(salesmen)"
+                class="button-action p-mr-3"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
             </td>
           </tr>
@@ -131,7 +132,7 @@
           </div>
 
           <div class="p-field p-col-12 p-md-4">
-           <label for="type">Tipo de empleado</label>
+            <label for="type">Tipo de empleado</label>
             <p-dropdown id="gender" [options]="types" placeholder="Seleccione" [(ngModel)]="employee.type"
               formControlName="type"></p-dropdown>
           </div>
@@ -206,7 +207,7 @@
             </div>
 
             <div formArrayName="mobilePhones">
-              <div class="p-mt-2" *ngFor="let mobilePhone of employee.person.mobilesPhones; let rowIndexMobile = index"
+              <div class="p-mt-2" *ngFor="let mobilePhone of employee.person.mobilePhones; let rowIndexMobile = index"
                 [formGroupName]="rowIndexMobile">
                 <div class="p-d-flex p-mb-2">
                   <input id="number" type="text" formControlName="number" [(ngModel)]="mobilePhone.number" pInputText

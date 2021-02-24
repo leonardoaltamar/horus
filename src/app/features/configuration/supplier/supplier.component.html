@@ -24,7 +24,7 @@
             <th>Documento</th>
             <th>Nombre</th>
             <th>Correo</th>
-            <th>Tefono</th>
+            <th>Telefono</th>
             <th>Direccion</th>
             <th>*</th>
           </tr>
@@ -39,10 +39,12 @@
               {{dataRow.person.secondSurname || ''}}
             </td>
             <td>{{dataRow.person.emails?.length > 0 ? dataRow.person.emails[0].email : ""}}</td>
-            <td>{{dataRow.person.mobilesPhones?.length > 0 ? dataRow.person.mobilesPhones[0].number : ""}}</td>
+            <td>{{dataRow.person.mobilePhones?.length > 0 ? dataRow.person.mobilePhones[0].number : ""}}</td>
             <td>
-              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action p-mr-3"
+                (click)="modifySupplier(dataRow)"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"
+                (click)="deleteSupplier(dataRow)"></button>
             </td>
           </tr>
         </ng-template>
@@ -134,8 +136,8 @@
     <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-4">
         <label for="typeSupplier">Tipo de proveedor</label>
-        <p-dropdown id="typeSupplier" [options]="typeSupplier" placeholder="Genero" [(ngModel)]="supplier.typeSupplier"
-          placeholder="Genero" formControlName="typeSupplier"></p-dropdown>
+        <p-dropdown id="typeSupplier" [options]="typeSupplier" placeholder="Tipo de proveedor"
+          [(ngModel)]="supplier.typeSupplier" formControlName="typeSupplier"></p-dropdown>
       </div>
     </div>
 
@@ -186,7 +188,7 @@
             </div>
 
             <div formArrayName="mobilePhones">
-              <div class="p-mt-2" *ngFor="let mobilePhone of supplier.person.mobilesPhones; let rowIndexMobile = index"
+              <div class="p-mt-2" *ngFor="let mobilePhone of supplier.person.mobilePhones; let rowIndexMobile = index"
                 [formGroupName]="rowIndexMobile">
                 <div class="p-d-flex p-mb-2">
                   <input id="number" type="text" formControlName="number" [(ngModel)]="mobilePhone.number" pInputText
@@ -311,17 +313,17 @@
           <div class="p-field p-col-12 p-md-4">
             <h4 class="color-title">Nit</h4>
             <input id="nit" type="text" pInputText class="p-mr-1" placeholder="Nit de la empresa"
-              formControlName="businesNit" [(ngModel)]="supplier.busines.nit">
+              formControlName="businesNit" [(ngModel)]="supplier.business.nit">
           </div>
           <div class="p-field p-col-12 p-md-4">
             <h4 class="color-title">Nombre</h4>
             <input id="name" type="text" pInputText class="p-mr-1" placeholder="Nombre de la empresa"
-              formControlName="businesName" [(ngModel)]="supplier.busines.name">
+              formControlName="businesName" [(ngModel)]="supplier.business.name">
           </div>
           <div class="p-field p-col-12 p-md-4">
             <h4 class="color-title">Dane</h4>
             <input id="direction" type="text" pInputText class="p-mr-1" placeholder="Direccion de la empresa"
-              formControlName="businesDane" [(ngModel)]="supplier.busines.dane">
+              formControlName="businesDane" [(ngModel)]="supplier.business.dane">
           </div>
         </div>
       </p-tabPanel>

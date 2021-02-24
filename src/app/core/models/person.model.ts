@@ -16,7 +16,7 @@ export class Person {
   imageUrl: string;
   locations?: Location[];
   emails?: Email[];
-  mobilesPhones?: MobilePhone[];
+  mobilePhones?: MobilePhone[];
   gender: Gender;
 
   constructor() {
@@ -28,7 +28,7 @@ export class Person {
     this.documentNumber = null;
     this.locations = [];
     this.emails = [];
-    this.mobilesPhones = [];
+    this.mobilePhones = [];
     this.expeditionCity = new City();
     this.gender = new Gender();
     this.birthDate = '';

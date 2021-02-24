@@ -7,13 +7,13 @@ export class Supplier {
   typePerson?: string;
   person: Person;
   typeSupplier: TypeSupplier;
-  busines: Busines;
+  business: Busines;
 
   constructor() {
     this.id = null;
     this.typePerson = '';
     this.person = new Person();
     this.typeSupplier = new TypeSupplier();
-    this.busines = new Busines();
+    this.business = new Busines();
   }
 }

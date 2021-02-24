@@ -35,7 +35,7 @@ export class CustomerComponent implements OnInit {
   //Customer
   customer: Customer = new Customer();
   customers: Customer[] = [];
-  cities: City[] = [];
+  cities: SelectItem[] = [];
   gender: SelectItem[] = [];
   document: SelectItem[] = [];
 
@@ -84,7 +84,14 @@ export class CustomerComponent implements OnInit {
     this.routeStateService.add("Configuration", "/configuration/customers", null, false);
     this.getAllCustomer();
 
-    this.cityService.getAll().then(data => { this.cities = data; });
+    this.cityService.getAll().then(data => {
+      data.forEach(x =>
+        this.cities.push({
+          label: x.name,
+          value: x
+        })
+      )
+    });
 
     this.gerderService.getAll().then(data =>
       data.forEach(x =>
@@ -119,11 +126,12 @@ export class CustomerComponent implements OnInit {
 
   saveCustomer() {
     this.customer.person.emails.forEach((item, index) => { this.customer.person.emails[index].main = item.main ? 1 : 0 });
-    this.customer.person.mobilesPhones.forEach((item, index) => { this.customer.person.mobilesPhones[index].main = item.main ? 1 : 0 });
+    this.customer.person.mobilePhones.forEach((item, index) => { this.customer.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.customer.person.locations.forEach((item, index) => { this.customer.person.locations[index].main = item.main ? 1 : 0 });
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
+          this.customers.push(this.customer);
           this.customer = data;
           this.customers.push(this.customer);
           this.messageService.add({
@@ -170,8 +178,10 @@ export class CustomerComponent implements OnInit {
       accept: () => {
         this.customerService.delete(customer.id, customer).pipe(first()).subscribe(
           data => {
+            console.log(data['success']);
             if (data['success']) {
               this.customers = this.customers.filter((x) => x.id != customer.id);
+              this.getAllCustomer()
             }
           },
           error => {
@@ -184,8 +194,8 @@ export class CustomerComponent implements OnInit {
 
   //validations Phone
   addMobile() {
-    this.customer.person.mobilesPhones = [...this.customer.person.mobilesPhones];
-    this.customer.person.mobilesPhones.push(new MobilePhone());
+    this.customer.person.mobilePhones = [...this.customer.person.mobilePhones];
+    this.customer.person.mobilePhones.push(new MobilePhone());
     this.mobilePhones.push(this._formBuilder.group({
       number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
       main: [false]
@@ -203,12 +213,12 @@ export class CustomerComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!mobile.id) {
-          this.customer.person.mobilesPhones.splice(rowIndex, 1);
+          this.customer.person.mobilePhones.splice(rowIndex, 1);
         } else {
           this.mobilePhoneService.delete(mobile.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.customer.person.mobilesPhones = this.customer.person.mobilesPhones.filter((x) => x.id != mobile.id);
+                this.customer.person.mobilePhones = this.customer.person.mobilePhones.filter((x) => x.id != mobile.id);
               }
             },
             error => {

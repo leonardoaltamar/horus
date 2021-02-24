@@ -18,7 +18,7 @@ import { MessageService } from 'primeng/api';
 export class CategoryComponent {
   form_category: FormGroup;
   model: Category = new Category();
-  models: Category[];
+  models: Category[] = [];
 
   isLoading: boolean = false;
   showModal: boolean = false;
@@ -112,10 +112,8 @@ export class CategoryComponent {
       accept: () => {
         this.categoryService.delete(category.id, category).pipe(first()).subscribe(
           data => {
-            console.log(data);
             if (data['success']) {
               this.models = this.models.filter((x) => x.id != category.id);
-              console.log(this.models);
             }
           },
           error => {

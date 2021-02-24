@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MenuDataService } from './../../../core/services/menu-data.service';
+import { MenuDataService } from '@core/services/menu-data.service';
+import { AuthenticationService } from '@core/services/authentication.service';
+
 
 @Component({
   selector: 'hr-header',
@@ -8,7 +10,8 @@ import { MenuDataService } from './../../../core/services/menu-data.service';
 })
 
 export class HeaderComponent {
-  constructor(private menuDataService: MenuDataService) {
+  constructor(private menuDataService: MenuDataService,
+    private authenticationService: AuthenticationService) {
   }
 
   toggleMenu() {
@@ -17,5 +20,10 @@ export class HeaderComponent {
 
   ngOnInit() {
 
+  }
+
+  logout() {
+    // remove user from local storage and set current user to null
+    this.authenticationService.logout();
   }
 }

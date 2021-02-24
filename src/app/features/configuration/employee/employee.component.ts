@@ -133,12 +133,13 @@ export class EmployeeComponent implements OnInit {
   }
 
   newSalesman() {
+    this.employee = new Employee();
     this.showModal = true;
   }
 
   saveSalesMan() {
     this.employee.person.emails.forEach((item, index) => { this.employee.person.emails[index].main = item.main ? 1 : 0 });
-    this.employee.person.mobilesPhones.forEach((item, index) => { this.employee.person.mobilesPhones[index].main = item.main ? 1 : 0 });
+    this.employee.person.mobilePhones.forEach((item, index) => { this.employee.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.employee.person.locations.forEach((item, index) => { this.employee.person.locations[index].main = item.main ? 1 : 0 });
     if (!this.employee.id) {
       this.employeeService.create(this.employee).pipe(first()).subscribe(
@@ -183,8 +184,8 @@ export class EmployeeComponent implements OnInit {
 
   //validations Phone
   addMobile() {
-    this.employee.person.mobilesPhones = [...this.employee.person.mobilesPhones];
-    this.employee.person.mobilesPhones.push(new MobilePhone());
+    this.employee.person.mobilePhones = [...this.employee.person.mobilePhones];
+    this.employee.person.mobilePhones.push(new MobilePhone());
     this.mobilePhones.push(this._formBuilder.group({
       number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
       main: [false]
@@ -202,12 +203,12 @@ export class EmployeeComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!mobile.id) {
-          this.employee.person.mobilesPhones.splice(rowIndex, 1);
+          this.employee.person.mobilePhones.splice(rowIndex, 1);
         } else {
           this.mobilePhoneService.delete(mobile.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.employee.person.mobilesPhones = this.employee.person.mobilesPhones.filter((x) => x.id != mobile.id);
+                this.employee.person.mobilePhones = this.employee.person.mobilePhones.filter((x) => x.id != mobile.id);
               }
             },
             error => {
@@ -316,6 +317,7 @@ export class EmployeeComponent implements OnInit {
     try {
       this.isLoading = true;
       this.employees = await this.employeeService.getAll();
+      console.log(this.employees)
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;

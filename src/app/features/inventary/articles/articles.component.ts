@@ -80,8 +80,8 @@ export class ArticlesComponent implements OnInit {
     if (!this.article.id) {
       this.articleService.create(this.article).subscribe(
         data => {
-          console.log(this.article);
           this.article = data;
+          console.log(data);
           this.articles.push(this.article);
           this.messageService.add({ severity: 'success', summary: `producto creada con éxito`, detail: `Nombre: ${this.article.name}` });
         },

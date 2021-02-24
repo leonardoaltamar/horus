@@ -11,6 +11,7 @@ import { Supplier } from '@core/models/supplier.model'
 
 //Services
 import { SupplierService } from '@core/services/supplier.service'
+import { TypeSupplierService } from '@core/services/typeSupplier.service';
 import { PersonService } from '@core/services/person.service';
 import { CityService } from '@core/services/city.service';
 import { LocationService } from '@core/services/location.service';
@@ -43,6 +44,7 @@ export class SupplierComponent implements OnInit {
   constructor(private routeStateService: RouteStateService,
     private supplierService: SupplierService,
     private confirmationService: ConfirmationService,
+    private typeSupplierService: TypeSupplierService,
     private personService: PersonService,
     private cityService: CityService,
     private messageService: MessageService,
@@ -67,7 +69,7 @@ export class SupplierComponent implements OnInit {
         main: [false]
       })]),
 
-      mobilesPhones: this._formBuilder.array([this._formBuilder.group({
+      mobilePhones: this._formBuilder.array([this._formBuilder.group({
         number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
         main: [false]
       })]),
@@ -90,22 +92,24 @@ export class SupplierComponent implements OnInit {
   ngOnInit(): void {
     this.routeStateService.add("Configuration", "/configuration/suppliers", null, false);
     this.getCitiesGenderDocument();
+    this.getSupplier();
   }
 
   newSupplier() {
+    this.supplier = new Supplier;
     this.showModal = true;
   }
 
   saveSupplier() {
     this.supplier.person.emails.forEach((item, index) => { this.supplier.person.emails[index].main = item.main ? 1 : 0 });
-    this.supplier.person.mobilesPhones.forEach((item, index) => { this.supplier.person.mobilesPhones[index].main = item.main ? 1 : 0 });
+    this.supplier.person.mobilePhones.forEach((item, index) => { this.supplier.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.supplier.person.locations.forEach((item, index) => { this.supplier.person.locations[index].main = item.main ? 1 : 0 });
     if (!this.supplier.id) {
       this.supplierService.create(this.supplier).pipe(first()).subscribe(
         data => {
           console.log(this.supplier)
-          console.log(data)
           this.supplier = data;
+          console.log(data)
           this.suppliers.push(this.supplier);
           this.messageService.add({
             severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${data.person.documentNumber}
@@ -138,18 +142,44 @@ export class SupplierComponent implements OnInit {
     }
   }
 
+  modifySupplier(supplier: Supplier) {
+    this.supplier = supplier;
+    this.showModal = true;
+  }
+
+  deleteSupplier(supplier: Supplier) {
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `Está eliminando: ${supplier.person.name} ${supplier.person.surname} ${supplier.person.secondSurname}`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.supplierService.delete(supplier.id, supplier).pipe(first()).subscribe(
+          data => {
+            console.log(data['success']);
+            if (data['success']) {
+              this.suppliers = this.suppliers.filter((x) => x.id != supplier.id);
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+    });
+  }
+
   //validations Phone
   addMobile() {
-    this.supplier.person.mobilesPhones = [...this.supplier.person.mobilesPhones];
-    this.supplier.person.mobilesPhones.push(new MobilePhone());
-    this.mobilesPhones.push(this._formBuilder.group({
+    this.supplier.person.mobilePhones = [...this.supplier.person.mobilePhones];
+    this.supplier.person.mobilePhones.push(new MobilePhone());
+    this.mobilePhones.push(this._formBuilder.group({
       number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
       main: [false]
     }));
   }
 
-  get mobilesPhones(): FormArray {
-    return this.form_supplier.get('mobilesPhones') as FormArray;
+  get mobilePhones(): FormArray {
+    return this.form_supplier.get('mobilePhones') as FormArray;
   }
 
   deletePhone(mobile: MobilePhone, rowIndex: number) {
@@ -159,12 +189,12 @@ export class SupplierComponent implements OnInit {
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         if (!mobile.id) {
-          this.supplier.person.mobilesPhones.splice(rowIndex, 1);
+          this.supplier.person.mobilePhones.splice(rowIndex, 1);
         } else {
           this.mobilePhoneService.delete(mobile.id).pipe(first()).subscribe(
             data => {
               if (data['success']) {
-                this.supplier.person.mobilesPhones = this.supplier.person.mobilesPhones.filter((x) => x.id != mobile.id);
+                this.supplier.person.mobilePhones = this.supplier.person.mobilePhones.filter((x) => x.id != mobile.id);
               }
             },
             error => {
@@ -231,6 +261,7 @@ export class SupplierComponent implements OnInit {
     try {
       this.isLoading = true;
       this.suppliers = await this.supplierService.getAll();
+      console.log(this.suppliers)
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -271,20 +302,15 @@ export class SupplierComponent implements OnInit {
         value: 'Pasaporte'
       }
     )
-    this.typeSupplier.push(
-      {
-        label: 'Proveedor interno',
-        value: 'interno'
-      },
-      {
-        label: 'Proveedor externo',
-        value: 'externo'
-      },
-      {
-        label: 'Proveedor de productos',
-        value: 'productos'
-      }
-    )
+
+    this.typeSupplierService.getAll().then(data =>
+      data.forEach(x =>
+        this.typeSupplier.push({
+          label: x.description,
+          value: x
+        })
+      )
+    );
   }
 
 }
