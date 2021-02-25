@@ -45,16 +45,25 @@ export class MenuComponent {
         ]
       },
       {
+        label: 'Gestión humano',
+        icon: 'fas fa-users',
+        items: [
+          { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
+          { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
+          { label: 'Empleados', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/employee"] },
+          { label: 'Tipos de empleados', icon: 'fas fa-user-cog', routerLink: ["/configuration/type_employee"] },
+          { label: 'Tipos de proveedores', icon: 'fas pi-fw fa-people-carry', routerLink: ["/configuration/type_supplier"] }
+        ]
+      },
+      {
         label: 'Ajustes',
         icon: 'fas fa-cogs',
         items: [
           { label: 'Categorias', icon: 'fas fa-cubes', routerLink: ["/configuration/categories"] },
-          { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
-          { label: 'Empleados', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/employee"] },
-          { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
           { label: 'Departamentos', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/states"] },
           { label: 'Ciudades', icon: 'fas pi-fw fa-building', routerLink: ["/configuration/cities"] },
-          { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] }
+          { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] },
+          { label: 'Tipos de pago', icon: 'fas pi-fw fa-money-check-alt', routerLink: ["/configuration/type_payment"] },
         ]
       }
     ];

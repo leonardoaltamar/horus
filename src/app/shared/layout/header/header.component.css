@@ -68,6 +68,7 @@
   margin: 0;
   padding: 0;
   padding-right: 2em;
+  cursor: pointer;
 }
 
 .user{

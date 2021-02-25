@@ -1,16 +1,16 @@
-import { Article } from './article.model';
+import { MovementOrder } from './movement-order.model';
 export class ProductionOrder{
   id?:number;
   date: string;
   numOrder: string;
   numLote: string;
-  articles: Article[];
+  details: MovementOrder[];
 
   constructor(){
     this.id = null;
     this.date;
     this.numOrder;
-    this.articles = [];
+    this.details = [];
   }
 }
 

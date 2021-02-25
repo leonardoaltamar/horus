@@ -1,6 +1,6 @@
 <div styleClass="ssw-panel" class="card scroll">
   <div class="card-header">
-    Produccion
+    Producción
   </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
@@ -100,63 +100,42 @@
       </div>
     </div>
 
-    <div class="p-grid p-mt-2">
-      <div class="p-field p-col-5 p-sm-5">
-        <label for="numOrder">Productos</label>
-        <p-dropdown [options]="articles" [(ngModel)]="article" optionLabel="name" formControlName="article"
-          placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
-        <ng-container *ngIf="form_production.get('article').hasError('required') && form_production.get('article').touched">
-          <small class="p-invalid p-text-center">El articulo es obligatorio</small>
-        </ng-container>
-      </div>
-
-      <div class="p-field p-col-4 p-sm-4">
-        <label for="quantity">Cantidad a producir</label>
-        <input id="quantity" formControlName="quantity" [(ngModel)]="article.quantity" type="text"
-          onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
-        <ng-container *ngIf="form_production.get('quantity').hasError('required') && form_production.get('quantity').touched">
-          <small class="p-invalid p-text-center">El codigo es obligatorio</small>
-        </ng-container>
-        <ng-container *ngIf="form_production.get('quantity').hasError('A') && form_production.get('quantity').touched">
-          <small class="caption p-text-center">Este codigo ya está en uso</small>
-        </ng-container>
-      </div>
-    </div>
-
-    <p-table [value]="productionOrder.articles" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
-        [globalFilterFields]="['descripcion']">
-        <ng-template pTemplate="caption">
-          <div class="p-d-flex p-ai-center p-jc-between">
-            <span class="p-input-icon-right">
-              <i class="pi pi-search"></i>
-              <input type="text" pInputText placeholder="Buscar..."
-                (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
-            </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="agregar" (click)="addProduct()" class="button-text p-button-close"></button>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-          <tr>
-            <th>#</th>
-            <th>Descripcion</th>
-            <th>Cantidad</th>
-            <th>*</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
-          <tr>
-            <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.name}}</td>
-            <td>{{dataRow.quantity || ""}} </td>
-            <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;"
-                icon="fas fa-pencil" class="button-action"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash-alt"
-                class="button-action"></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <p-table formArrayName="details" [value]="productionOrder.details" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+          [globalFilterFields]="['descripcion']">
+          <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+              <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Buscar..."
+                  (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
+              </span>
+              <button pButton pRipple icon="pi pi-plus" iconPos="right" label="agregar" (click)="addProduct()" class="button-text p-button-close"></button>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>#</th>
+              <th>Articulo</th>
+              <th style="width: 80px;">Cantidad</th>
+              <th>*</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body"  let-dataRowArticles let-rowIndex="rowIndex">
+            <tr [formGroupName]="rowIndex">
+              <td>{{rowIndex+1}}</td>
+              <td>
+                <p-dropdown [options]="articles" formControlName="article" [(ngModel)]="dataRowArticles.article" optionLabel="name" placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+              </td>
+              <td style="width: 80px;">
+                <input [(ngModel)]="dataRowArticles.quantity" formControlName="quantity" type="number" pInputText>
+              </td>
+              <td>
+                <button pButton pRipple type="button" icon="fas fa-trash-alt"
+                  class="button-action"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       <br>
       <p-footer class="p-grid">
         <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" (click)="saveProductionOrder()"

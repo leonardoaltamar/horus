@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
-import { Article, ProductionOrder } from '@core/models';
+import { Article, MovementOrder, ProductionOrder } from '@core/models';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //servicios
@@ -29,13 +29,13 @@ export class ProductionComponent implements OnInit {
         date: ['', [Validators.required], []],
         numOrder: ['', [Validators.required], []],
         numLote: ['', [Validators.required], []],
-        article:['', [Validators.required], []],
-        quantity:['', [Validators.required], []]
+        details: this._formuilder.array([this._formuilder.group({
+          article: [''],
+          quantity: ['']
+        })]),
       })
 
     }
-
-
 
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/productions", null, false);
@@ -51,21 +51,27 @@ export class ProductionComponent implements OnInit {
     return this.form_production.get('productionOrder') as FormArray;
   }
 
+  get details(): FormArray{
+    return this.form_production.get('details') as FormArray;
+  }
+
   deleteRow(dataRow, rowIndex){
 
   }
 
   addProduct(){
-      console.log(this.article);
-      this.productionOrder.articles.push(this.article);
-
+    this.productionOrder.details = [...this.productionOrder.details];
+    this.productionOrder.details.push(new MovementOrder);
+    this.details.push(this._formuilder.group({
+      article: [''],
+      quantity: ['']
+    }))
   }
 
   async getAllProduction(){
     try {
       this.isLoading = true;
       this.productionOrders = await this.productionService.getAll();
-      console.log(this.productionOrders);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -77,7 +83,6 @@ export class ProductionComponent implements OnInit {
     try {
       this.isLoading = true;
       this.articles = await this.articleService.getAll();
-      console.log(this.articles);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -92,19 +97,18 @@ export class ProductionComponent implements OnInit {
   }
 
   saveProductionOrder(){
-    console.log(this.productionOrder)
-
-    this.productionService.create(this.productionOrder).subscribe(
-      data => {
-        console.log(this.article);
-        this.productionOrder = data;
-        this.productionOrders.push(this.productionOrder);
-        this.messageService.add({ severity: 'success', summary: `Orden de producción creada con exito` });
-      },
-      error => {
-        console.error(`Error de guardado ${error}`);
-      }
-    );
-    this.showModal = false;
+    console.log(this.productionOrder);
+    // this.productionService.create(this.productionOrder).subscribe(
+    //   data => {
+    //     console.log(this.article);
+    //     this.productionOrder = data;
+    //     this.productionOrders.push(this.productionOrder);
+    //     this.messageService.add({ severity: 'success', summary: `Orden de producción creada con exito` });
+    //   },
+    //   error => {
+    //     console.error(`Error de guardado ${error}`);
+    //   }
+    // );
+    // this.showModal = false;
   }
 }

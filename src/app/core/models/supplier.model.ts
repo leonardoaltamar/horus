@@ -1,6 +1,6 @@
 import { Busines } from './busines.model';
 import { Person } from './person.model';
-import { TypeSupplier } from "./type_supplier.model";
+import { TypeSupplier } from "./type-supplier.model";
 
 export class Supplier {
   id: number;

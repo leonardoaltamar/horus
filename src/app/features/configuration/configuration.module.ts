@@ -6,6 +6,9 @@ import { CategoryComponent } from './category/category.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeComponent } from './employee/employee.component';
 import { CustomerComponent } from './customer/customer.component';
+import { TypeEmployeeComponent } from './type-employee/type-employee.component';
+import { TypePaymentComponent } from './type-payment/type-payment.component';
+import { TypeSupplierComponent } from './type-supplier/type-supplier.component';
 
 //Importaciones primeng
 import { TableModule } from 'primeng/table';
@@ -34,7 +37,10 @@ import { StateComponent } from './state/state.component';
     SupplierComponent,
     CityComponent,
     MeasurementComponent,
-    StateComponent
+    StateComponent,
+    TypeEmployeeComponent,
+    TypePaymentComponent,
+    TypeSupplierComponent
   ],
   exports: [
   ],

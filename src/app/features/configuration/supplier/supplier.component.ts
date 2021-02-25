@@ -11,7 +11,7 @@ import { Supplier } from '@core/models/supplier.model'
 
 //Services
 import { SupplierService } from '@core/services/supplier.service'
-import { TypeSupplierService } from '@core/services/typeSupplier.service';
+import { TypeSupplierService } from '@core/services/type-supplier.service';
 import { PersonService } from '@core/services/person.service';
 import { CityService } from '@core/services/city.service';
 import { LocationService } from '@core/services/location.service';

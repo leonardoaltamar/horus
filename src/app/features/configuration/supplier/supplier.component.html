@@ -222,7 +222,7 @@
         <div class="p-d-flex p-jc-between p-ai-center p-mt-2">
           <h4 class="color-title">Direcciones</h4>
           <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
-            class="p-button button-text p-button-close" (click)="addRow()"></button>
+            class="p-button button-text p-button-close" (click)="addEmail()"></button>
         </div>
         <div class="table-responsive">
           <p-table [value]="supplier.person.locations" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
@@ -296,7 +296,7 @@
                 </td>
                 <td>
                   <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"
-                    (click)="deleteRow(dataRow, rowIndex)"></button>
+                    (click)="deletePhone(dataRow, rowIndex)"></button>
                 </td>
               </tr>
             </ng-template>
