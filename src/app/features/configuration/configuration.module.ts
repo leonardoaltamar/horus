@@ -9,6 +9,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { TypeEmployeeComponent } from './type-employee/type-employee.component';
 import { TypePaymentComponent } from './type-payment/type-payment.component';
 import { TypeSupplierComponent } from './type-supplier/type-supplier.component';
+import { SettingComponent } from './setting/setting.component';
 
 //Importaciones primeng
 import { TableModule } from 'primeng/table';
@@ -40,7 +41,8 @@ import { StateComponent } from './state/state.component';
     StateComponent,
     TypeEmployeeComponent,
     TypePaymentComponent,
-    TypeSupplierComponent
+    TypeSupplierComponent,
+    SettingComponent
   ],
   exports: [
   ],

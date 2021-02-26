@@ -13,6 +13,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { TypePaymentComponent } from './type-payment/type-payment.component';
 import { TypeSupplierComponent } from './type-supplier/type-supplier.component';
 import { TypeEmployeeComponent } from './type-employee/type-employee.component';
+import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
       {
         path: 'states',
         component: StateComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingComponent,
       },
       {
         path: 'type_employee',

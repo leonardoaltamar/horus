@@ -1,15 +1,25 @@
+import { TypeEmployee } from './type-employee.model';
 import { Person } from './person.model';
+import { Carrier } from './carrier.model';
 
 export class Employee {
   id?: number;
   person: Person;
-  type: string;
-  licensePlate?: string;
+  typeEmployee: TypeEmployee;
+  bank: string;
+  accountNumber: string;
+  contractDate: string;
+  typeAccount: string;
+  carrier: Carrier;
 
   constructor() {
     this.id = null;
-    this.type = '';
+    this.typeEmployee = new TypeEmployee();
+    this.bank = '';
+    this.accountNumber = '';
+    this.contractDate = '';
+    this.typeAccount = '';
     this.person = new Person();
-    this.licensePlate = '';
+    this.carrier = new Carrier();
   }
 }

@@ -82,11 +82,51 @@
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
           <label for="paymentType">Tipo de pago</label>
-          <p-dropdown placeholder="Selecciona" id="paymentType"></p-dropdown>
+          <p-dropdown [options]="typePayments" placeholder="Selecciona" id="paymentType"></p-dropdown>
         </div>
       </div>
     </div>
+
+    <div class="card-payment">
+      <div class="card-payment-title">
+        <span>Total a pagar</span>
+        <h3>$ 1.569.589</h3>
+      </div>
+      <div class="card-payment-balance">
+        <div class="balance debt">
+          <small>Deuda total</small>
+          <p>$ 44555456</p>
+        </div>
+        <div class="balance paid">
+          <small>Pagado</small>
+          <p>$ 44555456</p>
+        </div>
+      </div>
+      <div class="card-payment-footer">
+        <a (click)="viewPayment=!viewPayment">{{!viewPayment ? 'Ver Pagos': 'Ocultar'}}</a>
+      </div>
+
+      <div class="view-payment p-mt-2" *ngIf="viewPayment">
+        <p-table [value]="payments">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>#</th>
+              <th>Fecha</th>
+              <th>Valor</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-payment let-rowIndexPayment="rowIndex">
+            <tr>
+              <td>{{rowIndexPayment+1}}</td>
+              <td>{{payment.date}}</td>
+              <td>$ {{payment.value}}</td>
+            </tr>
+          </ng-template>
+      </p-table>
+      </div>
+    </div>
   </div>
+
 
   <div class="card-header p-d-flex p-jc-between p-ai-center">
     <span>Detalle de venta</span>

@@ -4,6 +4,7 @@ import { RouteStateService } from '@core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { DateTime } from 'luxon';
 
 //Models
 import { City } from '@core/models/city.model';
@@ -20,6 +21,7 @@ import { GerderService } from '@core/services/gerder.service';
 import { Email } from '@core/models/email.model';
 import { MobilePhone } from '@core/models/mobilePhone.model';
 import { Employee } from '../../../core/models';
+import { TypeEmployeeService } from '@core/services/type-Employee.service';
 
 @Component({
   selector: 'app-employee',
@@ -31,25 +33,21 @@ export class EmployeeComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
   form_salesman: FormGroup;
-
-  //Customer
   employee: Employee = new Employee();
   employees: Employee[] = [];
+  typeEmployees: SelectItem[] = [];
+  typeAccounts: SelectItem[] = [];
   cities: City[] = [];
   gender: SelectItem[] = [];
   document: SelectItem[] = [];
   imageUrl: any;
-  types: SelectItem[] = [
-    { label: 'Vendedor', value: 'S' },
-    { label: 'Transportista', value: 'C' },
-  ]
 
   city: { name: string }[];
 
   constructor(private routeStateService: RouteStateService,
     private confirmationService: ConfirmationService,
     private employeeService: EmployeeService,
-    private personService: PersonService,
+    private serviceTypeEmployee: TypeEmployeeService,
     private cityService: CityService,
     private locationService: LocationService,
     private emailService: EmailService,
@@ -67,6 +65,10 @@ export class EmployeeComponent implements OnInit {
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       secondSurname: [''],
       type: [''],
+      typeAccount: [''],
+      bank: [''],
+      accountNumber: [''],
+      contractDate: [''],
       licensePlate: [''],
 
       emails: this._formBuilder.array([this._formBuilder.group({
@@ -92,6 +94,7 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.routeStateService.add("Configuration", "/configuration/employee", null, false);
     this.getAllSalesMan();
+    this.getAllTypeEmployee();
 
     this.cityService.getAll().then(data => { this.cities = data; });
 
@@ -103,6 +106,11 @@ export class EmployeeComponent implements OnInit {
         })
       )
     );
+    this.typeAccounts.push(
+      {label: 'Cuenta corriente', value: 'Cuenta corriente'},
+      {label: 'Cuenta de ahorro', value: 'Cuenta de ahorro'},
+      {label: 'Cuenta de nómina', value: 'Cuenta de nómina'},
+    )
     this.document.push(
       {
         label: 'Cédula de ciudadanía',
@@ -117,6 +125,16 @@ export class EmployeeComponent implements OnInit {
         value: 'Pasaporte'
       }
     )
+  }
+
+  async getAllTypeEmployee() {
+    const data = await this.serviceTypeEmployee.getAll();
+    data.forEach(item => {
+      this.typeEmployees.push({
+        label: item.description,
+        value: item
+      })
+    });
   }
 
   imgUrlChange(event: any) {
@@ -138,6 +156,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   saveSalesMan() {
+    console.log(this.employee);
     this.employee.person.emails.forEach((item, index) => { this.employee.person.emails[index].main = item.main ? 1 : 0 });
     this.employee.person.mobilePhones.forEach((item, index) => { this.employee.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.employee.person.locations.forEach((item, index) => { this.employee.person.locations[index].main = item.main ? 1 : 0 });
@@ -147,7 +166,7 @@ export class EmployeeComponent implements OnInit {
           this.employee = data;
           this.employees.push(this.employee);
           this.messageService.add({
-            severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.employee.person.documentNumber}
+            severity: 'success', summary: `Empleado creado con éxito`, detail: `Code: ${this.employee.person.documentNumber}
           Nombre: ${this.employee.person.name} ${this.employee.person.surname}`
           });
           this.showModal = false;
@@ -167,7 +186,7 @@ export class EmployeeComponent implements OnInit {
               return x
             });
             this.showModal = false;
-            this.messageService.add({ severity: 'success', summary: `Departamento actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Empleado actualizado con éxito` });
           }
         },
         error => {
@@ -317,7 +336,6 @@ export class EmployeeComponent implements OnInit {
     try {
       this.isLoading = true;
       this.employees = await this.employeeService.getAll();
-      console.log(this.employees)
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;

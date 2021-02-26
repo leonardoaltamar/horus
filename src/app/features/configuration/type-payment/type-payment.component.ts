@@ -15,7 +15,7 @@ import { first } from 'rxjs/operators';
 })
 
 export class TypePaymentComponent {
-  
+
   form_TypePayment: FormGroup;
   model: TypePayment = new TypePayment();
   typePayments: TypePayment[] = [];
@@ -74,7 +74,7 @@ export class TypePaymentComponent {
       this.service.create(this.model).subscribe(
         data => {
           this.typePayments.push(this.model);
-          this.messageService.add({ severity: 'success', summary: `Categoria creada con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+          this.messageService.add({ severity: 'success', summary: `Tipo de pago creado con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
@@ -90,7 +90,7 @@ export class TypePaymentComponent {
                 x = this.model;
               return x
             });
-            this.messageService.add({ severity: 'success', summary: `Categoria actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Tipo de pago actualizado con éxito` });
           }
         }
       )

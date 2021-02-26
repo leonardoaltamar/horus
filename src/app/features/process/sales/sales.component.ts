@@ -1,3 +1,4 @@
+import { SettingService } from '@core/services/setting.service';
 import { Article } from './../../../core/models/article.model';
 import { Sale } from '@core/models/sales.model';
 import { SelectItem } from 'primeng/api';
@@ -6,8 +7,8 @@ import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { ArticleService } from '@core/services/article.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
-import { Message, MessageService } from 'primeng/api';
 import { EmployeeService } from '@core/services/employee.service';
+import { TypePaymentService } from '@core/services/type-payment.service';
 
 @Component({
   selector: 'sales',
@@ -20,6 +21,8 @@ export class SalesComponent {
   constructor(private routeStateService: RouteStateService,
     private serviceEmployee: EmployeeService,
     private serviceCustomer: CustomerService,
+    private serviceTypePayment: TypePaymentService,
+    private serviceSetting: SettingService,
     private serviceArticle: ArticleService){}
 
   model: Sale = new Sale();
@@ -30,11 +33,15 @@ export class SalesComponent {
   messageError: boolean = false;
   sellers: SelectItem[] = [];
   carriers: SelectItem[] = [];
+  viewPayment: boolean = false;
+  typePayments: SelectItem[]= []
+  payments: any = [{date: '2002/02/02', value: '584425'},{date: '2002/02/02', value: '584425'}]
 
   ngOnInit(): void {
     this.routeStateService.add("Ventas", "/process/sales", null, false);
     this.getAllCustomer();
     this.getAllEmployee();
+    this.getAllTypePayments();
     this.getAllProducts();
   }
 
@@ -48,10 +55,22 @@ export class SalesComponent {
     })
   }
 
+  async getAllTypePayments() {
+    const data = await this.serviceTypePayment.getAll();
+    data.forEach(item => {
+      this.typePayments.push({
+        label: item.description,
+        value: item.id
+      })
+    })
+  }
+
   async getAllEmployee() {
+    const configuration = await this.serviceSetting.get();
     const data = await this.serviceEmployee.getAll();
+    console.log(data)
     data.forEach( item => {
-      if(item.type === 'C') {
+      if(item.typeEmployee.id === configuration.carrierId) {
         this.carriers.push({
           label: `${item.person.name} ${item.person.surname} ${item.person.secondSurname}`,
           value: item.id
@@ -63,6 +82,7 @@ export class SalesComponent {
         })
       }
     })
+    console.log(this.carriers)
   }
 
   async getAllProducts() {

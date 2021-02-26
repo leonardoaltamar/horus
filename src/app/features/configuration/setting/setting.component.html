@@ -1,0 +1,22 @@
+<div class="card scroll">
+  <div class="card-header">
+    Configuración
+  </div>
+
+  <div class="card-body">
+    <form>
+      <div class="p-grid">
+        <div class="p-field p-col-6 p-sm-6">
+          <label for="seller">Vendedor: </label>
+          <p-dropdown [options]="typeEmployes" name="seller" [(ngModel)]="model.sellerId" placeholder="Selecciona"></p-dropdown>
+        </div>
+        <div class="p-field p-col-6 p-sm-6">
+          <label for="carrier">Transportista: </label>
+          <p-dropdown [options]="typeEmployes" name="carrier" [(ngModel)]="model.carrierId" placeholder="Selecciona"></p-dropdown>
+        </div>
+        <button type="submit" pButton pRipple icon="far fa-save" label=" Guardar" class="p-button-save p-button"
+        (click)="save()"></button>
+      </div>
+    </form>
+  </div>
+</div>

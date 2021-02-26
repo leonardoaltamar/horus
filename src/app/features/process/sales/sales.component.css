@@ -1,3 +1,66 @@
 :host /deep/ .quantity-product {
   width: 60px;
 }
+
+.card-payment {
+  box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+  max-width: 23rem;
+  padding: 1rem;
+  border: 1px solid #f5f5f5;
+  border-radius: 5px;
+  margin-top: 15px;
+  color: #656565;
+}
+
+.card-payment-title {
+  text-align: center;
+}
+
+.card-payment-title h3 {
+  font-size: 24px;
+  margin-top: 8px;
+}
+
+.card-payment-balance {
+  display: flex;
+  justify-content: space-between;
+}
+
+.balance small {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.balance p {
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.debt small{
+  color: #ee2424
+}
+
+.paid small{
+  color: #2ece85;
+}
+
+.card-payment-footer {
+  margin-top: 12px;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.card-payment-footer a {
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.card-payment-footer a:hover {
+  background: #3646cd29;
+}
+
+.view-payment {
+  transition: all linear 0.5s;
+}
