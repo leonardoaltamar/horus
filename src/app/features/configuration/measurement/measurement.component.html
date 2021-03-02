@@ -25,6 +25,7 @@
             <th>#</th>
             <th>Codigo</th>
             <th>Descripcion</th>
+            <th>Equivalencia</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -33,6 +34,7 @@
             <td>{{rowIndex+1}}</td>
             <td>{{measurement.code}}</td>
             <td>{{measurement.description}}</td>
+            <td>{{measurement.equivalence}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"
                 (click)="modifyMeasurement(measurement)"></button>
@@ -66,6 +68,14 @@
         <ng-container
           *ngIf="form_measurement.get('description').hasError('required') && form_measurement.get('description').touched">
           <small class="caption p-text-center">la descripcion es obligatoria</small>
+        </ng-container>
+      </div>
+      <div class="p-field p-col-6 p-sm-6">
+        <label for="equivalence">Equivalencia</label>
+        <input id="equivalence" formControlName="equivalence" type="text" pInputText [(ngModel)]="model.equivalence">
+        <ng-container
+          *ngIf="form_measurement.get('equivalence').hasError('required') && form_measurement.get('equivalence').touched">
+          <small class="caption p-text-center">la equivalencia es obligatoria</small>
         </ng-container>
       </div>
     </div>

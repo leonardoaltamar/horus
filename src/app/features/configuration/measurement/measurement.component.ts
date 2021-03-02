@@ -30,7 +30,8 @@ export class MeasurementComponent implements OnInit {
     private messageService: MessageService) {
     this.form_measurement = this._formuilder.group({
       code: ['', [Validators.required], [this.validate_measurement.bind(this)]],
-      description: ['', [Validators.required], []]
+      description: ['', [Validators.required], []],
+      equivalence: ['', [Validators.required], []]
     })
   }
 

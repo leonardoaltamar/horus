@@ -4,7 +4,7 @@
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <p-table [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="sales" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['descripcion']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -28,14 +28,14 @@
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
-            <td>{{rowIndex+1}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{dataRow.numberInvoice}}</td>
+            <td>{{dataRow.client.person.name}} {{dataRow.client.person.surname}} {{dataRow.client.person.secondSurname}}</td>
+            <td>{{dataRow.dateInvoice}}</td>
+            <td>{{dataRow.seller?.person.name}} {{dataRow.seller?.person.surname}} {{dataRow.seller?.person.secondSurname}}</td>
+            <td>$ {{dataRow.total}}</td>
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
-                class="button-action"></button>
+                class="button-action" (click)="modifySales(dataRow)"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
             </td>
           </tr>
@@ -46,51 +46,126 @@
 </div>
 
 
-<div class="card scroll" *ngIf="showModal">
-  <div class="card-header p-d-flex p-jc-between p-ai-center">
-    <span>Nueva venta</span>
-    <button pButton pRipple icon="fas fa-times" class="p-button-rounded p-button-text" (click)="showModal=false"></button>
+
+<div [ngClass]="{'container-invoice': model.id}" *ngIf="showModal">
+  <div class="card scroll">
+    <div class="card-header p-d-flex p-jc-between p-ai-center">
+      <span>Nueva venta</span>
+      <button pButton pRipple icon="fas fa-times" class="p-button-rounded p-button-text" (click)="showModal=false"></button>
+    </div>
+  
+    <div class="card-body">
+      <div class="p-grid">
+        <div class="p-col-12 p-sm-2">
+          <div class="p-field p-fluid">
+            <label for="numberInvoice">Venta Nº</label>
+            <input id="disabled-input" type="text" pInputText readonly [(ngModel)]="model.numberInvoice"/>
+          </div>
+        </div>
+  
+        <div class="p-col-12 p-sm-3">
+          <div class="p-field p-fluid">
+            <label for="date">Fecha</label>
+            <p-calendar inputId="date" [(ngModel)]="model.dateInvoice" dateFormat="yy-mm-dd"></p-calendar>
+          </div>
+        </div>
+      </div>
+  
+      <div class="p-grid">
+        <div class="p-col-12 p-sm-4">
+          <div class="p-field p-fluid">
+            <label for="customer">Cliente</label>
+            <p-dropdown [options]="customers" [(ngModel)]="model.client.id" placeholder="Selecciona" id="customer"></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-sm-4">
+          <div class="p-field p-fluid">
+            <label for="seller">Vendedor</label>
+            <p-dropdown [options]="sellers" [(ngModel)]="model.seller.id" placeholder="Selecciona" id="seller"></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-sm-4">
+          <div class="p-field p-fluid">
+            <label for="carrier">Transportista</label>
+            <p-dropdown [options]="carriers" [(ngModel)]="model.carrier.id" placeholder="Selecciona" id="carrier"></p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-12 p-sm-4">
+          <label for="address">Dirección</label>
+          <input id="address" type="text" pInputText>
+        </div>
+        <div class="p-col-12 p-sm-4">
+          <div class="p-field p-fluid">
+            <label for="paymentType">Tipo de pago</label>
+            <p-dropdown [options]="typePayments" placeholder="Selecciona" id="paymentType" [(ngModel)]="model.typePayment.id"></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-header p-d-flex p-jc-between p-ai-center">
+      <span>Detalle de venta</span>
+    </div>
+
+    <div class="card-body">
+      <p-table [value]="model.details">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Unidad de medida</th>
+            <th style="width: 100px;">Cantidad</th>
+            <th>Total</th>
+            <th style="width: 40px;"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              <p-dropdown [options]="articles" [(ngModel)]="detail.article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
+            </td>
+            <td>$ {{detail.article.unitValue}}</td>
+            <td>
+              <p-dropdown [options]="measurements" [(ngModel)]="detail.measurement" placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="code"></p-dropdown>
+            </td>
+            <td style="width: 100px;">
+              <input type="number" pInputText pKeyFilter="num" [(ngModel)]="detail.quantity" (keyup)="onChangeQuantity()">
+              <span class="text-Available">Disponible: {{detail.article.stock}}</span>
+            </td>
+            <td>$ {{detail.article.unitValue*detail.quantity}}</td>
+            <td style="width: 40px;">
+              <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr>
+            <td colspan="3">
+              <button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo Producto" (click)="addProduct()" class="p-button-text button-new-product"></button>
+            </td>
+          </tr>
+            <tr>
+              <td colspan="3" class="p-text-right">Total</td>
+              <td>$ {{model.total}}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+  
+      <div class="p-mt-4" *ngIf="!model.id">
+        <p-button label="Guardar" (onClick)="save()"></p-button>
+      </div>
+    </div>
   </div>
 
-  <div class="card-body">
-    <div class="p-grid">
-      <div class="p-col-12 p-sm-4">
-        <div class="p-field p-fluid">
-          <label for="customer">Cliente</label>
-          <p-dropdown [options]="customers" placeholder="Selecciona" id="customer"></p-dropdown>
-        </div>
-      </div>
-      <div class="p-col-12 p-sm-4">
-        <div class="p-field p-fluid">
-          <label for="seller">Vendedor</label>
-          <p-dropdown [options]="sellers" placeholder="Selecciona" id="seller"></p-dropdown>
-        </div>
-      </div>
-      <div class="p-col-12 p-sm-4">
-        <div class="p-field p-fluid">
-          <label for="carrier">Transportista</label>
-          <p-dropdown [options]="carriers" placeholder="Selecciona" id="carrier"></p-dropdown>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-grid">
-      <div class="p-col-12 p-sm-4">
-        <label for="address">Dirección</label>
-        <input id="address" type="text" pInputText>
-      </div>
-      <div class="p-col-12 p-sm-4">
-        <div class="p-field p-fluid">
-          <label for="paymentType">Tipo de pago</label>
-          <p-dropdown [options]="typePayments" placeholder="Selecciona" id="paymentType"></p-dropdown>
-        </div>
-      </div>
-    </div>
-
+  <div *ngIf="model.id">
+    <button pButton pRipple type="button" label="Guardar" (click)="save()" styleClass="p-button-lg" class="button-width-100" ></button>
     <div class="card-payment">
       <div class="card-payment-title">
         <span>Total a pagar</span>
-        <h3>$ 1.569.589</h3>
+        <h3>$ {{model.total}}</h3>
       </div>
       <div class="card-payment-balance">
         <div class="balance debt">
@@ -103,9 +178,10 @@
         </div>
       </div>
       <div class="card-payment-footer">
-        <a (click)="viewPayment=!viewPayment">{{!viewPayment ? 'Ver Pagos': 'Ocultar'}}</a>
+        <p-button label="Regitrar" styleClass="p-button-sm"></p-button>
+        <p-button label="{{!viewPayment ? 'Ver Pagos': 'Ocultar'}}" (click)="viewPayment=!viewPayment" class="p-ml-2" styleClass="p-button-sm p-button-text"></p-button>
       </div>
-
+  
       <div class="view-payment p-mt-2" *ngIf="viewPayment">
         <p-table [value]="payments">
           <ng-template pTemplate="header">
@@ -126,83 +202,5 @@
       </div>
     </div>
   </div>
-
-
-  <div class="card-header p-d-flex p-jc-between p-ai-center">
-    <span>Detalle de venta</span>
-    <button pButton type="button" icon="pi pi-plus" label="Agregar" (click)="showModalArticles=true" class="p-button-outlined"></button>
-  </div>
-
-  <div class="card-body">
-    <p-table [value]="model.details">
-      <ng-template pTemplate="header">
-          <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Total</th>
-              <th style="width: 40px;"></th>
-          </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
-          <tr>
-              <td>{{detail.article.name}}</td>
-              <td>$ {{detail.article.unitValue}}</td>
-              <td>{{detail.quantity}}</td>
-              <td>$ {{detail.article.unitValue*detail.quantity}}</td>
-              <td style="width: 40px;">
-                <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
-              </td>
-          </tr>
-      </ng-template>
-      <ng-template pTemplate="footer">
-          <tr>
-              <td colspan="3" class="p-text-right">Total</td>
-              <td>$ {{model.total}}</td>
-          </tr>
-      </ng-template>
-    </p-table>
-  </div>
+ 
 </div>
-
-
-<p-dialog header="Productos" [(visible)]="showModalArticles" [style]="{width: '45em'}" [baseZIndex]="10000">
-  <p-messages severity="error" *ngIf="messageError">
-    <ng-template pTemplate>
-        <div class="p-ml-2">La cantidad ingresada es mayor que el stock actual.</div>
-    </ng-template>
-  </p-messages>
-  <p-table [value]="details" #dt [globalFilterFields]="['article.name', 'article.unitValue']">
-    <ng-template pTemplate="caption">
-      <div class="p-d-flex p-ai-center p-jc-end">
-          <span class="p-input-icon-right" style="width: 60%;">
-            <i class="fas fa-search"></i>
-            <input type="text" pInputText placeholder="Buscar..." (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line" />
-          </span>
-      </div>
-  </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th style="width: 80px;">Cantidad</th>
-            <th>*</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
-        <tr>
-            <td>{{rowIndex+1}}</td>
-            <td>{{dataRow.article.name}}</td>
-            <td>{{dataRow.article.unitValue}}</td>
-            <td>{{dataRow.article.stock}}</td>
-            <td style="width: 80px;"><input type="number" pInputText pKeyFilter="num" class="quantity-product" [(ngModel)]="dataRow.quantity" (keyup)="onChangeQuantity(dataRow)"></td>
-            <td><button pButton type="button" icon="pi pi-plus" (click)="addInventoryMovement(dataRow)" class="p-button-outlined"></button></td>
-        </tr>
-    </ng-template>
-  </p-table>
-  <div class="p-d-flex p-jc-end p-mt-3">
-    <button pButton pRipple iconPos="right" label="Cerrrar" (click)="showModalArticles=false" class="button-text p-button-close"></button>
-  </div>
-</p-dialog>
