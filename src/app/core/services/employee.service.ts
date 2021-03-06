@@ -21,6 +21,10 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.endPoint}`).toPromise();
   }
 
+  getTop() {
+    return this.http.get<Employee[]>(`${this.endPoint}/topEmployee`).toPromise();
+  }
+
   getById(id: string) {
     return this.http.get<Employee>(`${this.endPoint}/${id}`).toPromise();
   }

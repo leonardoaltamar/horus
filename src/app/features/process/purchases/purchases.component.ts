@@ -24,6 +24,7 @@ export class purchasesComponent {
   suppliers: SelectItem[] = [];
   showModal: boolean = false;
   measurements: Measurement[] = [];
+  showEdit: boolean = false;
 
   constructor(private service: ProcessService,
               private routeStateService: RouteStateService,
@@ -94,10 +95,11 @@ export class purchasesComponent {
   save() {
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
-    // console.log(this.model);
+    console.log(this.model);
     if(!this.model.id) {
       this.service.create(this.model).pipe().subscribe(
-        data =>{
+        data => {
+          console.log(data);
           this.model = data;
           this.calculateTotal();
           this.purchases.push(this.model);

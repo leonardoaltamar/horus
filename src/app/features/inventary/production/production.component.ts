@@ -20,6 +20,7 @@ export class ProductionComponent implements OnInit {
   productionOrder: ProductionOrder = new ProductionOrder();
   productionOrders: ProductionOrder[];
   form_production: FormGroup;
+  showEdit: boolean = false;
   constructor(private routeStateService: RouteStateService,
     private articleService: ArticleService,
     private productionService: ProductionOrderService,
@@ -60,8 +61,8 @@ export class ProductionComponent implements OnInit {
   }
 
   addProduct(){
-    this.productionOrder.details = [...this.productionOrder.details];
-    this.productionOrder.details.push(new MovementOrder);
+    this.productionOrder.articles = [...this.productionOrder.articles];
+    this.productionOrder.articles.push(new MovementOrder);
     this.details.push(this._formuilder.group({
       article: [''],
       quantity: ['']
@@ -93,22 +94,27 @@ export class ProductionComponent implements OnInit {
   addRow() {
     this.articles = [...this.articles];
     this.articles.push(new Article());
+  }
 
+  modifyProductionOrder(productionOrder: ProductionOrder) {
+    this.showEdit = true;
+    this.productionOrder = productionOrder;
+    console.log(productionOrder);
   }
 
   saveProductionOrder(){
     console.log(this.productionOrder);
-    // this.productionService.create(this.productionOrder).subscribe(
-    //   data => {
-    //     console.log(this.article);
-    //     this.productionOrder = data;
-    //     this.productionOrders.push(this.productionOrder);
-    //     this.messageService.add({ severity: 'success', summary: `Orden de producción creada con exito` });
-    //   },
-    //   error => {
-    //     console.error(`Error de guardado ${error}`);
-    //   }
-    // );
-    // this.showModal = false;
+    this.productionService.create(this.productionOrder).subscribe(
+      data => {
+        console.log(this.article);
+        this.productionOrder = data;
+        this.productionOrders.push(this.productionOrder);
+        this.messageService.add({ severity: 'success', summary: `Orden de producción creada con exito` });
+      },
+      error => {
+        console.error(`Error de guardado ${error}`);
+      }
+    );
+    this.showModal = false;
   }
 }

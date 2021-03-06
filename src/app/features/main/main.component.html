@@ -1,0 +1,134 @@
+<div class="p-grid">
+  <div class="p-col-12 p-sm-3">
+    <p-card class="card-totals">
+      <div class="p-d-flex p-jc-between">
+        <h6>Ventas hoy</h6>
+        <p-badge value="Hoy día"></p-badge>
+      </div>
+      <h3>{{numberSalesToday}}</h3>
+    </p-card>
+  </div>
+  <div class="p-col-12 p-sm-3">
+    <p-card class="card-totals">
+      <div class="p-d-flex p-jc-between">
+        <h6>Compras</h6>
+        <p-badge value="Semanal"></p-badge>
+      </div>
+      <h3>7.532</h3>
+    </p-card>
+  </div>
+  <div class="p-col-12 p-sm-3">
+    <p-card class="card-totals">
+      <div class="p-d-flex p-jc-between">
+        <h6>Productos vendidos</h6>
+        <p-badge value="Hoy día"></p-badge>
+      </div>
+      <h3>{{numberProductsSold}}</h3>
+    </p-card>
+  </div>
+  <div class="p-col-12 p-sm-3">
+    <p-card class="card-totals">
+      <div class="p-d-flex p-jc-between">
+        <h6>Ordenes de producción</h6>
+        <p-badge value="Hoy día"></p-badge>
+      </div>
+      <h3>{{numberProductionOrder}}</h3>
+    </p-card>
+  </div>
+</div>
+
+
+<div class="p-grid">
+  <div class="p-col-12 p-sm-8">
+    <p-card header="Ventas anuales">
+      <h1 *ngIf="isLoading">Cargando...</h1>
+      <apx-chart
+      *ngIf="!isLoading"
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [dataLabels]="chartOptions.dataLabels"
+    ></apx-chart>
+    </p-card>
+  </div>
+  <div class="p-col-12 p-sm-4">
+    <p-card header="Ultimas ventas">
+      <p-table [value]="topEmployees">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Codigo</th>
+                <th>Cliente</th>
+                <th>Total</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employee let-rowIndex="rowIndex">
+            <tr>
+                <td></td>
+                <td></td>
+                <td>$ </td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
+
+
+<div class="p-grid">
+  <div class="p-col-12 p-sm-4">
+    <p-card>
+      Content 4
+    </p-card>
+  </div>
+  <div class="p-col-12 p-sm-8">
+    <p-card>
+      Content 4
+    </p-card>
+  </div>
+</div>
+
+
+<div class="p-grid">
+  <div class="p-col-12 p-sm-8">
+    <p-card header="Mejor vendedor">
+      <p-table [value]="topEmployees">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Vendedor</th>
+                <th>Rango</th>
+                <th>Total</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employee let-rowIndex="rowIndex">
+            <tr>
+                <td>{{employee.person.name}} {{employee.person.surname}} {{employee.person.secondSurname}}</td>
+                <td>{{rowIndex+1}}</td>
+                <td>$ {{employee.total}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </p-card>
+  </div>
+  <div class="p-col-12 p-sm-4">
+    <p-card header="Productos mas vendidos">
+      <p-table [value]="topEmployees">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>N°</th>
+                <th>Articulo</th>
+                <th>Precio</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employee let-rowIndex="rowIndex">
+            <tr>
+                <td></td>
+                <td></td>
+                <td>$ </td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>

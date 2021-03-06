@@ -1,8 +1,9 @@
+import { first } from 'rxjs/operators';
+import { PaymentService } from '@core/services/payment.service';
 import { SettingService } from '@core/services/setting.service';
-import { Article } from './../../../core/models/article.model';
-import { Sale } from '@core/models/sales.model';
+import { Article } from '@core/models/article.model';
 import { MessageService, SelectItem } from 'primeng/api';
-import { CustomerService } from './../../../core/services/customer.service';
+import { CustomerService } from '@core/services/customer.service';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { ArticleService } from '@core/services/article.service';
@@ -14,6 +15,7 @@ import { ProcessService } from '@core/services/process.service';
 import { Measurement } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
 import * as moment from 'moment';
+import { Payment } from '@core/models/payment.model';
 
 @Component({
   selector: 'sales',
@@ -24,19 +26,23 @@ import * as moment from 'moment';
 export class SalesComponent {
 
   model: Process = new Process();
+  modelPayment: Payment = new Payment();
   sales: Process[] = [];
+  payments: Payment[] = [];
   customers: SelectItem[] = [];
   articles: Article[] = [];
   measurements: Measurement[] = [];
+  viewPaymentCreate: boolean = false;
   showModal: boolean = false;
   sellers: SelectItem[] = [];
   carriers: SelectItem[] = [];
   viewPayment: boolean = false;
-  typePayments: SelectItem[]= []
-  payments: any = [{date: '2002/02/02', value: '584425'},{date: '2002/02/02', value: '584425'}];
+  typePayments: SelectItem[]= [];
+  sumPayment: number = 0;
 
   constructor(private routeStateService: RouteStateService,
     private service: ProcessService,
+    private servicePayment: PaymentService,
     private serviceEmployee: EmployeeService,
     private serviceMeasurement: MeasurementService,
     private serviceCustomer: CustomerService,
@@ -73,7 +79,16 @@ export class SalesComponent {
       })
       return e;
     })
-    console.log(this.sales);
+  }
+
+  async getAllPayments() {
+    const data = await this.servicePayment.getByProcess(this.model.id);
+    this.sumPayment = 0;
+    this.payments = data.map(item => {
+      this.sumPayment = item.value + this.sumPayment;
+      item.datePay = moment(this.model.dateInvoice).format('YYYY/MM/DD');
+      return item;
+    })
   }
 
   async getAllCustomer() {
@@ -134,24 +149,46 @@ export class SalesComponent {
   modifySales(sale: Process) {
     this.model = sale;
     this.showModal = true;
+    this.getAllPayments();
   }
 
   save() {
     this.model.typeMoviment = 'S';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
-    // console.log(this.model);
     if(!this.model.id) {
       this.service.create(this.model).pipe().subscribe(
         data =>{
-          console.log(data);
           this.model = data;
           this.calculateTotal();
           this.sales.push(this.model);
           this.showModal = false;
-          this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
+          this.messageService.add({ severity: 'success', summary: `Venta creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
         }
       )
     }
+  }
+
+  savePayment() {
+    this.modelPayment.datePay = moment(this.modelPayment.datePay).format('YYYY-MM-DD');
+    this.modelPayment.process = this.model;
+    this.servicePayment.create(this.modelPayment).pipe(first()).subscribe(
+      data => {
+        this.payments.push(data);
+        this.sumPayment = 0;
+        this.payments.forEach(e => this.sumPayment = e.value + this.sumPayment);
+        if(this.sumPayment === this.model.total) {
+          this.model.state = 'P';
+          this.service.update(this.model.id, this.model).pipe().subscribe(
+            data => console.log(data)
+          );
+        }
+        this.viewPaymentCreate = false;
+        this.messageService.add({ severity: 'success', summary: `Pago realizado con exito`});
+      },
+      error => {
+        console.error(error);
+      }
+    )
   }
 
   calculateTotal() {
@@ -163,7 +200,9 @@ export class SalesComponent {
   }
 
   async calculateTotalDetail(dataRow: InventoryMovement) {
-    console.log(dataRow);
+    const { article } = dataRow;
+    console.log(article);
+
   }
 
   newSale() {

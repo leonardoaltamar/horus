@@ -4,6 +4,25 @@
   gap: 1.125rem;
 }
 
+:host/deep/ .p-card .p-card-title {
+  font-size: 1.1rem;
+}
+
+.card-totals h3 {
+  font-size: 1.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  margin: 0px;
+  color: #212b36;
+}
+
+.card-totals h6 {
+  margin: 0px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.57143;
+  color: #212b36;
+}
 
 @media only screen and (max-width: 768px) {
   .container-home {

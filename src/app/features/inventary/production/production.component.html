@@ -1,4 +1,4 @@
-<div styleClass="ssw-panel" class="card scroll">
+<div styleClass="ssw-panel" class="card scroll" *ngIf="!showEdit">
   <div class="card-header">
     Producción
   </div>
@@ -36,7 +36,7 @@
             <td>{{productionOrder.numLote || ""}}</td>
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;"
-                icon="fas fa-pencil" class="button-action"></button>
+                icon="fas fa-pencil" class="button-action" (click)="modifyProductionOrder(productionOrder)"></button>
               <button pButton pRipple type="button" icon="fas fa-trash-alt"
                 class="button-action"></button>
             </td>
@@ -47,6 +47,56 @@
   </div>
 </div>
 
+
+<div class="card scroll" *ngIf="showEdit">
+  <div class="card-header p-d-flex p-jc-between p-ai-center">
+    <span>Orden de producción</span>
+    <button pButton pRipple icon="fas fa-times" class="p-button-rounded p-button-text" (click)="showEdit=false"></button>
+  </div>
+
+  <div class="card-body">
+    <p-table [value]="productionOrder.articles" dataKey="name">
+      <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 3rem"></th>
+            <th>Name</th>
+            <th>Cantidad</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-article let-expanded="expanded">
+        <tr>
+            <td>
+                <button type="button" pButton pRipple [pRowToggler]="article" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            </td>
+            <td>{{article.name}}</td>
+            <td></td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-article>
+      <tr>
+        <td colspan="7">
+          <div class="p-p-3">
+            <p-table [value]="article.rawMaterials" dataKey="id">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Id</th>
+                  <th>Customer</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-order>
+                <tr>
+                    <td>asfdfs</td>
+                    <td>sdfsdaf</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    </p-table>
+  </div>
+</div>
 
 <p-dialog [(visible)]="showModal" [style]="{width: '45em'}" [modal]="true" [baseZIndex]="10" [resizable]="false">
   <ng-template pTemplate="header" class="p-mb-0 p-pb-0">
@@ -100,7 +150,7 @@
       </div>
     </div>
 
-      <p-table formArrayName="details" [value]="productionOrder.details" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table formArrayName="details" [value]="productionOrder.articles" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
           [globalFilterFields]="['descripcion']">
           <ng-template pTemplate="caption">
             <div class="p-d-flex p-ai-center p-jc-between">

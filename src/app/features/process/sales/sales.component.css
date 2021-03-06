@@ -87,3 +87,28 @@
 .view-payment {
   transition: all linear 0.5s;
 }
+
+.sales-badge {
+  border-radius: 2px;
+  padding: .25em .5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+}
+
+.status-P {
+  background-color: #c8e6c9;
+  color: #256029;
+}
+
+.status-E {
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+
+
+.status-C {
+  background: #e7e7e7;
+  color: #3e3e3e;
+}

@@ -21,6 +21,8 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressBarModule } from 'primeng/progressbar';
 
+import { NgApexchartsModule } from "ng-apexcharts";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
     RouterModule,
     HttpClientModule,
     ProgressBarModule,
+    NgApexchartsModule,
     ToastModule
   ],
   providers: [

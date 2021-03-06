@@ -11,6 +11,7 @@ export class Employee {
   contractDate: string;
   typeAccount: string;
   carrier: Carrier;
+  total: number;
 
   constructor() {
     this.id = null;
@@ -21,5 +22,6 @@ export class Employee {
     this.typeAccount = '';
     this.person = new Person();
     this.carrier = new Carrier();
+    this.total = 0;
   }
 }

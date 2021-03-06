@@ -63,7 +63,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.routeStateService.add("Productos", "/inventary/products", null, false);
+    this.routeStateService.add("Productos", "/inventary/articles", null, false);
     this.getAllArticles();
     this.getAllCategory();
     this.getAllMeasurement();
@@ -120,7 +120,6 @@ export class ArticlesComponent implements OnInit {
       accept: () => {
         this.articleService.delete(article.id, article).pipe(first()).subscribe(
           data => {
-            console.log(data['success']);
             if (data['success']) {
               this.messageService.add({ severity: 'success', summary: `producto borrado con éxito`, detail: `producto: ${article.name} ` });
               this.articles = this.articles.filter((x) => x.id != article.id);
@@ -199,7 +198,6 @@ export class ArticlesComponent implements OnInit {
     try {
       this.isLoading = true;
       this.articles = await this.articleService.getAll();
-      console.table(this.articles);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
