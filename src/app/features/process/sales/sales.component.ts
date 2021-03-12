@@ -12,10 +12,12 @@ import { EmployeeService } from '@core/services/employee.service';
 import { TypePaymentService } from '@core/services/type-payment.service';
 import { Process } from '@core/models/process.model';
 import { ProcessService } from '@core/services/process.service';
-import { Measurement } from '@core/models';
+import { Employee, Measurement } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
 import * as moment from 'moment';
 import { Payment } from '@core/models/payment.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'sales',
@@ -41,6 +43,7 @@ export class SalesComponent {
   sumPayment: number = 0;
 
   constructor(private routeStateService: RouteStateService,
+    private _fB: FormBuilder,
     private service: ProcessService,
     private servicePayment: PaymentService,
     private serviceEmployee: EmployeeService,
@@ -51,6 +54,23 @@ export class SalesComponent {
     private serviceSetting: SettingService,
     private serviceArticle: ArticleService){}
 
+    formSale: FormGroup = this._fB.group({
+      code: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      client: ['', [Validators.required]],
+      seller: ['', [Validators.required]],
+      carrier: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      typePayment: ['', [Validators.required]],
+      details: this._fB.array([this.addDetails()])
+    })
+
+  addDetails(){
+    return this._fB.group({
+      article: ['', [Validators.required]],
+      quantity: ['', [Validators.required]]
+    })
+  }
 
   ngOnInit(): void {
     this.routeStateService.add("Ventas", "/process/sales", null, false);
@@ -148,11 +168,14 @@ export class SalesComponent {
 
   modifySales(sale: Process) {
     this.model = sale;
+    this.model.carrier = this.model.carrier || new Employee();
+    console.log(this.model)
     this.showModal = true;
     this.getAllPayments();
   }
 
   save() {
+    console.log(this.model)
     this.model.typeMoviment = 'S';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
     if(!this.model.id) {

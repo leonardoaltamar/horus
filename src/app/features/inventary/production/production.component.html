@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="productionOrders" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="productionOrders" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10" #dt
         [globalFilterFields]="['numOrder']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -55,7 +55,12 @@
   </div>
 
   <div class="card-body">
-    <p-table [value]="productionOrder.articles" dataKey="name">
+    <div class="order-detail-title">
+      <p>Fecha de inicio: {{productionOrder.date}}</p>
+      <p>Numero de orden: {{productionOrder.numOrder}}</p>
+      <p>Numero de lote: {{productionOrder.numLote}}</p>
+    </div>
+    <p-table [value]="productionOrder.details" dataKey="id" styleClass="p-datatable-gridlines">
       <ng-template pTemplate="header">
         <tr>
             <th style="width: 3rem"></th>
@@ -63,30 +68,30 @@
             <th>Cantidad</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-article let-expanded="expanded">
+      <ng-template pTemplate="body" let-detail let-expanded="expanded">
         <tr>
             <td>
-                <button type="button" pButton pRipple [pRowToggler]="article" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+              <button type="button" pButton pRipple [pRowToggler]="detail" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>
-            <td>{{article.name}}</td>
-            <td></td>
+            <td>{{detail.article.name}}</td>
+            <td>{{detail.quantity}}</td>
         </tr>
     </ng-template>
-    <ng-template pTemplate="rowexpansion" let-article>
+    <ng-template pTemplate="rowexpansion" let-detail>
       <tr>
         <td colspan="7">
           <div class="p-p-3">
-            <p-table [value]="article.rawMaterials" dataKey="id">
+            <p-table [value]="detail.article.rawMaterials" dataKey="id" styleClass="p-datatable-gridlines">
               <ng-template pTemplate="header">
                 <tr>
-                  <th>Id</th>
-                  <th>Customer</th>
+                  <th>Materia prima</th>
+                  <th>Cantidad</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-order>
                 <tr>
-                    <td>asfdfs</td>
-                    <td>sdfsdaf</td>
+                    <td>{{order.article.name}}</td>
+                    <td>{{detail.quantity * order.quantity}}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -150,7 +155,7 @@
       </div>
     </div>
 
-      <p-table formArrayName="details" [value]="productionOrder.articles" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table formArrayName="details" [value]="productionOrder.details" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
           [globalFilterFields]="['descripcion']">
           <ng-template pTemplate="caption">
             <div class="p-d-flex p-ai-center p-jc-between">
@@ -174,7 +179,7 @@
             <tr [formGroupName]="rowIndex">
               <td>{{rowIndex+1}}</td>
               <td>
-                <p-dropdown [options]="articles" formControlName="article" [(ngModel)]="dataRowArticles.article" optionLabel="name" placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+                <p-dropdown [options]="articles" formControlName="{{rowIndex}}" [(ngModel)]="dataRowArticles.article" optionLabel="name" placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
               </td>
               <td style="width: 80px;">
                 <input [(ngModel)]="dataRowArticles.quantity" formControlName="quantity" type="number" pInputText>

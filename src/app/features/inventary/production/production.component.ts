@@ -46,6 +46,7 @@ export class ProductionComponent implements OnInit {
 
   newProduction(){
     this.showModal = true;
+    this.productionOrder = new ProductionOrder();
   }
 
   get productionOrder_from(): FormArray {
@@ -56,13 +57,9 @@ export class ProductionComponent implements OnInit {
     return this.form_production.get('details') as FormArray;
   }
 
-  deleteRow(dataRow, rowIndex){
-
-  }
-
   addProduct(){
-    this.productionOrder.articles = [...this.productionOrder.articles];
-    this.productionOrder.articles.push(new MovementOrder);
+    this.productionOrder.details = [...this.productionOrder.details];
+    this.productionOrder.details.push(new MovementOrder);
     this.details.push(this._formuilder.group({
       article: [''],
       quantity: ['']
@@ -83,7 +80,9 @@ export class ProductionComponent implements OnInit {
   async getAllArticles() {
     try {
       this.isLoading = true;
-      this.articles = await this.articleService.getAll();
+      const data = await this.articleService.getAll();
+      this.articles = data.filter(e => e.rawMaterials != null && e.rawMaterials.length > 0);
+      console.log(this.articles);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -106,7 +105,7 @@ export class ProductionComponent implements OnInit {
     console.log(this.productionOrder);
     this.productionService.create(this.productionOrder).subscribe(
       data => {
-        console.log(this.article);
+        console.log(data);
         this.productionOrder = data;
         this.productionOrders.push(this.productionOrder);
         this.messageService.add({ severity: 'success', summary: `Orden de producción creada con exito` });

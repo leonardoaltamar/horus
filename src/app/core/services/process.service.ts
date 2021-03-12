@@ -21,6 +21,10 @@ export class ProcessService {
     return this.http.get<Process[]>(`${this.endPoint}`).toPromise();
   }
 
+  getLast() {
+    return this.http.get<Process[]>(`${this.endPoint}/lastProcess`).toPromise();
+  }
+
   getAllByYear(type: string) {
     return this.http.get<Process[]>(`${this.endPoint}/year/${type}`).toPromise();
   }

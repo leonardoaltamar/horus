@@ -4,14 +4,14 @@ export class ProductionOrder{
   date: string;
   numOrder: string;
   numLote: string;
-  articles: MovementOrder[];
+  details: MovementOrder[];
   createdAt: string;
 
   constructor(){
     this.id = null;
     this.date;
     this.numOrder;
-    this.articles = [];
+    this.details = [];
     this.createdAt = '';
   }
 }
