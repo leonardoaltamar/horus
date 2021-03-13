@@ -17,10 +17,12 @@ export class ArticleService {
     this.endPoint = `${environment.apiUrl}article`;
   }
 
-
-
   async getAll() {
     return this.http.get<Article[]>(`${this.endPoint}`).toPromise();
+  }
+
+  async getTop() {
+    return this.http.get<Article[]>(`${this.endPoint}/topArticle`).toPromise();
   }
 
   getById(id: string) {

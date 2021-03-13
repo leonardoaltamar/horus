@@ -32,8 +32,6 @@
             <td>{{dataRow.dateInvoice}}</td>
             <td>$ {{dataRow.total}}</td>
             <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
-                class="button-action"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
               <button pButton pRipple type="button" icon="pi pi-print" class="button-action" (click)="downloadPdf(dataRow)"></button>
             </td>
@@ -100,7 +98,7 @@
             <p-dropdown [options]="measurements" [(ngModel)]="detail.measurement" placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="code"></p-dropdown>
           </td>
           <td style="width: 100px;">
-            <input type="number" pInputText pKeyFilter="num" [(ngModel)]="detail.quantity" (keyup)="onChangeQuantity()">
+            <input type="number" pInputText pKeyFilter="num" min="0" [(ngModel)]="detail.quantity" (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
             <span class="text-Available">Disponible: {{detail.article.stock}}</span>
           </td>
           <td>$ {{detail.article.acquisitionValue*detail.quantity}}</td>
