@@ -9,7 +9,7 @@ import { Article, Measurement } from '@core/models';
 import { SupplierService } from '@core/services/supplier.service';
 import * as moment from 'moment';
 import { MeasurementService } from '@core/services/measurement.service';
-
+import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
 @Component({
   selector: 'purchases',
   templateUrl: 'purchases.component.html',
@@ -121,5 +121,9 @@ export class purchasesComponent {
   deleteInventoryMovement(index: number){
     this.model.details.splice(index,1);
     this.calculateTotal();
+  }
+
+  downloadPdf(datarow){
+    generatePdfPurchases(datarow);
   }
 }

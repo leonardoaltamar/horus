@@ -24,7 +24,7 @@
             <th>Vendedor</th>
             <th>Estado</th>
             <th>Total</th>
-            <th>*</th>
+            <th style="width: 100px;">*</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
@@ -43,6 +43,7 @@
               <button pButton pRipple type="button" style="padding-right: 0.3em;" icon="pi pi-pencil"
                 class="button-action" (click)="modifySales(dataRow)"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-print" (click)="downloadPdf(dataRow)" class="button-action"></button>
             </td>
           </tr>
         </ng-template>

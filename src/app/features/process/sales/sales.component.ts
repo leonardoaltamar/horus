@@ -16,6 +16,7 @@ import { Measurement } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
 import * as moment from 'moment';
 import { Payment } from '@core/models/payment.model';
+import { generatePdf } from '@core/helpers/invoice-pdf'
 
 @Component({
   selector: 'sales',
@@ -155,12 +156,15 @@ export class SalesComponent {
   save() {
     this.model.typeMoviment = 'S';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
+
     if(!this.model.id) {
       this.service.create(this.model).pipe().subscribe(
         data =>{
           this.model = data;
           this.calculateTotal();
           this.sales.push(this.model);
+          console.log(this.model);
+          generatePdf(this.model);
           this.showModal = false;
           this.messageService.add({ severity: 'success', summary: `Venta creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
         }
@@ -213,5 +217,9 @@ export class SalesComponent {
 
   deleteInventoryMovement(index: number){
     this.model.details.splice(index,1);
+  }
+
+  downloadPdf(dataRow){
+    generatePdf(dataRow);
   }
 }
