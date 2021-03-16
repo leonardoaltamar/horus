@@ -55,7 +55,7 @@
 
 
 <div [ngClass]="{'container-invoice': model.id}" *ngIf="showModal">
-  <div class="card scroll">
+  <div class="card scroll card-create-sale">
     <form [formGroup]="formSale" (ngSubmit)="save()">
       <div class="card-header p-d-flex p-jc-between p-ai-center">
         <span>Nueva venta</span>
@@ -119,44 +119,46 @@
       </div>
 
       <div class="card-body">
-        <p-table [value]="model.details" formArrayName="details">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th style="width: 100px;">Cantidad</th>
-              <th>Total</th>
-              <th style="width: 40px;"></th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
-            <tr [formGroupName]="rowIndex">
-              <td>
-                <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
-              </td>
-              <td>$ {{detail.article.unitValue}}</td>
-              <td style="width: 100px;">
-                <input type="number" pInputText pKeyFilter="num" formControlName="quantity" min="0" [(ngModel)]="detail.quantity" (keyup)="onChangeQuantity()" (keyup)="calculateTotalDetail(detail)" (change)="onChangeQuantity()">
-                <span class="text-Available">Disponible: {{detail.article.stock}}</span>
-              </td>
-              <td>$ {{detail.article.unitValue*detail.quantity}}</td>
-              <td style="width: 40px;">
-                <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
-              </td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="footer">
-            <tr>
-              <td colspan="3">
-                <button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo Producto" (click)="addProduct()" class="p-button-text button-new-product"></button>
-              </td>
-            </tr>
+        <div class="table-responsive-detail">
+          <p-table [value]="model.details" formArrayName="details">
+            <ng-template pTemplate="header">
               <tr>
-                <td colspan="3" class="p-text-right">Total</td>
-                <td>$ {{model.total}}</td>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th style="width: 100px;">Cantidad</th>
+                <th>Total</th>
+                <th style="width: 40px;"></th>
               </tr>
-          </ng-template>
-        </p-table>
+            </ng-template>
+            <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
+              <tr [formGroupName]="rowIndex">
+                <td>
+                  <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
+                </td>
+                <td>$ {{detail.article.unitValue}}</td>
+                <td style="width: 100px;">
+                  <input type="number" pInputText pKeyFilter="num" formControlName="quantity" min="0" [(ngModel)]="detail.quantity" (keyup)="onChangeQuantity()" (keyup)="calculateTotalDetail(detail)" (change)="onChangeQuantity()">
+                  <span class="text-Available">Disponible: {{detail.article.stock}}</span>
+                </td>
+                <td>$ {{detail.article.unitValue*detail.quantity}}</td>
+                <td style="width: 40px;">
+                  <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <tr>
+                <td colspan="3">
+                  <button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo Producto" (click)="addProduct()" class="p-button-text button-new-product"></button>
+                </td>
+              </tr>
+                <tr>
+                  <td colspan="3" class="p-text-right">Total</td>
+                  <td>$ {{model.total}}</td>
+                </tr>
+            </ng-template>
+          </p-table>
+        </div>
 
         <div class="p-mt-4" *ngIf="!model.id">
           <p-button label="Guardar" (onClick)="save()"></p-button>
@@ -166,7 +168,7 @@
   </div>
 
   <div *ngIf="model.id">
-    <button pButton pRipple type="button" label="Guardar" (click)="save()" styleClass="p-button-lg" class="button-width-100" ></button>
+    <button pButton pRipple type="button" label="Guardar" (click)="save()" styleClass="p-button-lg" class="button-width-100 p-px-2"></button>
     <div class="card-payment">
       <div class="card-payment-title">
         <span>Total a pagar</span>

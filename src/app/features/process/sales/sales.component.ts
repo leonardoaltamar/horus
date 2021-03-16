@@ -16,7 +16,7 @@ import { Employee, Measurement } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
 import * as moment from 'moment';
 import { Payment } from '@core/models/payment.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { generatePdf } from '@core/helpers/invoice-pdf'
 
@@ -63,14 +63,18 @@ export class SalesComponent {
       carrier: ['', [Validators.required]],
       address: ['', [Validators.required]],
       typePayment: ['', [Validators.required]],
-      details: this._fB.array([this.addDetails()])
+      details: this._fB.array([this.addDetailGroup()])
     })
 
-  addDetails(){
+  addDetailGroup(){
     return this._fB.group({
       article: ['', [Validators.required]],
       quantity: ['', [Validators.required]]
     })
+  }
+
+  get addDetails(): FormArray {
+    return <FormArray>this.formSale.get('details');
   }
 
   ngOnInit(): void {
@@ -170,9 +174,13 @@ export class SalesComponent {
   modifySales(sale: Process) {
     this.model = sale;
     this.model.carrier = this.model.carrier || new Employee();
-    console.log(this.model)
     this.showModal = true;
     this.getAllPayments();
+    this.model.details.forEach(item => {
+      if(this.model.details.length != this.addDetails.length){
+        this.addDetails.push(this.addDetailGroup())
+      }
+    });
   }
 
   save() {

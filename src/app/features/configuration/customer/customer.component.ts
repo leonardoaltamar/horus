@@ -84,20 +84,20 @@ export class CustomerComponent implements OnInit {
     this.routeStateService.add("Configuration", "/configuration/customers", null, false);
     this.getAllCustomer();
 
-    this.cityService.getAll().then(data => {
-      data.forEach(x =>
+    this.cityService.getAll().then(response => {
+      response.forEach(city =>
         this.cities.push({
-          label: x.name,
-          value: x
+          label: city.name,
+          value: city
         })
       )
     });
 
-    this.gerderService.getAll().then(data =>
-      data.forEach(x =>
+    this.gerderService.getAll().then(response =>
+      response.forEach(gender =>
         this.gender.push({
-          label: x.name,
-          value: x
+          label: gender.name,
+          value: gender
         })
       )
     );

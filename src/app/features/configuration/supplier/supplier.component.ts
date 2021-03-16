@@ -74,13 +74,7 @@ export class SupplierComponent implements OnInit {
         main: [false]
       })]),
 
-      addresses: this._formBuilder.array([this._formBuilder.group({
-        city: [''],
-        address: [''],
-        neighborhood: [''],
-        phoneNumber: [''],
-        main: [false]
-      })]),
+      addresses: this._formBuilder.array([this.addLocationGroup()]),
 
       businesNit: [''],
       businesName: [''],
@@ -242,6 +236,49 @@ export class SupplierComponent implements OnInit {
     });
   }
 
+
+  addLocation() {
+    this.supplier.person.locations = [...this.supplier.person.locations];
+    this.supplier.person.locations.push(new Location);
+  }
+
+  addLocationGroup(){
+    return this._formBuilder.group({
+      city: [''],
+      address: [''],
+      neighborhood: [''],
+      phoneNumber: [''],
+      main: [false]
+    })
+  }
+
+  get addDetails(): FormArray{
+    return <FormArray>this.form_supplier.get('details');
+  }
+
+  deleteLocation(location: Location, rowIndex: number) {
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `¿Estas seguro que deseas eliminar esta dirección?`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        if (!location.id) {
+          this.supplier.person.locations.splice(rowIndex, 1);
+        } else {
+          this.locationService.delete(location.id).pipe(first()).subscribe(
+            data => {
+              if (data['success']) {
+                this.supplier.person.locations = this.supplier.person.locations.filter((x) => x.id != location.id);
+              }
+            },
+            error => {
+              console.log(error);
+            });
+        }
+      }
+    });
+  }
+
   //validations Document Student
   async validate_document(control: AbstractControl) {
     const val = control.value;
@@ -261,7 +298,7 @@ export class SupplierComponent implements OnInit {
     try {
       this.isLoading = true;
       this.suppliers = await this.supplierService.getAll();
-      console.log(this.suppliers)
+      console.log(this.suppliers);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -270,11 +307,12 @@ export class SupplierComponent implements OnInit {
   }
 
   getCitiesGenderDocument() {
-    this.cityService.getAll().then(data => {
-      data.forEach(x =>
+    this.cityService.getAll().then(response => {
+      console.log(response);
+      response.forEach(city =>
         this.cities.push({
-          label: x.name,
-          value: x
+          label: city.name,
+          value: city
         })
       )
     });

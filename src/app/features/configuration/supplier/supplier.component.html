@@ -105,13 +105,6 @@
       </div>
 
       <div class="p-field p-col-12 p-md-4">
-        <label for="date">Fecha de nacimeinto</label>
-        <p-calendar id="date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
-          [(ngModel)]="supplier.person.birthDate" formControlName="birthDate">
-        </p-calendar>
-      </div>
-
-      <div class="p-field p-col-12 p-md-4">
         <label for="gerder">Genero</label>
         <p-dropdown id="gender" [options]="gender" placeholder="Genero" [(ngModel)]="supplier.person.gender"
           placeholder="Genero" formControlName="gender"></p-dropdown>
@@ -222,7 +215,7 @@
         <div class="p-d-flex p-jc-between p-ai-center p-mt-2">
           <h4 class="color-title">Direcciones</h4>
           <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
-            class="p-button button-text p-button-close" (click)="addEmail()"></button>
+            class="p-button button-text p-button-close" (click)="addLocation()"></button>
         </div>
         <div class="table-responsive">
           <p-table [value]="supplier.person.locations" dataKey="id" styleClass="p-datatable-gridlines" class="p-mb-3"
@@ -243,7 +236,7 @@
                   <p-cellEditor>
                     <ng-template pTemplate="input">
                       <p-dropdown [options]="cities" id="city" formControlName="city" placeholder="Selecciona"
-                        [(ngModel)]="dataRow.city" optionLabel="name" [style]="{ width: '100%' }"></p-dropdown>
+                        [(ngModel)]="dataRow.city" [style]="{ width: '100%' }"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                       {{ dataRow.city.name }}
@@ -296,7 +289,7 @@
                 </td>
                 <td>
                   <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action"
-                    (click)="deletePhone(dataRow, rowIndex)"></button>
+                    (click)="deleteLocation(dataRow, rowIndex)"></button>
                 </td>
               </tr>
             </ng-template>

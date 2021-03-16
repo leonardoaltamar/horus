@@ -33,7 +33,7 @@ export class MainComponent implements OnInit {
   numberSalesToday: number = 0;
   numberProductsSold: number = 0;
   numberProductionOrder: number = 0;
-  today = moment().format('YYYY-MM-DD');
+  currentToday = moment().format('YYYY-MM-DD');
   topArticles: Article[] = []
   lastSales: Process[] = [];
 
@@ -106,7 +106,7 @@ export class MainComponent implements OnInit {
   async getAllSalesToday() {
     const data = await this.serviceProcess.getAll();
     data.forEach(item => {
-      if(item.typeMoviment === 'S' && item.createdAt === this.today) {
+      if(item.typeMoviment === 'S' && item.createdAt === this.currentToday) {
         this.numberSalesToday++;
         item.details.forEach(de => this.numberProductsSold++)
       }
@@ -119,7 +119,6 @@ export class MainComponent implements OnInit {
 
   async getTopProduct() {
     this.topArticles = await this.serviceArticle.getTop();
-    console.log(this.topArticles)
   }
 
   async getLastSales() {
@@ -129,7 +128,7 @@ export class MainComponent implements OnInit {
   async getAllOrderProdution() {
     const data = await this.serviceProdutionOrder.getAll();
     data.forEach(item => {
-      if(item.createdAt === this.today){
+      if(item.createdAt === this.currentToday){
         this.numberProductionOrder++;
       }
     })

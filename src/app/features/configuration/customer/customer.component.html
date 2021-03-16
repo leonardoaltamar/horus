@@ -103,13 +103,6 @@
       </div>
 
       <div class="p-field p-col-12 p-md-4">
-        <label for="date">Fecha de nacimeinto</label>
-        <p-calendar id="date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"
-          formControlName="birthDate" [(ngModel)]="customer.person.birthDate">
-        </p-calendar>
-      </div>
-
-      <div class="p-field p-col-12 p-md-4">
         <label for="gerder">Genero</label>
         <p-dropdown id="gender" [options]="gender" placeholder="Genero" [(ngModel)]="customer.person.gender"
           placeholder="Genero" formControlName="gender"></p-dropdown>
@@ -232,7 +225,7 @@
                   <p-cellEditor>
                     <ng-template pTemplate="input">
                       <p-dropdown [options]="cities" id="city" formControlName="city" placeholder="Selecciona"
-                        [(ngModel)]="dataRow.city" optionLabel="name" [style]="{ width: '100%' }"></p-dropdown>
+                        [(ngModel)]="dataRow.city" [style]="{ width: '100%' }"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                       {{ dataRow.city.name }}
