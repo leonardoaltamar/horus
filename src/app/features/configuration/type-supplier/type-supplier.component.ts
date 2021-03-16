@@ -112,6 +112,7 @@ export class TypeSupplierComponent {
           data => {
             if (data['success']) {
               this.typeSuppliers = this.typeSuppliers.filter((x) => x.id != typeSupplier.id);
+              this.messageService.add({ severity: 'success', summary: '', detail: 'Tipo de proveedor eliminado con éxito' });
             }
           },
           error => {
