@@ -1,6 +1,6 @@
 <div class="card scroll">
   <div class="card-header">
-    Ciudad
+    Ciudades
   </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
@@ -16,14 +16,13 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo"
-              class="p-button button-text p-button-close" (click)="newCity()"></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" (click)="newCity()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Codigo</th>
+            <th>Código</th>
             <th>Nombre</th>
             <th>Departamento</th>
             <th>*</th>
@@ -53,29 +52,29 @@
   <form [formGroup]="form_city">
     <div class="p-grid">
       <div class="p-col-6 p-sm-6">
-        <label for="code">Codigo</label>
+        <label for="code">Código</label>
         <input id="code" type="text" [(ngModel)]="city.code" formControlName="code" pInputText>
         <ng-container *ngIf="form_city.get('code').hasError('required') && form_city.get('code').touched">
-          <small class="p-invalid p-text-center">El codigo es obligatoria</small>
+          <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
         <ng-container *ngIf="form_city.get('code').hasError('A') && form_city.get('code').touched">
-          <small class="caption p-text-center">Esta codigo ya está registrada</small>
-        </ng-container>
-      </div>
-      <div class="p-col-6 p-sm-6">
-        <label for="state">Departamento</label>
-        <p-dropdown id="state" [options]="states" [(ngModel)]="city.state.id" formControlName="state"
-          placeholder="Selecciona el departamento">
-        </p-dropdown>
-        <ng-container *ngIf="form_city.get('state').hasError('required') && form_city.get('state').touched">
-          <small class="p-invalid p-text-center">El pais es obligatoria</small>
+          <small class="caption p-text-center">Este código ya está registrado</small>
         </ng-container>
       </div>
       <div class="p-col-6 p-sm-6">
         <label for="name">Nombre</label>
         <input id="name" [(ngModel)]="city.name" formControlName="name" type="text" pInputText>
         <ng-container *ngIf="form_city.get('name').hasError('required') && form_city.get('name').touched">
-          <small class="p-invalid p-text-center">El nombre es obligatoria</small>
+          <small class="p-invalid p-text-center">El nombre es obligatorio</small>
+        </ng-container>
+      </div>
+      <div class="p-col-6 p-sm-6">
+        <label for="state">Departamento</label>
+        <p-dropdown id="state" [options]="states" [(ngModel)]="city.state.id" formControlName="state"
+          placeholder="Selecciona">
+        </p-dropdown>
+        <ng-container *ngIf="form_city.get('state').hasError('required') && form_city.get('state').touched">
+          <small class="p-invalid p-text-center">El departamento es obligatorio</small>
         </ng-container>
       </div>
     </div>

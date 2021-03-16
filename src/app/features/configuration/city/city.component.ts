@@ -41,7 +41,7 @@ export class CityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.routeStateService.add("Configuration", "/configuration/cities", null, false);
+    this.routeStateService.add("Ciudad", "/configuration/cities", null, false);
     this.getAllCity();
     this.stateService.getAll().then(data =>
       data.forEach(x =>
@@ -99,6 +99,7 @@ export class CityComponent implements OnInit {
           data => {
             if (data['success']) {
               this.cities = this.cities.filter((x) => x.id != city.id);
+              this.messageService.add({ severity: 'success', summary: '', detail: 'Ciudad eliminada con é xito'});
             }
           },
           error => {
@@ -116,7 +117,7 @@ export class CityComponent implements OnInit {
           this.city = data;
           console.log(data);
           this.cities.push(this.city);
-          this.messageService.add({ severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${data.code} Nombre: ${data.name}` });
+          this.messageService.add({ severity: 'success', summary: `Ciudad creada con éxito`, detail: `Código: ${data.code} Nombre: ${data.name}` });
         },
         error => {
           console.log(error);
@@ -132,7 +133,7 @@ export class CityComponent implements OnInit {
                 x = this.city;
               return x
             });
-            this.messageService.add({ severity: 'success', summary: `Departamento actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Ciudad actualizada con éxito` });
           }
         },
         error => {
