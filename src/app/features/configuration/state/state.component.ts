@@ -97,7 +97,7 @@ export class StateComponent implements OnInit {
             console.log(data);
             if (data['success']) {
               this.states = this.states.filter((x) => x.id != state.id);
-              this.messageService.add({ severity: 'success', summary: `Eliminado con exito` });
+              this.messageService.add({ severity: 'success', summary: `Departamento eliminado con éxito` });
             }
           },
           error => {
@@ -113,7 +113,7 @@ export class StateComponent implements OnInit {
       this.stateService.create(this.state).subscribe(
         data => {
           this.states.push(this.state);
-          this.messageService.add({ severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${data.code} Nombre: ${data.name}` });
+          this.messageService.add({ severity: 'success', summary: `Departamento creado con éxito`, detail: `Code: ${data.code} Nombre: ${data.name}` });
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
@@ -129,7 +129,7 @@ export class StateComponent implements OnInit {
                 x = this.state;
               return x
             });
-            this.messageService.add({ severity: 'success', summary: `Departamento actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Departamento actualizado con éxito` });
           }
         }
       )

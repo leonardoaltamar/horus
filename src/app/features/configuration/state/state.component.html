@@ -16,16 +16,15 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo"
-              class="p-button button-text p-button-close" (click)="newState()"></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" (click)="newState()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Codigo</th>
-            <th>Departamento</th>
-            <th>Pais</th>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>País</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -48,34 +47,34 @@
   </div>
 </div>
 
-<p-dialog header="Nuevo estado" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
+<p-dialog header="Nuevo departamento" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
   [baseZIndex]="10000" [resizable]="false">
   <form [formGroup]="form_state">
     <div class="p-grid">
-      <div class="p-col-6 p-sm-6">
-        <label for="code">Codigo</label>
+      <div class="p-col-12 p-sm-6">
+        <label for="code">Código</label>
         <input id="code" [(ngModel)]="state.code" formControlName="code" type="text" pInputText>
         <ng-container *ngIf="form_state.get('code').hasError('required') && form_state.get('code').touched">
-          <small class="p-invalid p-text-center">El codigo es obligatoria</small>
+          <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
         <ng-container *ngIf="form_state.get('code').hasError('A') && form_state.get('code').touched">
-          <small class="caption p-text-center">Esta codigo ya está registrada</small>
+          <small class="caption p-text-center">Esta código ya está registrado</small>
         </ng-container>
       </div>
-      <div class="p-col-6 p-sm-6">
-        <label for="staet">Paise</label>
-        <p-dropdown [options]="country" [(ngModel)]="state.country" formControlName="country"
-          placeholder="Selecciona el pais" optionLabel="name" optionValue="name">
-        </p-dropdown>
-        <ng-container *ngIf="form_state.get('country').hasError('required') && form_state.get('country').touched">
-          <small class="p-invalid p-text-center">El pais es obligatoria</small>
-        </ng-container>
-      </div>
-      <div class="p-col-8 p-sm-8 ">
+      <div class="p-col-12 p-sm-6 ">
         <label for="name">Nombre</label>
         <input id="name" [(ngModel)]="state.name" formControlName="name" type="text" pInputText>
         <ng-container *ngIf="form_state.get('name').hasError('required') && form_state.get('name').touched">
           <small class="p-invalid p-text-center">El nombre es obligatoria</small>
+        </ng-container>
+      </div>
+      <div class="p-col-12 p-sm-6">
+        <label for="staet">Paíse</label>
+        <p-dropdown [options]="country" [(ngModel)]="state.country" formControlName="country"
+          placeholder="Selecciona el pais" optionLabel="name" optionValue="name">
+        </p-dropdown>
+        <ng-container *ngIf="form_state.get('country').hasError('required') && form_state.get('country').touched">
+          <small class="p-invalid p-text-center">El país es obligatorio</small>
         </ng-container>
       </div>
     </div>
