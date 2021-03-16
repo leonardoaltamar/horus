@@ -113,6 +113,7 @@ export class TypeEmployeeComponent {
           data => {
             if (data['success']) {
               this.typeEmployees = this.typeEmployees.filter((x) => x.id != typeEmployee.id);
+              this.messageService.add({ severity: 'success', summary: `Tipo de empleado elimimado con éxito` });
             }
           },
           error => {
