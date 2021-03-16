@@ -19,7 +19,6 @@
 
 :host/deep/ .p-inputtext:enabled:focus {
   box-shadow: 0 0 0 0.01rem #3646cd;
-  border-color: #3646cd;
 }
 
 :host/deep/ .p-link:focus {
@@ -31,7 +30,6 @@
 :host/deep/ .p-datatable .p-datatable-thead > tr > th {
   text-align: left;
   padding: 1rem 1rem;
-  border: none;
   border-width: 0 0 1px 0;
   font-weight: 600;
   color: #495057;
@@ -41,12 +39,10 @@
 
 :host/deep/ .p-datatable .p-datatable-tbody > tr > td {
   text-align: left;
-  border: none;
 }
 
 :host/deep/ .p-button {
   background: rgba(54, 69, 205, 0.876);
-  border: 1px solid #3646CD;
 }
 
 :host/deep/ .p-button:enabled:hover{
@@ -66,47 +62,11 @@
   box-shadow: 0 0 0 0.1rem #3645cd5e;
 }
 
-/* style component */
-.button-action {
-  width: 20px !important;
-  height: 20px;
-  background: transparent !important;
-  border: none !important;
-  color: rgba(31, 45, 65, 0.5) !important;
-}
-
-.button-text{
-  float: right;
-  position: relative;
-  border: none;
-  font-weight: bold;
-}
-
-.p-button-close {
-  color: #3646CD;
-  background: rgba(54, 69, 205, 0);
-  border-color: #3646CD !important;
-  padding: .5em .8em;
-}
-
 .p-button-close:enabled:hover, .p-button-close:enabled:focus {
   color: #3646CD;
   background: #3645cd1c;
   border-color: #3646CD48 !important;
   border: none;
-}
-
-.p-button-save {
-  color: #fff;
-  background: #3646cd;
-  border-color: #3646cd !important;
-  padding: .5em .8em;
-}
-
-.p-button-save:enabled:hover, .p-button-save:enabled:focus {
-  color: #fff;
-  background: #001f9b;
-  border-color: #001f9b !important;
 }
 
 .input-line {
@@ -118,6 +78,5 @@
 
 .input-line:enabled:focus {
   box-shadow: none ;
-  border-color: #3646cd;
 }
 

@@ -36,7 +36,7 @@ export class CategoryComponent {
   }
 
   ngOnInit(): void {
-    this.routeStateService.add("Configuration", "/configuration/categories", null, false);
+    this.routeStateService.add("Category", "/configuration/categories", null, false);
     this.getAllCategory();
   }
 
@@ -75,7 +75,7 @@ export class CategoryComponent {
       this.categoryService.create(this.model).subscribe(
         data => {
           this.models.push(this.model);
-          this.messageService.add({ severity: 'success', summary: `Categoria creada con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+          this.messageService.add({ severity: 'success', summary: `Categoría creada con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
@@ -91,7 +91,7 @@ export class CategoryComponent {
                 x = this.model;
               return x
             });
-            this.messageService.add({ severity: 'success', summary: `Categoria actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Categoría actualizada con éxito` });
           }
         }
       )
@@ -114,6 +114,7 @@ export class CategoryComponent {
           data => {
             if (data['success']) {
               this.models = this.models.filter((x) => x.id != category.id);
+              this.messageService.add({ severity: 'success', summary: 'Categoría Eliminada con éxito' });
             }
           },
           error => {

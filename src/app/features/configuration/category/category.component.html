@@ -1,6 +1,6 @@
 <div class="card scroll">
   <div class="card-header">
-    Categorias
+    Categorías
   </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
@@ -16,15 +16,14 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo"
-              class="p-button button-text p-button-close" (click)="newCategory()"></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" (click)="newCategory()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Codigo</th>
-            <th>Nombre</th>
+            <th>Código</th>
+            <th>Descripción</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -46,26 +45,26 @@
   </div>
 </div>
 
-<p-dialog header="Nueva categoria" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
+<p-dialog header="Nueva categoría" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
   [baseZIndex]="10000" [resizable]="false">
-  <form [formGroup]="form_category" class="">
+  <form [formGroup]="form_category">
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
-        <label for="code">Codigo</label>
+        <label for="code">Código</label>
         <input id="code" formControlName="code" type="text" pInputText [(ngModel)]="model.code">
         <ng-container *ngIf="form_category.get('code').hasError('required') && form_category.get('code').touched">
-          <small class="p-invalid p-text-center">El codigo es obligatoria</small>
+          <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
         <ng-container *ngIf="form_category.get('code').hasError('A') && form_category.get('code').touched">
-          <small class="caption p-text-center">Esta codigo ya está registrada</small>
+          <small class="caption p-text-center">Esta código ya está registrado</small>
         </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="description">Descripcion</label>
+        <label for="description">Descripción</label>
         <input id="description" formControlName="description" type="text" pInputText [(ngModel)]="model.description">
         <ng-container
           *ngIf="form_category.get('description').hasError('required') && form_category.get('description').touched">
-          <small class="caption p-text-center">la descripcion es obligatoria</small>
+          <small class="caption p-text-center">La descripción es obligatoria</small>
         </ng-container>
       </div>
     </div>
