@@ -7,7 +7,7 @@ export class Article {
   name: string;
   dateExpiry?: string;
   stock: number;
-  production_cost?: number;
+  productionCost?: number;
   acquisitionValue?: number;
   unitValue?: number;
   barCode?: string;
@@ -20,7 +20,7 @@ export class Article {
     this.code = '';
     this.name = '';
     this.dateExpiry = '';
-    this.production_cost = 0;
+    this.productionCost = 0;
     this.stock = 0;
     this.acquisitionValue = 0;
     this.unitValue = 0;

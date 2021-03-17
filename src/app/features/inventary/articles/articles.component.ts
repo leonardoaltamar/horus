@@ -219,4 +219,12 @@ export class ArticlesComponent implements OnInit {
     }
     return null;
   }
+
+  calculateProductionCost() {
+    this.article.productionCost = 0;
+    this.article.rawMaterials.forEach(material => {
+      const totalMaterial = material.article.unitValue * material.quantity
+      this.article.productionCost = this.article.productionCost + totalMaterial
+    })
+  }
 }

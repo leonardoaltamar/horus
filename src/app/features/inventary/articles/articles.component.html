@@ -1,6 +1,6 @@
 <div styleClass="ssw-panel" class="card scroll">
   <div class="card-header">
-    Articulos
+    Artículos
   </div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
@@ -16,15 +16,14 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button-close"
-              (click)="newArticle()"></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" (click)="newArticle()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Codigo</th>
-            <th>Descripcion</th>
+            <th>Código</th>
+            <th>Descripción</th>
             <th>Precio</th>
             <th>Categorias</th>
             <th>*</th>
@@ -55,10 +54,10 @@
     <div class="p-grid">
       <div class="p-col-12 p-sm-12">
         <div>
-          Ingreso de articulos
+          Ingreso de artículos
         </div>
         <div class="p-ai-center p-d-flex p-mt-3">
-          <label for="check" class="p-ml-4 p-mr-2 p-ml-auto">¿El articulo es un producto?</label>
+          <label for="check" class="p-ml-4 p-mr-2 p-ml-auto">¿El artículo es un producto?</label>
           <p-toggleButton [(ngModel)]="checked" onIcon="pi pi-check" offIcon="pi pi-times" class="p-mr-2"
             [style]="{'width': '1.2em', 'height': '1.2em', 'padding': '0'}">
           </p-toggleButton>
@@ -69,16 +68,15 @@
 
   <form [formGroup]="form_product" class="">
     <div class="p-grid p-mt-2">
-
       <div class="p-field p-col-3 p-sm-3">
-        <label for="code">Codigo</label>
+        <label for="code">Código</label>
         <input id="code" formControlName="code" [(ngModel)]="article.code" type="text"
           onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
         <ng-container *ngIf="form_product.get('code').hasError('required') && form_product.get('code').touched">
-          <small class="p-invalid p-text-center">El codigo es obligatorio</small>
+          <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
         <ng-container *ngIf="form_product.get('code').hasError('A') && form_product.get('code').touched">
-          <small class="caption p-text-center">Este codigo ya está en uso</small>
+          <small class="caption p-text-center">Este código ya está en uso</small>
         </ng-container>
       </div>
 
@@ -86,7 +84,7 @@
         <label for="description">Nombre</label>
         <input id="description" formControlName="name" [(ngModel)]="article.name" type="text" pInputText>
         <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
-          <small class="p-invalid p-text-center">El nombre del producto es obligatorio</small>
+          <small class="p-invalid p-text-center">El nombre del articulo es obligatorio</small>
         </ng-container>
       </div>
 
@@ -103,17 +101,17 @@
         <input id="unitValue" [(ngModel)]="article.unitValue" formControlName="unitValue" type="text" pInputText>
         <ng-container
           *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
-          <small class="p-invalid p-text-center">El stock es obligatorio</small>
+          <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
         </ng-container>
       </div>
 
       <div class="p-field p-col-4 p-sm-4" *ngIf="!checked">
-        <label for="acquisitionValue">Valor de adquisicion</label>
+        <label for="acquisitionValue">Valor de adquisición</label>
         <input id="acquisitionValue" [(ngModel)]="article.acquisitionValue" formControlName="unitValue" type="text"
           pInputText>
         <ng-container
           *ngIf="form_product.get('unitValue').hasError('required') && form_product.get('unitValue').touched">
-          <small class="p-invalid p-text-center">El stock es obligatorio</small>
+          <small class="p-invalid p-text-center">El valor de adquisición es obligatorio</small>
         </ng-container>
       </div>
 
@@ -126,7 +124,7 @@
         </ng-container>
       </div>
       <div class="p-field p-col-12 p-md-4">
-        <label for="expeditionDate">Fecha de expedicion</label>
+        <label for="expeditionDate">Fecha de expedición</label>
         <input id="expeditionDate" type="date" formControlName="expeditionDate" [(ngModel)]="article.dateExpiry"
           formControlName="expeditionDate" pInputText>
       </div>
@@ -143,7 +141,7 @@
           formArrayName="materials">
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 100px;">Descripcion</th>
+              <th style="width: 100px;">Descripción</th>
               <th style="width: 100px;">Cantidad necesaria</th>
               <th style="width: 100px;">Unidad de medida</th>
               <th style="width: 50px;">*</th>
@@ -167,7 +165,7 @@
               <td pEditableColumn>
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <input pInputText type="text" formControlName="quantity" [(ngModel)]="dataRow.quantity" />
+                    <input pInputText type="text" formControlName="quantity" [(ngModel)]="dataRow.quantity" (change)="calculateProductionCost()"/>
                   </ng-template>
                   <ng-template pTemplate="output">
                     {{ dataRow.quantity || "" }}
@@ -196,7 +194,7 @@
           </ng-template>
         </p-table>
       </div>
-      <div class="p-text-right">Costo de produccion: {{cost}}</div>
+      <div class="p-text-right">Costo de producción: $ {{article.productionCost}}</div>
     </div>
 
     <br>

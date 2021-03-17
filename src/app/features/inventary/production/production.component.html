@@ -175,14 +175,14 @@
               <th>*</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body"  let-dataRowArticles let-rowIndex="rowIndex">
+          <ng-template pTemplate="body"  let-detail let-rowIndex="rowIndex">
             <tr [formGroupName]="rowIndex">
               <td>{{rowIndex+1}}</td>
               <td>
-                <p-dropdown [options]="articles" formControlName="{{rowIndex}}" [(ngModel)]="dataRowArticles.article" optionLabel="name" placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+                <p-dropdown [options]="articles" formControlName="article" [(ngModel)]="detail.article" optionLabel="name" placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
               </td>
               <td style="width: 80px;">
-                <input [(ngModel)]="dataRowArticles.quantity" formControlName="quantity" type="number" pInputText>
+                <input [(ngModel)]="detail.quantity" formControlName="quantity" type="number" pInputText>
               </td>
               <td>
                 <button pButton pRipple type="button" icon="fas fa-trash-alt"

@@ -82,7 +82,6 @@ export class ProductionComponent implements OnInit {
       this.isLoading = true;
       const data = await this.articleService.getAll();
       this.articles = data.filter(e => e.rawMaterials != null && e.rawMaterials.length > 0);
-      console.log(this.articles);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
