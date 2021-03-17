@@ -1,5 +1,5 @@
 <div class="card scroll" *ngIf="!showModal">
-  <div class="card-header"> Clientes </div>
+  <div class="card-header">Clientes</div>
   <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
@@ -14,8 +14,7 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Nuevo"
-              class="p-button button-text p-button-close" (click)="newCustomer()"></button>
+            <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Nuevo" (click)="newCustomer()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -24,7 +23,7 @@
             <th>Documento</th>
             <th>Nombre</th>
             <th>Correo</th>
-            <th>Telefono</th>
+            <th>Télefono</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -55,7 +54,7 @@
 <form class="card scroll" *ngIf="showModal" [formGroup]="form_customer">
   <div class="card-header p-d-flex p-jc-between p-ai-center">
     <span>Nuevo cliente</span>
-    <button pButton pRipple icon="fas fa-times" class="p-button p-button-close" (click)="showModal=false"></button>
+    <button pButton pRipple icon="fas fa-times" class="button-action" (click)="showModal=false"></button>
   </div>
 
   <div class="card-body">
@@ -67,36 +66,36 @@
         </p-dropdown>
         <ng-container
           *ngIf="form_customer.get('typeDocument').hasError('required') && form_customer.get('typeDocument').touched">
-          <small class="p-invalid p-text-center">El tipo de documento es obligatoria</small>
+          <small class="caption">El tipo de documento es obligatorio</small>
         </ng-container>
       </div>
 
       <div class="p-field p-col-12 p-md-4">
-        <label for="document">Numero de documento</label>
+        <label for="document">Número de documento</label>
         <input id="document" type="text" pInputText onkeypress='return event.charCode >= 48 && event.charCode <= 57'
           [(ngModel)]="customer.person.documentNumber" formControlName="document">
         <ng-container
           *ngIf="form_customer.get('document').hasError('required') && form_customer.get('document').touched">
-          <small class="caption p-text-center">Numero de Documento es obligatorio!</small>
+          <small class="caption">Número de Documento es obligatorio</small>
         </ng-container>
         <ng-container *ngIf="form_customer.get('document').hasError('minlength')">
-          <small class="caption p-text-center">El numero de documento debe tener al menos 7 caracteres!</small>
+          <small class="caption">El número de documento debe tener al menos 7 caracteres!</small>
         </ng-container>
         <ng-container *ngIf="form_customer.get('document').hasError('maxlength')">
-          <small class="caption p-text-center">El numero de documento no debe tener mas de 12 caracteres!</small>
+          <small class="caption">El número de documento no debe tener mas de 12 caracteres!</small>
         </ng-container>
         <ng-container *ngIf="form_customer.get('document').hasError('A') && form_customer.get('document').touched">
-          <small class="caption p-text-center">Esta documento ya está registrado</small>
+          <small class="caption">Esta número de documento ya está registrado</small>
         </ng-container>
         <ng-container *ngIf="form_customer.get('document').hasError('pattern')">
-          <small class="caption p-text-center">Solo puedes ingresar numeros en este campo!</small>
+          <small class="caption">Solo puedes ingresar números en este campo!</small>
         </ng-container>
       </div>
     </div>
 
     <div class="p-fluid p-grid">
       <div class="p-field p-col-12 p-md-4">
-        <label for="expeditionCity">Ciudad de expedicion</label>
+        <label for="expeditionCity">Ciudad de expedición</label>
         <p-dropdown id="expeditionCity" [options]="cities" [(ngModel)]="customer.person.expeditionCity"
           placeholder="Ciudad" formControlName="expeditionCity">
         </p-dropdown>
@@ -113,11 +112,17 @@
       <div class="p-field p-col-12 p-md-6">
         <label for="name">Nombre</label>
         <input id="name" type="text" pInputText [(ngModel)]="customer.person.name" formControlName="name">
+        <ng-container *ngIf="form_customer.get('name').hasError('required') && form_customer.get('name').touched">
+          <small class="caption">El nombre es obligatorio</small>
+        </ng-container>
       </div>
 
       <div class="p-field p-col-12 p-md-3">
         <label for="Surname">Primer apellido</label>
         <input id="Surname" type="text" pInputText [(ngModel)]="customer.person.surname" formControlName="surName">
+        <ng-container *ngIf="form_customer.get('surName').hasError('required') && form_customer.get('surName').touched">
+          <small class="caption">El primer apellido es obligatorio</small>
+        </ng-container>
       </div>
 
       <div class="p-field p-col-12 p-md-3">
@@ -139,7 +144,7 @@
           <div class="p-col-12 p-sm-6">
             <div class="p-d-flex p-ai-center">
               <h4 class="color-title">Correos</h4>
-              <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
+              <button pButton pRipple type="button" icon="fas fa-plus" class="button-action p-ml-1"
                 (click)="addEmail()"></button>
             </div>
 
@@ -156,7 +161,7 @@
                     </small>
                   </ng-container>
                   <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="email.main"></p-checkbox>
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-2"
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action p-ml-2"
                     (click)="deleteEmail(email, rowIndexEmail)"></button>
                 </div>
               </div>
@@ -166,7 +171,7 @@
           <div class="p-col-12 p-sm-6">
             <div class="p-d-flex p-ai-center">
               <h4 class="color-title">Telefonos</h4>
-              <button pButton pRipple type="button" icon="fas fa-plus" class="p-button p-button-close p-ml-1"
+              <button pButton pRipple type="button" icon="fas fa-plus" class="button-action p-ml-1"
                 (click)="addMobile()"></button>
             </div>
 
@@ -193,7 +198,7 @@
                     </small>
                   </ng-container>
                   <p-checkbox [binary]="true" formControlName="main" [(ngModel)]="mobilePhone.main"></p-checkbox>
-                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="p-button p-button-close p-ml-2"
+                  <button pButton pRipple type="button" icon="fa fa-trash-alt" class="button-action p-ml-2"
                     (click)="deletePhone(mobilePhone, rowIndexMobile)"></button>
                 </div>
               </div>
@@ -201,7 +206,7 @@
           </div>
 
         </div>
-        <div class="p-d-flex p-jc-between p-ai-center p-mt-2">
+        <div class="p-d-flex p-jc-between p-ai-center p-mt-2 p-mb-2">
           <h4 class="color-title">Direcciones</h4>
           <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
             class="p-button button-text p-button-close" (click)="addRow()"></button>
@@ -214,7 +219,7 @@
                 <th style="width: 100px;">Ciudad</th>
                 <th style="width: 100px;">Barrio</th>
                 <th style="width: 100px;">Dirección</th>
-                <th style="width: 100px;">Numero de telefono</th>
+                <th style="width: 100px;">Número de télefono</th>
                 <th style="width: 100px;">Principal</th>
                 <th style="width: 50px;">*</th>
               </tr>

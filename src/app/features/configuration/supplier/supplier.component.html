@@ -119,10 +119,16 @@
       <div class="p-field p-col-12 p-md-6">
         <label for="username1">Nombre</label>
         <input type="text" formControlName="name" [(ngModel)]="supplier.person.name" pInputText>
+        <ng-container *ngIf="form_supplier.get('name').hasError('required') && form_supplier.get('name').touched">
+          <small class="caption">El nombre es obligatorio</small>
+        </ng-container>
       </div>
       <div class="p-field p-col-12 p-md-3">
         <label for="username1">Primer apellido</label>
         <input type="text" formControlName="surName" [(ngModel)]="supplier.person.surname" pInputText>
+        <ng-container *ngIf="form_supplier.get('surName').hasError('required') && form_supplier.get('surName').touched">
+          <small class="caption">El primer apellido es obligatorio</small>
+        </ng-container>
       </div>
       <div class="p-field p-col-12 p-md-3">
         <label for="username1">Segundo apellido</label>

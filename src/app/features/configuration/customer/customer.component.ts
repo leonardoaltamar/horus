@@ -58,24 +58,9 @@ export class CustomerComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       secondSurname: [''],
-
-      emails: this._formBuilder.array([this._formBuilder.group({
-        email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-        main: [false]
-      })]),
-
-      mobilePhones: this._formBuilder.array([this._formBuilder.group({
-        number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-        main: [false]
-      })]),
-
-      addresses: this._formBuilder.array([this._formBuilder.group({
-        city: [''],
-        address: [''],
-        neighborhood: [''],
-        phoneNumber: [''],
-        main: [false]
-      })])
+      emails: this._formBuilder.array([this.addEmailFormGroup()]),
+      mobilePhones: this._formBuilder.array([this.addMobileFormGroup()]),
+      addresses: this._formBuilder.array([this.addAdressFormGroup()])
     });
 
   }
@@ -135,7 +120,7 @@ export class CustomerComponent implements OnInit {
           this.customer = data;
           this.customers.push(this.customer);
           this.messageService.add({
-            severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${this.customer.person.documentNumber}
+            severity: 'success', summary: `Cliente creado con éxito`, detail: `Documento: ${this.customer.person.documentNumber}
           Nombre: ${this.customer.person.name} ${this.customer.person.surname}`
           });
           this.showModal = false;
@@ -148,6 +133,7 @@ export class CustomerComponent implements OnInit {
     else {
       this.customerService.update(this.customer.id, this.customer).pipe(first()).subscribe(
         data => {
+          console.log(data['success'])
           if (data['success']) {
             this.customers = this.customers.map(x => {
               if (x.id == this.customer.id)
@@ -155,18 +141,35 @@ export class CustomerComponent implements OnInit {
               return x
             });
             this.showModal = false;
-            this.messageService.add({ severity: 'success', summary: `Departamento actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Cliente actualizado con éxito` });
           }
         },
-        error => {
-          console.log(error);
-        }
+        error => console.log(error)
       );
     }
   }
 
   modifyCustomer(customer: Customer) {
     this.customer = customer;
+
+    this.customer.person.emails.forEach( email => {
+      if(this.customer.person.emails.length != this.emails.length){
+        this.emails.push(this.addEmailFormGroup())
+      }
+    });
+
+    this.customer.person.locations.forEach( email => {
+      if(this.customer.person.locations.length != this.addresses.length){
+        this.addresses.push(this.addAdressFormGroup())
+      }
+    });
+
+    this.customer.person.mobilePhones.forEach( email => {
+      if(this.customer.person.mobilePhones.length != this.mobilePhones.length){
+        this.mobilePhones.push(this.addMobileFormGroup())
+      }
+    });
+
     this.showModal = true;
   }
 
@@ -196,14 +199,18 @@ export class CustomerComponent implements OnInit {
   addMobile() {
     this.customer.person.mobilePhones = [...this.customer.person.mobilePhones];
     this.customer.person.mobilePhones.push(new MobilePhone());
-    this.mobilePhones.push(this._formBuilder.group({
-      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-      main: [false]
-    }));
+    this.mobilePhones.push(this.addMobileFormGroup());
   }
 
   get mobilePhones(): FormArray {
     return this.form_customer.get('mobilePhones') as FormArray;
+  }
+
+  addMobileFormGroup() {
+    return this._formBuilder.group({
+      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
+      main: [false]
+    })
   }
 
   deletePhone(mobile: MobilePhone, rowIndex: number) {
@@ -234,13 +241,18 @@ export class CustomerComponent implements OnInit {
   addEmail() {
     this.customer.person.emails = [...this.customer.person.emails];
     this.customer.person.emails.push(new Email());
-    this.emails.push(this._formBuilder.group({
-      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-      main: [false]
-    }));
+    this.emails.push(this.addEmailFormGroup());
   }
+
   get emails(): FormArray {
     return this.form_customer.get('emails') as FormArray;
+  }
+
+  addEmailFormGroup(){
+    return this._formBuilder.group({
+      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
+      main: [false]
+    })
   }
 
   deleteEmail(email: Email, rowIndex: number) {
@@ -270,17 +282,21 @@ export class CustomerComponent implements OnInit {
   addRow() {
     this.customer.person.locations = [...this.customer.person.locations];
     this.customer.person.locations.push(new Location());
-    this.addresses.push(this._formBuilder.group({
-      city: [''],
-      address: [''],
-      neighborhood: [''],
-      phoneNumber: [''],
-      main: [false]
-    }))
+    this.addresses.push(this.addAdressFormGroup())
 
   }
   get addresses(): FormArray {
     return this.form_customer.get('addresses') as FormArray;
+  }
+
+  addAdressFormGroup() {
+    return this._formBuilder.group({
+      city: ['',],
+      address: ['',],
+      neighborhood: [''],
+      phoneNumber: [''],
+      main: [false]
+    })
   }
 
   deleteRow(row: Location, rowIndex: number) {
@@ -327,7 +343,6 @@ export class CustomerComponent implements OnInit {
     try {
       this.isLoading = true;
       this.customers = await this.customerService.getAll();
-      console.log(this.customers);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
