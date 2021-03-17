@@ -3,7 +3,6 @@ import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MobilePhone } from './../models/mobilePhone.model';
-import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -14,7 +13,7 @@ export class MobilePhoneService {
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}mobilePhone`;
+    this.endPoint = `${environment.apiUrl}mobile_phone`;
   }
 
   getAll() {

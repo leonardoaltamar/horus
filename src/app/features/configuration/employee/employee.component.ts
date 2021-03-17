@@ -1,17 +1,17 @@
 import { first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
-import { FormBuilder, Validators, FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { DateTime } from 'luxon';
+
+import { Validations } from '../../../../utils/validations';
 
 //Models
 import { City } from '@core/models/city.model';
 import { Location } from '@core/models/location.model';
 
 //Services
-import { PersonService } from '@core/services/person.service';
 import { CityService } from '@core/services/city.service';
 import { LocationService } from '@core/services/location.service';
 import { EmailService } from '@core/services/email.service';
@@ -22,6 +22,7 @@ import { Email } from '@core/models/email.model';
 import { MobilePhone } from '@core/models/mobilePhone.model';
 import { Employee } from '../../../core/models';
 import { TypeEmployeeService } from '@core/services/type-Employee.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-employee',
@@ -29,6 +30,7 @@ import { TypeEmployeeService } from '@core/services/type-Employee.service';
   styleUrls: ['./employee.component.css'],
   providers: [ConfirmationService]
 })
+
 export class EmployeeComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
@@ -41,8 +43,8 @@ export class EmployeeComponent implements OnInit {
   gender: SelectItem[] = [];
   document: SelectItem[] = [];
   imageUrl: any;
-
   city: { name: string }[];
+
 
   constructor(private routeStateService: RouteStateService,
     private confirmationService: ConfirmationService,
@@ -57,37 +59,22 @@ export class EmployeeComponent implements OnInit {
     private _formBuilder: FormBuilder) {
     this.form_salesman = this._formBuilder.group({
       typeDocument: ['', [Validators.required]],
+      typeEmployee: ['', [Validations.validateDropdown]],
+      gender: ['', [Validations.validateDropdown]],
       document: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(12), Validators.pattern(/^([0-9])*$/)], [this.validate_document.bind(this)]],
       expeditionCity: [''],
       birthDate: [''],
-      gender: [''],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       secondSurname: [''],
-      type: [''],
       typeAccount: [''],
       bank: [''],
       accountNumber: [''],
       contractDate: [''],
       licensePlate: [''],
-
-      emails: this._formBuilder.array([this._formBuilder.group({
-        email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-        main: [false]
-      })]),
-
-      mobilePhones: this._formBuilder.array([this._formBuilder.group({
-        number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-        main: [false]
-      })]),
-
-      addresses: this._formBuilder.array([this._formBuilder.group({
-        city: [''],
-        address: [''],
-        neighborhood: [''],
-        phoneNumber: [''],
-        main: [false]
-      })])
+      emails: this._formBuilder.array([this.addEmailFormGroup()]),
+      mobilePhones: this._formBuilder.array([this.addMobileFormGroup()]),
+      addresses: this._formBuilder.array([this.addAdressFormGroup()])
     });
   }
 
@@ -95,9 +82,9 @@ export class EmployeeComponent implements OnInit {
     this.routeStateService.add("Configuration", "/configuration/employee", null, false);
     this.getAllSalesMan();
     this.getAllTypeEmployee();
-
+  
     this.cityService.getAll().then(data => { this.cities = data; });
-
+  
     this.gerderService.getAll().then(data =>
       data.forEach(x =>
         this.gender.push({
@@ -151,53 +138,69 @@ export class EmployeeComponent implements OnInit {
   }
 
   newSalesman() {
+    console.log(this.employee)
     this.employee = new Employee();
     this.showModal = true;
   }
 
   saveSalesMan() {
-    console.log(this.employee);
+
+    // Date formatting to database format
+    this.employee.contractDate = moment(this.employee.contractDate).format('YYYY-MM-DD');
+
     this.employee.person.emails.forEach((item, index) => { this.employee.person.emails[index].main = item.main ? 1 : 0 });
     this.employee.person.mobilePhones.forEach((item, index) => { this.employee.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.employee.person.locations.forEach((item, index) => { this.employee.person.locations[index].main = item.main ? 1 : 0 });
-    if (!this.employee.id) {
+    
+    if(!this.employee.id) {
       this.employeeService.create(this.employee).pipe(first()).subscribe(
-        data => {
-          this.employee = data;
+        response => {
+          this.employee = response;
           this.employees.push(this.employee);
-          this.messageService.add({
-            severity: 'success', summary: `Empleado creado con éxito`, detail: `Code: ${this.employee.person.documentNumber}
-          Nombre: ${this.employee.person.name} ${this.employee.person.surname}`
-          });
+          this.messageService.add({severity: 'success', summary: '', detail: 'Empleado guardado con éxito'})
           this.showModal = false;
         },
-        error => {
-          console.log(error);
-        }
-      );
-    }
-    else {
+        error =>  console.error(error)
+      )
+    } else {
       this.employeeService.update(this.employee.id, this.employee).pipe(first()).subscribe(
-        data => {
-          if (data['success']) {
-            this.employees = this.employees.map(x => {
-              if (x.id == this.employee.id)
-                x = this.employee;
-              return x
-            });
+        response => {
+          console.log(response);
+          if(response['success']) {
+            this.employees = this.employees.map( employee => {
+              if(employee.id === this.employee.id) employee = this.employee
+              return employee
+            })
             this.showModal = false;
-            this.messageService.add({ severity: 'success', summary: `Empleado actualizado con éxito` });
+            this.messageService.add({ severity: 'success', summary: '', detail: 'Empleado actualizado con éxito' })
           }
         },
-        error => {
-          console.log(error);
-        }
-      );
+        error => console.error(error)
+      )
     }
   }
 
   modifyEmployee(employee: Employee) {
     this.employee = employee;
+    
+    this.employee.person.emails.forEach( email => {
+      if(this.employee.person.emails.length != this.emails.length){
+        this.emails.push(this.addEmailFormGroup())
+      }
+    });
+
+    this.employee.person.locations.forEach( email => {
+      if(this.employee.person.locations.length != this.addresses.length){
+        this.addresses.push(this.addAdressFormGroup())
+      }
+    });
+
+    this.employee.person.mobilePhones.forEach( email => {
+      if(this.employee.person.mobilePhones.length != this.mobilePhones.length){
+        this.mobilePhones.push(this.addMobileFormGroup())
+      }
+    });
+
     this.showModal = true;
   }
 
@@ -205,14 +208,18 @@ export class EmployeeComponent implements OnInit {
   addMobile() {
     this.employee.person.mobilePhones = [...this.employee.person.mobilePhones];
     this.employee.person.mobilePhones.push(new MobilePhone());
-    this.mobilePhones.push(this._formBuilder.group({
-      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-      main: [false]
-    }));
+    this.mobilePhones.push(this.addMobileFormGroup());
   }
 
   get mobilePhones(): FormArray {
     return this.form_salesman.get('mobilePhones') as FormArray;
+  }
+
+  addMobileFormGroup() {
+    return this._formBuilder.group({
+      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
+      main: [false]
+    })
   }
 
   deletePhone(mobile: MobilePhone, rowIndex: number) {
@@ -243,13 +250,18 @@ export class EmployeeComponent implements OnInit {
   addEmail() {
     this.employee.person.emails = [...this.employee.person.emails];
     this.employee.person.emails.push(new Email());
-    this.emails.push(this._formBuilder.group({
-      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-      main: [false]
-    }));
+    this.emails.push(this.addEmailFormGroup());
   }
+
   get emails(): FormArray {
     return this.form_salesman.get('emails') as FormArray;
+  }
+
+  addEmailFormGroup(){
+    return this._formBuilder.group({
+      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
+      main: [false]
+    })
   }
 
   deleteEmail(email: Email, rowIndex: number) {
@@ -286,10 +298,20 @@ export class EmployeeComponent implements OnInit {
       phoneNumber: [''],
       main: [false]
     }))
-
   }
+
   get addresses(): FormArray {
     return this.form_salesman.get('addresses') as FormArray;
+  }
+
+  addAdressFormGroup() {
+    return this._formBuilder.group({
+      city: ['',],
+      address: ['',],
+      neighborhood: [''],
+      phoneNumber: [''],
+      main: [false]
+    })
   }
 
   deleteRow(row: Location, rowIndex: number) {
@@ -303,6 +325,7 @@ export class EmployeeComponent implements OnInit {
         } else {
           this.locationService.delete(row.id).pipe(first()).subscribe(
             data => {
+              console.log(data);
               if (data['success']) {
                 this.employee.person.locations = this.employee.person.locations.filter((x) => x.id != row.id);
               }
@@ -316,7 +339,6 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  //validations Document Student
   async validate_document(control: AbstractControl) {
     const val = control.value;
     const response = await this.employeeService.getAll();
@@ -331,6 +353,28 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
+  deleteEmployee(employee: Employee) {
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `Está eliminando: ${employee.person.name} ${employee.person.surname} ${employee.person.secondSurname}`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.employeeService.delete(employee.id, employee).pipe(first()).subscribe(
+          data => {
+            console.log(data['success']);
+            if (data['success']) {
+              this.employees = this.employees.filter((x) => x.id != employee.id);
+              this.messageService.add({severity: 'success', summary: '', detail: 'Empleado eliminado con éxito'})
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+    });
+  }
+
   // get all customers
   async getAllSalesMan() {
     try {
@@ -342,5 +386,7 @@ export class EmployeeComponent implements OnInit {
       console.error(error);
     }
   }
+
+  
 
 }

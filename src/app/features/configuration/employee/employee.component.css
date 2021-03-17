@@ -8,7 +8,6 @@
 :host/deep/ .p-datatable .p-datatable-thead > tr > th {
   text-align: left;
   padding: 1rem 1rem;
-  border: none;
   border-width: 0 0 1px 0;
   font-weight: 600;
   color: #495057;
@@ -18,7 +17,6 @@
 
 :host/deep/ .p-datatable .p-datatable-tbody > tr > td {
   text-align: left;
-  border: none;
 }
 
 :host/deep/ .p-inputtext:enabled:hover {
@@ -31,35 +29,6 @@
 
 :host/deep/ .p-dropdown {
   height: 2em;
-}
-
-/* style component */
-.button-action {
-  width: 20px !important;
-  height: 20px;
-  background: transparent !important;
-  border: none !important;
-  color: rgba(31, 45, 65, 0.5) !important;
-}
-
-.button-text{
-  float: right;
-  position: relative;
-  border: none;
-  font-weight: bold;
-}
-
-.p-button-close {
-  color: #3646CD;
-  background: rgba(54, 69, 205, 0);
-  border-color: #3646CD !important;
-  padding: .5em .8em;
-}
-
-.p-button-close:enabled:hover, .p-button-close:enabled:focus {
-  color: #3646CD;
-  background: #3645cd1c;
-  border-color: #3646CD48 !important;
 }
 
 .p-button-save {
