@@ -3,7 +3,6 @@ import { InventaryComponent } from './inventary.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from "@angular/core";
 import { InventaryRoutingModule } from './inventary-routing.module';
-import { PackingComponent } from './packing/packing.component';
 import { ProductionComponent } from './production/production.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,7 +25,6 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
   declarations: [
     InventaryComponent,
     ArticlesComponent,
-    PackingComponent,
     ProductionComponent
   ],
   exports: [

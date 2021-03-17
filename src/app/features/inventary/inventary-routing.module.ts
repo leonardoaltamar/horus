@@ -1,5 +1,4 @@
 import { ArticlesComponent } from './articles/articles.component';
-import { PackingComponent } from './packing/packing.component';
 import { RouterModule, Routes } from '@angular/router';
 import { InventaryComponent } from './inventary.component';
 import { ProductionComponent } from './production/production.component';
@@ -13,10 +12,6 @@ const routes: Routes = [
       {
         path: 'articles',
         component: ArticlesComponent,
-      },
-      {
-        path: 'packings',
-        component: PackingComponent,
       },
       {
         path: 'productions',
