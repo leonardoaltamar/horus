@@ -4,7 +4,6 @@ import { RouteStateService } from '@core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-
 import { Validations } from '../../../../utils/validations';
 
 //Models
@@ -138,13 +137,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   newSalesman() {
-    console.log(this.employee)
     this.employee = new Employee();
     this.showModal = true;
   }
 
   saveSalesMan() {
-
     // Date formatting to database format
     this.employee.contractDate = moment(this.employee.contractDate).format('YYYY-MM-DD');
 
@@ -291,13 +288,7 @@ export class EmployeeComponent implements OnInit {
   addRow() {
     this.employee.person.locations = [...this.employee.person.locations];
     this.employee.person.locations.push(new Location());
-    this.addresses.push(this._formBuilder.group({
-      city: [''],
-      address: [''],
-      neighborhood: [''],
-      phoneNumber: [''],
-      main: [false]
-    }))
+    this.addresses.push(this.addAdressFormGroup())
   }
 
   get addresses(): FormArray {

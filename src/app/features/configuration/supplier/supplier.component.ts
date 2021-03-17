@@ -3,9 +3,9 @@ import { RouteStateService } from '@core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService, SelectItem } from 'primeng/api';
+import { Validations } from '../../../../utils/validations';
 
 //Models
-import { City } from '@core/models/city.model';
 import { Location } from '@core/models/location.model';
 import { Supplier } from '@core/models/supplier.model'
 
@@ -45,7 +45,6 @@ export class SupplierComponent implements OnInit {
     private supplierService: SupplierService,
     private confirmationService: ConfirmationService,
     private typeSupplierService: TypeSupplierService,
-    private personService: PersonService,
     private cityService: CityService,
     private messageService: MessageService,
     private locationService: LocationService,
@@ -58,24 +57,14 @@ export class SupplierComponent implements OnInit {
       document: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(12), Validators.pattern(/^([0-9])*$/)], [this.validate_document.bind(this)]],
       expeditionCity: [''],
       birthDate: [''],
-      gender: [''],
+      gender: ['', [Validations.validateDropdown]],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       surName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(70), Validators.pattern(/^([a-zA-Z ])*$/)]],
       secondSurname: [''],
-      typeSupplier: [''],
-
-      emails: this._formBuilder.array([this._formBuilder.group({
-        email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-        main: [false]
-      })]),
-
-      mobilePhones: this._formBuilder.array([this._formBuilder.group({
-        number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-        main: [false]
-      })]),
-
-      addresses: this._formBuilder.array([this.addLocationGroup()]),
-
+      typeSupplier: ['', [Validations.validateDropdown]],
+      emails: this._formBuilder.array([this.addEmailFormGroup()]),
+      mobilePhones: this._formBuilder.array([this.addMobileFormGroup()]),
+      locations: this._formBuilder.array([this.addLocationGroupForm()]),
       businesNit: [''],
       businesName: [''],
       businesDane: ['']
@@ -103,10 +92,9 @@ export class SupplierComponent implements OnInit {
         data => {
           console.log(this.supplier)
           this.supplier = data;
-          console.log(data)
           this.suppliers.push(this.supplier);
           this.messageService.add({
-            severity: 'success', summary: `Departamento creada con éxito`, detail: `Code: ${data.person.documentNumber}
+            severity: 'success', summary: `Proveedor creado con éxito`, detail: `Documento: ${data.person.documentNumber}
           Nombre: ${data.person.name} ${data.person.surname}`
           });
           this.showModal = false;
@@ -126,7 +114,7 @@ export class SupplierComponent implements OnInit {
               return x
             });
             this.showModal = false;
-            this.messageService.add({ severity: 'success', summary: `Departamento actualizada con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Proveedor actualizado con éxito` });
           }
         },
         error => {
@@ -138,6 +126,24 @@ export class SupplierComponent implements OnInit {
 
   modifySupplier(supplier: Supplier) {
     this.supplier = supplier;
+
+    this.supplier.person.emails.forEach( email => {
+      if(this.supplier.person.emails.length != this.emails.length){
+        this.emails.push(this.addEmailFormGroup())
+      }
+    });
+
+    this.supplier.person.locations.forEach( email => {
+      if(this.supplier.person.locations.length != this.locations.length){
+        this.locations.push(this.addLocationGroupForm())
+      }
+    });
+
+    this.supplier.person.mobilePhones.forEach( email => {
+      if(this.supplier.person.mobilePhones.length != this.mobilePhones.length){
+        this.mobilePhones.push(this.addMobileFormGroup())
+      }
+    });
     this.showModal = true;
   }
 
@@ -166,14 +172,18 @@ export class SupplierComponent implements OnInit {
   addMobile() {
     this.supplier.person.mobilePhones = [...this.supplier.person.mobilePhones];
     this.supplier.person.mobilePhones.push(new MobilePhone());
-    this.mobilePhones.push(this._formBuilder.group({
-      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
-      main: [false]
-    }));
+    this.mobilePhones.push(this.addMobileFormGroup());
   }
 
   get mobilePhones(): FormArray {
     return this.form_supplier.get('mobilePhones') as FormArray;
+  }
+
+  addMobileFormGroup() {
+    return this._formBuilder.group({
+      number: ['', [Validators.pattern(/^([0-9])*$/), Validators.minLength(7), Validators.maxLength(10)]],
+      main: [false]
+    })
   }
 
   deletePhone(mobile: MobilePhone, rowIndex: number) {
@@ -204,13 +214,18 @@ export class SupplierComponent implements OnInit {
   addEmail() {
     this.supplier.person.emails = [...this.supplier.person.emails];
     this.supplier.person.emails.push(new Email());
-    this.emails.push(this._formBuilder.group({
-      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
-      main: [false]
-    }));
+    this.emails.push(this.addEmailFormGroup());
   }
+
   get emails(): FormArray {
     return this.form_supplier.get('emails') as FormArray;
+  }
+
+  addEmailFormGroup(){
+    return this._formBuilder.group({
+      email: ['', [Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)]],
+      main: [false]
+    })
   }
 
   deleteEmail(email: Email, rowIndex: number) {
@@ -240,9 +255,14 @@ export class SupplierComponent implements OnInit {
   addLocation() {
     this.supplier.person.locations = [...this.supplier.person.locations];
     this.supplier.person.locations.push(new Location);
+    this.locations.push(this.addLocationGroupForm());
   }
 
-  addLocationGroup(){
+  get locations(): FormArray {
+    return this.form_supplier.get('locations') as FormArray;
+  }
+
+  addLocationGroupForm(){
     return this._formBuilder.group({
       city: [''],
       address: [''],
@@ -298,7 +318,6 @@ export class SupplierComponent implements OnInit {
     try {
       this.isLoading = true;
       this.suppliers = await this.supplierService.getAll();
-      console.log(this.suppliers);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -308,7 +327,6 @@ export class SupplierComponent implements OnInit {
 
   getCitiesGenderDocument() {
     this.cityService.getAll().then(response => {
-      console.log(response);
       response.forEach(city =>
         this.cities.push({
           label: city.name,
