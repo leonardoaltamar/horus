@@ -83,7 +83,7 @@ export class ArticlesComponent implements OnInit {
           this.article = data;
           console.log(data);
           this.articles.push(this.article);
-          this.messageService.add({ severity: 'success', summary: `producto creada con éxito`, detail: `Nombre: ${this.article.name}` });
+          this.messageService.add({ severity: 'success', summary: `Artículo creado con éxito`, detail: `Nombre: ${this.article.name}` });
         },
         error => {
           console.error(`Error de guardado ${error}`);
@@ -98,7 +98,7 @@ export class ArticlesComponent implements OnInit {
                 x = this.article;
               return x
             });
-            this.messageService.add({ severity: 'success', summary: `Producto actualizado con exito` });
+            this.messageService.add({ severity: 'success', summary: `Artículo actualizado con exito` });
           }
         }
       )
@@ -120,14 +120,13 @@ export class ArticlesComponent implements OnInit {
       accept: () => {
         this.articleService.delete(article.id, article).pipe(first()).subscribe(
           data => {
+            console.log(data);
             if (data['success']) {
-              this.messageService.add({ severity: 'success', summary: `producto borrado con éxito`, detail: `producto: ${article.name} ` });
+              this.messageService.add({ severity: 'success', summary: `Artículo eliminado con éxito`, detail: `producto: ${article.name} ` });
               this.articles = this.articles.filter((x) => x.id != article.id);
             }
           },
-          error => {
-            console.log(error);
-          }
+          error => console.log(error)
         );
       }
     });
@@ -153,8 +152,9 @@ export class ArticlesComponent implements OnInit {
     if (!row.id) {
       this.article.rawMaterials.splice(rowIndex, 1);
     } else {
-      this.rawMaterialService.delete(row.id).pipe(first()).subscribe(
+      this.rawMaterialService.delete(row.id, row).pipe(first()).subscribe(
         data => {
+          console.log(data)
           if (data['success']) {
             this.article.rawMaterials = this.article.rawMaterials.filter((x) => x.id != row.id);
           }

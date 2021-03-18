@@ -38,23 +38,23 @@ export class RawMaterialService {
     // }));
   }
 
-  delete(id: number) {
-    return this.http.delete(`${this.endPoint}/${id}`)
-      .pipe(map(x => {
-        return x;
-      }
-      ));
-  }
-
-  // delete(id: number, rawMaterial: RawMaterial) {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  //     body: rawMaterial
-  //   };
-  //   return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
+  // delete(id: number) {
+  //   return this.http.delete(`${this.endPoint}/${id}`)
   //     .pipe(map(x => {
   //       return x;
-  //     }));
+  //     }
+  //     ));
   // }
+
+  delete(id: number, rawMaterial: RawMaterial) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      body: rawMaterial
+    };
+    return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
+      .pipe(map(x => {
+        return x;
+      }));
+  }
 
 }
