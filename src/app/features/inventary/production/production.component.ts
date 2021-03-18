@@ -3,6 +3,7 @@ import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { Article, MovementOrder, ProductionOrder } from '@core/models';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { generatePdf } from '@core/helpers/production_order.pdf'
 
 //servicios
 import { ArticleService } from '@core/services/article.service';
@@ -114,5 +115,8 @@ export class ProductionComponent implements OnInit {
       }
     );
     this.showModal = false;
+  }
+  downloadPdf(productionOrder){
+      generatePdf(productionOrder);
   }
 }
