@@ -17,6 +17,7 @@ export class Process {
   carrier: Employee;
   supplier: Supplier;
   state: string;
+  address: string;
   total: number;
   createdAt: string;
 
@@ -33,6 +34,7 @@ export class Process {
     this.carrier = new Employee();
     this.supplier = new Supplier();
     this.state = '';
+    this.address = '';
     this.total = 0;
     this.createdAt = '';
   }

@@ -31,8 +31,8 @@ export class MenuComponent {
         label: 'Remisiones',
         icon: 'fas pi-pw fa-list-alt',
         items: [
-          { label: 'Compras', icon: 'fas pi-fw fa-shopping-cart', routerLink: ["/process/purchases"] },
           { label: 'Ventas', icon: 'fas pi-fw fa-truck', routerLink: ["/process/sales"] },
+          { label: 'Compras', icon: 'fas pi-fw fa-shopping-cart', routerLink: ["/process/purchases"] },
         ]
       },
       {
