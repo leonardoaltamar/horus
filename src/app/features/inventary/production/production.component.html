@@ -22,9 +22,10 @@
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
-            <th>Numero de orden</th>
+            <th>Número de orden</th>
             <th>Fecha</th>
-            <th>Numero de lote</th>
+            <th>Número de lote</th>
+            <th>Estado</th>
             <th>*</th>
           </tr>
         </ng-template>
@@ -35,9 +36,13 @@
             <td>{{productionOrder.date || ""}} </td>
             <td>{{productionOrder.numLote || ""}}</td>
             <td>
-              <button pButton pRipple type="button" style="padding-right: 0.3em;"
+              <span *ngIf="productionOrder.state === 'A'" [class]="'sales-badge status-' + productionOrder.state">Terminado</span>
+              <span *ngIf="productionOrder.state === 'E'" [class]="'sales-badge status-' + productionOrder.state">Pendiente</span>
+            </td>
+            <td>
+              <button pButton pRipple type="button"
                 icon="fas fa-pencil" class="button-action" (click)="modifyProductionOrder(productionOrder)"></button>
-              <button pButton pRipple type="button" icon="fas fa-trash-alt"
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteProdution(productionOrder)"
                 class="button-action"></button>
             </td>
           </tr>
@@ -55,10 +60,18 @@
   </div>
 
   <div class="card-body">
-    <div class="order-detail-title">
-      <p>Fecha de inicio: {{productionOrder.date}}</p>
-      <p>Numero de orden: {{productionOrder.numOrder}}</p>
-      <p>Numero de lote: {{productionOrder.numLote}}</p>
+    <div class="p-d-flex p-jc-between">
+      <div class="order-detail-title">
+        <p>Fecha de inicio: {{productionOrder.date}}</p>
+        <p>Número de orden: {{productionOrder.numOrder}}</p>
+        <p>Número de lote: {{productionOrder.numLote}}</p>
+      </div>
+      <div class="container-state">
+        <p-confirmPopup></p-confirmPopup>
+        <span *ngIf="productionOrder.state === 'A'" [class]="'sales-badge button-state status-' + productionOrder.state">Terminado</span>
+        <span *ngIf="productionOrder.state === 'E'" (click)="confirmState($event)" [class]="'sales-badge button-state status-' + productionOrder.state">Pendiente</span>
+        <!-- <button  pButton icon="pi pi-check" [label]="productionOrder.state === 'A' ? 'Terminado': 'Pendiente'"></button> -->
+      </div>
     </div>
     <p-table [value]="productionOrder.details" dataKey="id" styleClass="p-datatable-gridlines">
       <ng-template pTemplate="header">
@@ -201,6 +214,7 @@
   </form>
 </p-dialog>
 
+<p-confirmDialog class="dialog-small" *ngIf="!isChangeState"></p-confirmDialog>
 
 
 
