@@ -26,6 +26,7 @@ export class ArticlesComponent implements OnInit {
   form_product: FormGroup;
   isLoading: boolean = false;
   showModal: boolean = false;
+  rawMaterials: Article[] = [];
   checked: boolean = false;
   //Modelos
   article: Article = new Article();
@@ -199,6 +200,7 @@ export class ArticlesComponent implements OnInit {
     try {
       this.isLoading = true;
       this.articles = await this.articleService.getAll();
+      this.rawMaterials = this.articles.filter((article) => article.rawMaterials.length <= 0)
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -224,7 +226,7 @@ export class ArticlesComponent implements OnInit {
   calculateProductionCost() {
     this.article.productionCost = 0;
     this.article.rawMaterials.forEach(material => {
-      const totalMaterial = material.article.unitValue * material.quantity
+      const totalMaterial = material.article.acquisitionValue * material.quantity
       this.article.productionCost = this.article.productionCost + totalMaterial
     })
   }

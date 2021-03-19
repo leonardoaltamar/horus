@@ -1,8 +1,10 @@
-import { ArticlesComponent } from './articles/articles.component';
-import { RouterModule, Routes } from '@angular/router';
-import { InventaryComponent } from './inventary.component';
-import { ProductionComponent } from './production/production.component';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { InventaryComponent } from './inventary.component';
+import { ArticlesComponent } from './articles/articles.component';
+import { InventoryMovementComponent } from './inventory-movement/inventory-movement.component';
+import { ProductionComponent } from './production/production.component';
 
 const routes: Routes = [
   {
@@ -12,6 +14,10 @@ const routes: Routes = [
       {
         path: 'articles',
         component: ArticlesComponent,
+      },
+      {
+        path: 'inventory_movements',
+        component: InventoryMovementComponent
       },
       {
         path: 'productions',

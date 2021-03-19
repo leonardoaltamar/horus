@@ -1,0 +1,38 @@
+<div styleClass="ssw-panel" class="card scroll">
+    <div class="card-header">
+      Movimientos de inventario
+    </div>
+    <div class="card-body">
+      <div *ngIf="isLoading" class="p-text-center">
+        <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+      </div>
+      <div class="table-responsive" *ngIf="!isLoading">
+        <p-table [value]="inventoryMovements" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+          [globalFilterFields]="['descripcion']">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>#</th>
+              <th>Artículo</th>
+              <th>Cantidad</th>
+              <th>Medida</th>
+              <th>Fecha</th>
+              <th>Tipo de movimiento</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+            <tr>
+              <td>{{rowIndex+1}}</td>
+              <td>{{dataRow.article.name}}</td>
+              <td>{{dataRow.typeMoviment ? '+': '-'}} {{dataRow.quantity}}</td>
+              <td>{{dataRow.measurement.description}}</td>
+              <td>{{dataRow.date}}</td>
+              <td>
+                  <span *ngIf="dataRow.typeMoviment" [class]="'sales-badge status-' + dataRow.typeMoviment">Entrada</span>
+                  <span *ngIf="!dataRow.typeMoviment" [class]="'sales-badge status-' + dataRow.typeMoviment">Salida</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
