@@ -31,6 +31,7 @@ export class MainComponent implements OnInit {
   isLoading: boolean = false;
   topEmployees: Employee[] = [];
   numberSalesToday: number = 0;
+  numberPurchasesToday: number = 0;
   numberProductsSold: number = 0;
   numberProductionOrder: number = 0;
   currentToday = moment().format('YYYY-MM-DD');
@@ -44,6 +45,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSalesToday();
+    this.getAllPurchasesToday();
     this.dataSalesPrice = [...[...Array(12)].map(e => 0)]
     this.dataSalesPriceE = [...[...Array(12)].map(e => 0)]
     this.getSalesYear();
@@ -109,6 +111,15 @@ export class MainComponent implements OnInit {
       if(item.typeMoviment === 'S' && item.createdAt === this.currentToday) {
         this.numberSalesToday++;
         item.details.forEach(de => this.numberProductsSold++)
+      }
+    })
+  }
+
+  async getAllPurchasesToday() {
+    const data = await this.serviceProcess.getAll();
+    data.forEach(item => {
+      if(item.typeMoviment === 'P' && item.createdAt === this.currentToday) {
+        this.numberPurchasesToday++;
       }
     })
   }

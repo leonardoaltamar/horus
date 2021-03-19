@@ -10,6 +10,8 @@ import { SupplierService } from '@core/services/supplier.service';
 import * as moment from 'moment';
 import { MeasurementService } from '@core/services/measurement.service';
 import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validations } from 'src/utils/validations';
 @Component({
   selector: 'purchases',
   templateUrl: 'purchases.component.html',
@@ -20,6 +22,7 @@ export class purchasesComponent {
 
   model: Process = new Process();
   purchases: Process[] = [];
+  form_purchase: FormGroup;
   articles: Article[] = [];
   suppliers: SelectItem[] = [];
   showModal: boolean = false;
@@ -31,7 +34,15 @@ export class purchasesComponent {
               private serviceArticle: ArticleService,
               private serviceMeasurement: MeasurementService,
               private messageService: MessageService,
-              private serviceSupplier: SupplierService) {}
+              private _formBuilder: FormBuilder,
+              private serviceSupplier: SupplierService) {
+                this.form_purchase = this._formBuilder.group({
+                  code: ['', [Validators.required]],
+                  date: ['', [Validators.required]],
+                  supplier: ['', [Validators.required]],
+                  details: this._formBuilder.array([this.addDetailsFormGroup()])
+                })
+              }
 
   ngOnInit(): void {
     this.routeStateService.add("Compras", "/process/purchases", null, false);
@@ -55,6 +66,7 @@ export class purchasesComponent {
 
   addProduct() {
     this.model.details.push(new InventoryMovement());
+    this.details.push(this.addDetailsFormGroup());
   }
 
   async getAllPurchases() {
@@ -68,6 +80,18 @@ export class purchasesComponent {
       })
       return e;
     })
+  }
+
+  addDetailsFormGroup() {
+    return this._formBuilder.group({
+      article: [''],
+      measurement: [''],
+      quantity: ['']
+    })
+  }
+
+  get details(): FormArray {
+    return this.form_purchase.get('details') as FormArray;
   }
 
   async getAllSuppliers() {
@@ -95,7 +119,6 @@ export class purchasesComponent {
   save() {
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
-    console.log(this.model);
     if(!this.model.id) {
       this.service.create(this.model).pipe().subscribe(
         data => {

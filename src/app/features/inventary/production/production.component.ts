@@ -8,10 +8,13 @@ import { generatePdf } from '@core/helpers/production_order.pdf'
 //servicios
 import { ArticleService } from '@core/services/article.service';
 import { ProductionOrderService } from '@core/services/production_order.service';
+import { first } from 'rxjs/operators';
+
 @Component({
   selector: 'app-production',
   templateUrl: './production.component.html',
-  styleUrls: ['./production.component.css']
+  styleUrls: ['./production.component.css'],
+  providers: [ConfirmationService]
 })
 export class ProductionComponent implements OnInit {
   isLoading: boolean = false;
@@ -20,10 +23,12 @@ export class ProductionComponent implements OnInit {
   article: Article = new Article();
   productionOrder: ProductionOrder = new ProductionOrder();
   productionOrders: ProductionOrder[];
+  isChangeState: boolean = false;
   form_production: FormGroup;
   showEdit: boolean = false;
   constructor(private routeStateService: RouteStateService,
     private articleService: ArticleService,
+    private confirmationService: ConfirmationService,
     private productionService: ProductionOrderService,
     private _formuilder: FormBuilder,
     private messageService: MessageService,) {
@@ -31,10 +36,7 @@ export class ProductionComponent implements OnInit {
         date: ['', [Validators.required], []],
         numOrder: ['', [Validators.required], []],
         numLote: ['', [Validators.required], []],
-        details: this._formuilder.array([this._formuilder.group({
-          article: [''],
-          quantity: ['']
-        })]),
+        details: this._formuilder.array([this.addDetailFormGroup()]),
       })
 
     }
@@ -61,10 +63,14 @@ export class ProductionComponent implements OnInit {
   addProduct(){
     this.productionOrder.details = [...this.productionOrder.details];
     this.productionOrder.details.push(new MovementOrder);
-    this.details.push(this._formuilder.group({
+    this.details.push(this.addDetailFormGroup())
+  }
+
+  addDetailFormGroup() {
+    return this._formuilder.group({
       article: [''],
       quantity: ['']
-    }))
+    })
   }
 
   async getAllProduction(){
@@ -96,8 +102,13 @@ export class ProductionComponent implements OnInit {
   }
 
   modifyProductionOrder(productionOrder: ProductionOrder) {
-    this.showEdit = true;
     this.productionOrder = productionOrder;
+    this.productionOrder.details.forEach( email => {
+      if(this.productionOrder.details.length != this.details.length){
+        this.details.push(this.addDetailFormGroup())
+      }
+    });
+    this.showEdit = true;
     console.log(productionOrder);
   }
 
@@ -116,7 +127,56 @@ export class ProductionComponent implements OnInit {
     );
     this.showModal = false;
   }
+
+  confirmState(event: Event) {
+    this.isChangeState = true;
+    this.confirmationService.confirm({
+      target: event.target,
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      message: '¿Deseas cambiar el estado a terminado?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.productionOrder.state = 'A';
+        this.productionService.update(this.productionOrder.id, this.productionOrder).pipe(first()).subscribe(
+          response => {
+            if(response['success']) {
+              this.messageService.add({severity:'info', detail:'Estado actualizado a terminado'});
+            }
+          },
+          erorr => {
+            this.messageService.add({severity:'error', detail:'Ocurrio un error al momento de actualizar el estado'});
+          }
+        )
+      },
+  });
+  }
+
+  deleteProdution(productionOrder: ProductionOrder) {
+    this.isChangeState = false;
+    const canDeleted = productionOrder.state === 'E'
+    if(canDeleted) {
+      this.confirmationService.confirm({
+        header: 'Alerta',
+        message: `¿Está seguro de eliminar esta orden de producción?`,
+        icon: 'fas fa-exclamation-triangle',
+        accept: () => {
+          this.productionService.delete(productionOrder.id, productionOrder).pipe(first()).subscribe(
+            data => {
+              console.log(data);
+              if (data['success']) {
+                this.messageService.add({ severity: 'success', summary: '', detail: `Orden de producción eliminada con éxito` });
+                this.productionOrders = this.productionOrders.filter((x) => x.id != productionOrder.id);
+              }
+            },
+            error => console.log(error)
+          );
+        }
+      });
+    }
+  }
+
   downloadPdf(productionOrder){
-      generatePdf(productionOrder);
+    generatePdf(productionOrder);
   }
 }

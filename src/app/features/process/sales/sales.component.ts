@@ -59,21 +59,21 @@ export class SalesComponent {
       code: ['', [Validators.required]],
       date: ['', [Validators.required]],
       client: ['', [Validators.required]],
-      seller: ['', [Validators.required]],
-      carrier: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      typePayment: ['', [Validators.required]],
+      seller: ['',],
+      carrier: ['',],
+      address: ['', ],
+      typePayment: ['',],
       details: this._fB.array([this.addDetailGroup()])
     })
 
   addDetailGroup(){
     return this._fB.group({
-      article: ['', [Validators.required]],
-      quantity: ['', [Validators.required]]
+      article: ['',],
+      quantity: ['']
     })
   }
 
-  get addDetails(): FormArray {
+  get details(): FormArray {
     return <FormArray>this.formSale.get('details');
   }
 
@@ -165,6 +165,7 @@ export class SalesComponent {
 
   addProduct() {
     this.model.details.push(new InventoryMovement());
+    this.details.push(this.addDetailGroup())
   }
 
   onChangeQuantity() {
@@ -177,14 +178,13 @@ export class SalesComponent {
     this.showModal = true;
     this.getAllPayments();
     this.model.details.forEach(item => {
-      if(this.model.details.length != this.addDetails.length){
-        this.addDetails.push(this.addDetailGroup())
+      if(this.model.details.length != this.details.length){
+        this.details.push(this.addDetailGroup())
       }
     });
   }
 
   save() {
-    console.log(this.model)
     this.model.typeMoviment = 'S';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
 
@@ -232,12 +232,6 @@ export class SalesComponent {
       item.total = item.quantity * item.article.unitValue;
       this.model.total = item.total + this.model.total;
     })
-  }
-
-  async calculateTotalDetail(dataRow: InventoryMovement) {
-    const { article } = dataRow;
-    console.log(article);
-
   }
 
   newSale() {

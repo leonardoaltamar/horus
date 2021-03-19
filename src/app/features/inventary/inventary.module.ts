@@ -20,6 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TabViewModule } from 'primeng/tabview';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     ReactiveFormsModule,
     CommonModule,
     ConfirmDialogModule,
+    ConfirmPopupModule,
     CalendarModule,
     InputNumberModule,
     ProgressSpinnerModule,

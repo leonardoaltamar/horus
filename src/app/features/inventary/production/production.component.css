@@ -10,6 +10,16 @@
   box-shadow: 0 0 0 0.01rem #3646cd;
 }
 
+:host/deep/ .p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: #495057;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+
 :host/deep/ .p-paginator .p-paginator-first,
 :host/deep/ .p-paginator .p-paginator-prev,
 :host/deep/ .p-paginator .p-paginator-next,
@@ -26,34 +36,6 @@
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 0.01rem #3646cd;
-}
-
-/* style component */
-.button-action {
-  width: 20px !important;
-  height: 20px;
-  background: transparent !important;
-  border: none !important;
-  color: rgba(31, 45, 65, 0.5) !important;
-}
-
-.button-text{
-  float: right;
-  position: relative;
-  border: none;
-  font-weight: bold;
-}
-
-.p-button-close {
-  color: #3646CD;
-  background: rgba(54, 70, 205, 0.173);
-  border-color: #3646CD !important;
-}
-
-.p-button-close:enabled:hover, .p-button-close:enabled:focus {
-  color: #3646CD;
-  background: #3646CD49;
-  border-color: #3646CD48 !important;
 }
 
 .p-button-save {
@@ -105,4 +87,34 @@
   float: left;
   height: 100%;
   width: 50%
+}
+
+.order-detail-title p {
+  font-weight: 700;
+  color: #5f5f5f;
+}
+
+.sales-badge {
+  border-radius: 2px;
+  padding: .25em .5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+}
+
+.status-A {
+  background-color: #c8e6c9;
+  color: #256029;
+}
+
+.status-E {
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+
+.button-state {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 5px;
 }

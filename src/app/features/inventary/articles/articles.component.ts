@@ -27,9 +27,6 @@ export class ArticlesComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
   checked: boolean = false;
-  cost: string = '$00.0'
-
-
   //Modelos
   article: Article = new Article();
   articles: Article[] = [];
@@ -52,13 +49,7 @@ export class ArticlesComponent implements OnInit {
       unitValue: [''],
       category: ['', [Validators.required], []],
       expeditionDate: [],
-
-      materials: this._formuilder.array([this._formuilder.group({
-        description: [''],
-        measurement: [],
-        quantity: [''],
-        main: [false]
-      })])
+      materials: this._formuilder.array([this.addRowMaterialFormGroup()])
     })
   }
 
@@ -109,6 +100,11 @@ export class ArticlesComponent implements OnInit {
   modifyArticle(dataRow: Article) {
     this.article = dataRow;
     this.checked = (this.article.rawMaterials.length == 0) ? false : true;
+    this.article.rawMaterials.forEach( email => {
+      if(this.article.rawMaterials.length != this.materials.length){
+        this.materials.push(this.addRowMaterialFormGroup())
+      }
+    });
     this.showModal = true;
   }
 
@@ -136,17 +132,22 @@ export class ArticlesComponent implements OnInit {
   addRow() {
     this.article.rawMaterials = [...this.article.rawMaterials];
     this.article.rawMaterials.push(new RawMaterial());
-    this.materials.push(this._formuilder.group({
-      description: [''],
-      measurement: [],
-      quantity: [''],
-      main: [false]
-    }))
+    this.materials.push(this.addRowMaterialFormGroup())
   }
 
   get materials(): FormArray {
     return this.form_product.get('materials') as FormArray;
   }
+
+  addRowMaterialFormGroup() {
+    return this._formuilder.group({
+      description: [''],
+      measurement: [],
+      quantity: [''],
+      main: [false]
+    })
+  }
+  
 
   deleteRow(row: RawMaterial, rowIndex: number) {
     if (!row.id) {
