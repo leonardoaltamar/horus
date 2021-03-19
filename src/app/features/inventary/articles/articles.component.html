@@ -34,7 +34,7 @@
             <td>{{rowIndex+1}}</td>
             <td>{{article.code}}</td>
             <td>{{article.name}}</td>
-            <td>{{article.unitValue || ""}} </td>
+            <td>{{ article.rawMaterials <= 0 ? article.acquisitionValue : article.unitValue }}</td>
             <td>{{article.category.description}}</td>
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyArticle(article)"
@@ -153,7 +153,7 @@
               <td pEditableColumn>
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <p-dropdown [options]="articles" optionLabel="name" id="rowMaterial" formControlName="description"
+                    <p-dropdown [options]="rawMaterials" optionLabel="name" id="rowMaterial" formControlName="description"
                       placeholder="Selecciona" [(ngModel)]="dataRow.article" [style]="{ width: '100%' }"></p-dropdown>
                   </ng-template>
                   <ng-template pTemplate="output">

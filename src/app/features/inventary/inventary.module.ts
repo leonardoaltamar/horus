@@ -1,10 +1,12 @@
 import { ArticlesComponent } from './articles/articles.component';
 import { InventaryComponent } from './inventary.component';
 import { CommonModule } from '@angular/common';
-import { NgModule } from "@angular/core";
-import { InventaryRoutingModule } from './inventary-routing.module';
-import { ProductionComponent } from './production/production.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+
+import { InventaryRoutingModule } from './inventary-routing.module';
+import { InventoryMovementComponent } from './inventory-movement/inventory-movement.component';
+import { ProductionComponent } from './production/production.component';
 
 //Theme Primeng
 import { CalendarModule } from 'primeng/calendar';
@@ -24,8 +26,9 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
-    InventaryComponent,
     ArticlesComponent,
+    InventaryComponent,
+    InventoryMovementComponent,
     ProductionComponent
   ],
   exports: [

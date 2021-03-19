@@ -1,0 +1,18 @@
+.sales-badge {
+    border-radius: 2px;
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .3px;
+  }
+  
+  .status-1 {
+    color: #229A16;
+    background-color: rgba(84, 214, 44, 0.16);
+  }
+  
+  .status-0 {
+    color: #B72136;
+    background-color: rgba(255, 72, 66, 0.16);
+  }

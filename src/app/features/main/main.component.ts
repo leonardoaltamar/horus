@@ -118,7 +118,7 @@ export class MainComponent implements OnInit {
   async getAllPurchasesToday() {
     const data = await this.serviceProcess.getAll();
     data.forEach(item => {
-      if(item.typeMoviment === 'P' && item.createdAt === this.currentToday) {
+      if(item.typeMoviment === 'E' && item.createdAt === this.currentToday) {
         this.numberPurchasesToday++;
       }
     })
