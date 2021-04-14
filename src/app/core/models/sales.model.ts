@@ -1,6 +1,7 @@
 import { InventoryMovement } from './detail-sale.model';
 import { Supplier } from './supplier.model';
 import { Customer } from './customer.model';
+
 export class Sale {
   id?: number;
   description: string;

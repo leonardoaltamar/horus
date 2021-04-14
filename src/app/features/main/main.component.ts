@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexStroke, ApexTooltip, ApexXAxis, ChartComponent } from 'ng-apexcharts';
 import { ProcessService } from '@core/services/process.service';
 import { EmployeeService } from '@core/services/employee.service';
-import { Article, Employee } from '@core/models';
+import { Product, Employee } from '@core/models';
 import { Process } from '@core/models/process.model';
 import * as moment from 'moment';
 import { ProductionOrderService } from '@core/services/production_order.service';
-import { ArticleService } from '@core/services/article.service';
+import { ProductService } from '@core/services/product.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -35,12 +35,12 @@ export class MainComponent implements OnInit {
   numberProductsSold: number = 0;
   numberProductionOrder: number = 0;
   currentToday = moment().format('YYYY-MM-DD');
-  topArticles: Article[] = []
+  topProducts: Product[] = [];
   lastSales: Process[] = [];
 
   constructor(private serviceProcess: ProcessService,
         private serviceEmplooyee: EmployeeService,
-        private serviceArticle: ArticleService,
+        private serviceProduct: ProductService,
         private serviceProdutionOrder: ProductionOrderService) {}
 
   ngOnInit(): void {
@@ -129,7 +129,7 @@ export class MainComponent implements OnInit {
   }
 
   async getTopProduct() {
-    this.topArticles = await this.serviceArticle.getTop();
+    this.topProducts = await this.serviceProduct.getTop();
   }
 
   async getLastSales() {

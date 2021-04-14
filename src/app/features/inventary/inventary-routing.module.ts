@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { InventaryComponent } from './inventary.component';
-import { ArticlesComponent } from './articles/articles.component';
+import { ProductComponent } from './product/product.component';
 import { InventoryMovementComponent } from './inventory-movement/inventory-movement.component';
 import { ProductionComponent } from './production/production.component';
+import { RawMaterialComponent } from './row-material/row-material.component';
 
 const routes: Routes = [
   {
@@ -12,8 +13,8 @@ const routes: Routes = [
     component: InventaryComponent,
     children: [
       {
-        path: 'articles',
-        component: ArticlesComponent,
+        path: 'products',
+        component: ProductComponent,
       },
       {
         path: 'inventory_movements',
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'productions',
         component: ProductionComponent,
+      },
+      {
+        path: 'raw_materials',
+        component: RawMaterialComponent,
       },
     ],
   },
