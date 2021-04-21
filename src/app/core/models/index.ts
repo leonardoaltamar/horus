@@ -1,3 +1,4 @@
+export * from './accounts.model';
 export * from './product.model';
 export * from './measurement.model';
 export * from './category.model';
