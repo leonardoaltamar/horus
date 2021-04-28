@@ -69,6 +69,7 @@ export class MenuComponent {
           { label: 'Categorias', icon: 'fas fa-cubes', routerLink: ["/configuration/categories"] },
           { label: 'Departamentos', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/states"] },
           { label: 'Ciudades', icon: 'fas pi-fw fa-building', routerLink: ["/configuration/cities"] },
+          { label: 'Gravámenes', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/liens"] },
           { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] },
           { label: 'Tipos de pago', icon: 'fas pi-fw fa-money-check-alt', routerLink: ["/configuration/type_payment"] },
         ]

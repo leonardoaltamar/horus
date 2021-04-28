@@ -7,6 +7,7 @@ import { NgModule, Component } from '@angular/core';
 import { CategoryComponent } from './category/category.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CityComponent } from './city/city.component';
+import { LienComponent } from './lien/lien.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { StateComponent } from './state/state.component';
 import { EmployeeComponent } from './employee/employee.component';
@@ -40,6 +41,10 @@ const routes: Routes = [
       {
         path: 'cities',
         component: CityComponent,
+      },
+      {
+        path: 'liens',
+        component: LienComponent,
       },
       {
         path: 'measurements',
