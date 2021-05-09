@@ -11,6 +11,7 @@ import { RawMaterial } from '@core/models/raw-material.model';
 
 //services
 import { CategoryService } from '@core/services/category.service';
+import { LienService } from '@core/services/lien.service';
 import { ProductService } from '@core/services/product.service';
 import { RawMaterialService } from '@core/services/raw-material.service';
 import { DetailProductService } from '@core/services/detail-product.service';
@@ -28,6 +29,7 @@ export class ProductComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
   rawMaterials: RawMaterial[] = [];
+  liens: SelectItem[] = [];
   //Modelos
   model: Product = new Product();
   products: Product[] = [];
@@ -37,6 +39,7 @@ export class ProductComponent implements OnInit {
   constructor(private service: ProductService,
     private rawMaterialService: RawMaterialService,
     private detailProductService: DetailProductService,
+    private lienService: LienService,
     private routeStateService: RouteStateService,
     private _formuilder: FormBuilder,
     private categoryService: CategoryService,
@@ -58,6 +61,7 @@ export class ProductComponent implements OnInit {
     this.routeStateService.add("Productos", "/inventary/products", null, false);
     this.getAllProducts();
     this.getAllRawMaterials();
+    this.getAllLiens();
     this.getAllCategory();
     this.getAllMeasurements();
   }
@@ -83,6 +87,17 @@ export class ProductComponent implements OnInit {
       this.isLoading = false;
       console.error(error);
     }
+  }
+
+  async getAllLiens() {
+    this.isLoading = true;
+    const response = await this.lienService.getAll()
+    response.forEach(lien => {
+      this.liens.push({
+        label: lien.name,
+        value: lien.id
+      })
+    })
   }
 
   async getAllCategory() {

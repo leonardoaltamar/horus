@@ -123,6 +123,12 @@
             <small class="p-invalid p-text-center">La Unidad de medida es obligatoria</small>
           </ng-container>
         </div>
+
+        <div class="p-field p-col-4 p-sm-4">
+          <label for="lien">Gravámenes</label>
+          <p-dropdown [options]="liens" [(ngModel)]="model.lien.id" formControlName="lien"
+              placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+        </div>
     </div>
 
     <br>

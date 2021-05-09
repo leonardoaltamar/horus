@@ -1,5 +1,7 @@
 import { DetailProduct } from './detail-product.model';
 import { Category } from './category.model';
+import { Lien } from './lien.model';
+
 
 export class Product {
   id?: number;
@@ -10,6 +12,7 @@ export class Product {
   unitValue?: number;
   category?: Category;
   detailProducts?: DetailProduct[];
+  lien: Lien;
 
   constructor() {
     this.id = null;
@@ -20,5 +23,6 @@ export class Product {
     this.unitValue = 0;
     this.category = new Category();
     this.detailProducts = [];
+    this.lien = new Lien();
   }
 }

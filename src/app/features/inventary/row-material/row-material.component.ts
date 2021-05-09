@@ -12,6 +12,7 @@ import { RawMaterial } from '@core/models/raw-material.model';
 import { CategoryService } from '@core/services/category.service';
 import { RawMaterialService } from '@core/services/raw-material.service';
 import { MeasurementService } from '@core/services/measurement.service';
+import { LienService } from '@core/services/lien.service';
 
 @Component({
   selector: 'app-row-materials',
@@ -30,11 +31,13 @@ export class RawMaterialComponent implements OnInit {
   rowMaterials: RawMaterial[] = [];
   categories: SelectItem[] = [];
   measurements: SelectItem[] = [];
+  liens: SelectItem[] = [];
 
   constructor(private service: RawMaterialService,
     private routeStateService: RouteStateService,
     private _formuilder: FormBuilder,
     private categoryService: CategoryService,
+    private lienService: LienService,
     private confirmationService: ConfirmationService,
     private measurementService: MeasurementService,
     private messageService: MessageService,
@@ -80,6 +83,17 @@ export class RawMaterialComponent implements OnInit {
       this.isLoading = false;
       console.error(error);
     }
+  }
+
+  async getAllLiens() {
+    this.isLoading = true;
+    const response = await this.lienService.getAll()
+    response.forEach(lien => {
+      this.liens.push({
+        label: lien.name,
+        value: lien.id
+      })
+    })
   }
 
   async getAllMeasurement() {

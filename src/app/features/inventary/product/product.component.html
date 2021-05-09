@@ -96,6 +96,12 @@
           <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
         </ng-container>
       </div>
+
+      <div class="p-field p-col-4 p-sm-4">
+        <label for="lien">Gravámen</label>
+        <p-dropdown [options]="liens" [(ngModel)]="model.lien.id" formControlName="lien"
+            placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+      </div>
     </div>
 
     <div class="p-mt-2">
