@@ -1,12 +1,13 @@
-import { ArticlesComponent } from './articles/articles.component';
 import { InventaryComponent } from './inventary.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
 
+import { ProductComponent } from './product/product.component';
 import { InventaryRoutingModule } from './inventary-routing.module';
 import { InventoryMovementComponent } from './inventory-movement/inventory-movement.component';
 import { ProductionComponent } from './production/production.component';
+import { RawMaterialComponent } from './row-material/row-material.component';
 
 //Theme Primeng
 import { CalendarModule } from 'primeng/calendar';
@@ -26,10 +27,11 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
-    ArticlesComponent,
+    ProductComponent,
     InventaryComponent,
     InventoryMovementComponent,
-    ProductionComponent
+    ProductionComponent,
+    RawMaterialComponent
   ],
   exports: [
   ],

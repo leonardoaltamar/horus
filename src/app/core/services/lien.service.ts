@@ -2,44 +2,44 @@ import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { RawMaterial } from './../models/raw-material.model';
+import { Lien } from './../models/';
 import { HttpHeaders } from '@angular/common/http';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class RawMaterialService {
+
+export class LienService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}raw_material`;
+    this.endPoint = `${environment.apiUrl}lien`;
   }
 
   getAll() {
-    return this.http.get<RawMaterial[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<Lien[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<RawMaterial>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<Lien>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(rawMaterial: RawMaterial) {
-    return this.http.post<RawMaterial>(`${this.endPoint}`, rawMaterial);
+  create(lien: Lien) {
+    return this.http.post<Lien>(`${this.endPoint}`, lien);
   }
 
-  update(id: number, rawMaterial: RawMaterial) {
-    return this.http.patch(`${this.endPoint}/${id}`, rawMaterial)
+  update(id: number, lien: Lien) {
+    return this.http.patch(`${this.endPoint}/${id}`, lien)
       .pipe(map(x => {
         return x;
       }));
   }
 
-  delete(id: number, rawMaterial: RawMaterial) {
+  delete(id: number, lien: Lien) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: rawMaterial
+      body: lien
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {

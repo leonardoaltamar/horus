@@ -1,15 +1,27 @@
+import { Category } from './category.model';
 import { Measurement } from './measurement.model';
-import { Article } from './article.model';
+import { Lien } from './lien.model';
 
 export class RawMaterial {
   id?: number;
-  quantity?: number;
-  measurement?: Measurement;
-  article: Article;
+  code: string;
+  name: string;
+  stock: number;
+  unitValue: number;
+  dateExpiry: string;
+  category: Category;
+  measurement: Measurement;
+  lien: Lien;
 
   constructor() {
     this.id = null;
+    this.code = '';
+    this.name = '';
+    this.stock = 0;
+    this.unitValue = 0;
+    this.dateExpiry = '';
+    this.category = new Category();
     this.measurement = new Measurement();
-    this.article = new Article();
+    this.lien = new Lien();
   }
 }

@@ -40,12 +40,19 @@ export class MenuComponent {
         icon: 'fas pi-pw fa-inventory',
         items: [
           { label: 'Producción', icon: 'fas pi-fw fa-hand-holding-box', routerLink: ["/inventary/productions"] },
-          { label: 'Artículos', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/articles"] },
           { label: 'Movimiento de inventario', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/inventory_movements"] },
         ]
       },
       {
-        label: 'Gestión humano',
+        label: 'Bodega',
+        icon: 'fas pi-pw fa-inventory',
+        items: [
+          { label: 'Producto terminado', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/products"] },
+          { label: 'Materia prima', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/raw_materials"] },
+        ]
+      },
+      {
+        label: 'Terceros',
         icon: 'fas fa-users',
         items: [
           { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
@@ -62,6 +69,7 @@ export class MenuComponent {
           { label: 'Categorias', icon: 'fas fa-cubes', routerLink: ["/configuration/categories"] },
           { label: 'Departamentos', icon: 'fas pi-fw fa-city', routerLink: ["/configuration/states"] },
           { label: 'Ciudades', icon: 'fas pi-fw fa-building', routerLink: ["/configuration/cities"] },
+          { label: 'Gravámenes', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/liens"] },
           { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] },
           { label: 'Tipos de pago', icon: 'fas pi-fw fa-money-check-alt', routerLink: ["/configuration/type_payment"] },
         ]

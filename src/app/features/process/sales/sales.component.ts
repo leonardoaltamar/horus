@@ -1,12 +1,12 @@
 import { first } from 'rxjs/operators';
 import { PaymentService } from '@core/services/payment.service';
 import { SettingService } from '@core/services/setting.service';
-import { Article } from '@core/models/article.model';
+import { Product } from '@core/models/product.model';
 import { MessageService, SelectItem } from 'primeng/api';
 import { CustomerService } from '@core/services/customer.service';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
-import { ArticleService } from '@core/services/article.service';
+import { ProductService } from '@core/services/product.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
 import { EmployeeService } from '@core/services/employee.service';
 import { TypePaymentService } from '@core/services/type-payment.service';
@@ -33,7 +33,7 @@ export class SalesComponent {
   sales: Process[] = [];
   payments: Payment[] = [];
   customers: SelectItem[] = [];
-  articles: Article[] = [];
+  products: Product[] = [];
   measurements: Measurement[] = [];
   viewPaymentCreate: boolean = false;
   showModal: boolean = false;
@@ -53,7 +53,7 @@ export class SalesComponent {
     private messageService: MessageService,
     private serviceTypePayment: TypePaymentService,
     private serviceSetting: SettingService,
-    private serviceArticle: ArticleService){}
+    private serviceProduct: ProductService){}
 
     formSale: FormGroup = this._fB.group({
       code: ['', [Validators.required]],
@@ -99,7 +99,7 @@ export class SalesComponent {
     this.sales = this.sales.map(e => {
       e.total = 0;
       e.details.forEach(de => {
-        de.total = de.quantity * de.article.unitValue;
+        de.total = de.quantity * de.product.unitValue;
         e.total = de.total + e.total;
       })
       return e;
@@ -155,8 +155,7 @@ export class SalesComponent {
   }
 
   async getAllProducts() {
-    const data = await this.serviceArticle.getAll();
-    this.articles = data.filter(item => item.rawMaterials.length > 0);
+    this.products = await this.serviceProduct.getAll();
   }
 
   async getAllMeasurements() {
@@ -229,7 +228,7 @@ export class SalesComponent {
   calculateTotal() {
     this.model.total = 0;
     this.model.details.forEach(item => {
-      item.total = item.quantity * item.article.unitValue;
+      item.total = item.quantity * item.product.unitValue;
       this.model.total = item.total + this.model.total;
     })
   }

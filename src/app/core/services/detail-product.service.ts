@@ -2,48 +2,49 @@ import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { RawMaterial } from './../models/raw-material.model';
+import { DetailProduct } from './../models/';
 import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class RawMaterialService {
+export class DetailProductService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}raw_material`;
+    this.endPoint = `${environment.apiUrl}detail_product`;
   }
 
   getAll() {
-    return this.http.get<RawMaterial[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<DetailProduct[]>(`${this.endPoint}`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<RawMaterial>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<DetailProduct>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(rawMaterial: RawMaterial) {
-    return this.http.post<RawMaterial>(`${this.endPoint}`, rawMaterial);
+  create(detailProduct: DetailProduct) {
+    return this.http.post<DetailProduct>(`${this.endPoint}`, detailProduct);
   }
 
-  update(id: number, rawMaterial: RawMaterial) {
-    return this.http.patch(`${this.endPoint}/${id}`, rawMaterial)
+  update(id: number, detailProduct: DetailProduct) {
+    return this.http.patch(`${this.endPoint}/${id}`, detailProduct)
       .pipe(map(x => {
         return x;
       }));
   }
 
-  delete(id: number, rawMaterial: RawMaterial) {
+  delete(id: number, detailProduct: DetailProduct) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: rawMaterial
+      body: detailProduct
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {
         return x;
       }));
   }
+
 }

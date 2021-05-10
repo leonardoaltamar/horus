@@ -1,32 +1,28 @@
-import { RawMaterial } from './raw-material.model';
+import { DetailProduct } from './detail-product.model';
 import { Category } from './category.model';
+import { Lien } from './lien.model';
 
-export class Article {
+
+export class Product {
   id?: number;
   code: string;
   name: string;
-  dateExpiry?: string;
   stock: number;
   productionCost?: number;
-  acquisitionValue?: number;
   unitValue?: number;
-  barCode?: string;
   category?: Category;
-  quantity?: number;
-  rawMaterials?: RawMaterial[];
+  detailProducts?: DetailProduct[];
+  lien: Lien;
 
   constructor() {
     this.id = null;
     this.code = '';
     this.name = '';
-    this.dateExpiry = '';
     this.productionCost = 0;
     this.stock = 0;
-    this.acquisitionValue = 0;
     this.unitValue = 0;
-    this.barCode = '';
     this.category = new Category();
-    this.rawMaterials = [];
-    this.quantity = 0;
+    this.detailProducts = [];
+    this.lien = new Lien();
   }
 }

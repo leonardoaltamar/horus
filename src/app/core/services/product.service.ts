@@ -1,4 +1,4 @@
-import { Article } from './../models/article.model';
+import { Product } from './../models/';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -9,46 +9,45 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 
-export class ArticleService {
+export class ProductService {
 
   private endPoint: string;
 
   constructor(private http: HttpClient) {
-    this.endPoint = `${environment.apiUrl}article`;
+    this.endPoint = `${environment.apiUrl}product`;
   }
 
   async getAll() {
-    return this.http.get<Article[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<Product[]>(`${this.endPoint}`).toPromise();
   }
 
   async getTop() {
-    return this.http.get<Article[]>(`${this.endPoint}/topArticle`).toPromise();
+    return this.http.get<Product[]>(`${this.endPoint}/topProduct`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<Article>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<Product>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(article: Article) {
-    return this.http.post<Article>(`${this.endPoint}`, article);
+  create(product: Product) {
+    return this.http.post<Product>(`${this.endPoint}`, product);
   }
 
-  update(id: number, article: Article) {
-    return this.http.patch(`${this.endPoint}/${id}`, article);
+  update(id: number, product: Product) {
+    return this.http.patch(`${this.endPoint}/${id}`, product);
     // .pipe(map(x => {
     //   return x;
     // }));
   }
 
-  delete(id: number, article: Article) {
+  delete(id: number, product: Product) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: article
+      body: product
     };
     return this.http.delete(`${this.endPoint}/${id}`, httpOptions)
       .pipe(map(x => {
         return x;
       }));
   }
-
 }

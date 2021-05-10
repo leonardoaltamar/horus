@@ -139,7 +139,7 @@
             <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
               <tr [formGroupName]="rowIndex">
                 <td>
-                  <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
+                  <p-dropdown [options]="products" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
                 </td>
                 <td>$ {{detail.article.unitValue}}</td>
                 <td style="width: 100px;">

@@ -4,14 +4,14 @@ import { Process } from '@core/models/process.model';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
-import { ArticleService } from '@core/services/article.service';
-import { Article, Measurement } from '@core/models';
+import { ProductService } from '@core/services/product.service';
+import { Product, Measurement } from '@core/models';
 import { SupplierService } from '@core/services/supplier.service';
 import * as moment from 'moment';
 import { MeasurementService } from '@core/services/measurement.service';
 import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Validations } from 'src/utils/validations';
+
 @Component({
   selector: 'purchases',
   templateUrl: 'purchases.component.html',
@@ -23,7 +23,7 @@ export class purchasesComponent {
   model: Process = new Process();
   purchases: Process[] = [];
   form_purchase: FormGroup;
-  articles: Article[] = [];
+  products: Product[] = [];
   suppliers: SelectItem[] = [];
   showModal: boolean = false;
   measurements: Measurement[] = [];
@@ -31,7 +31,7 @@ export class purchasesComponent {
 
   constructor(private service: ProcessService,
               private routeStateService: RouteStateService,
-              private serviceArticle: ArticleService,
+              private serviceProduct: ProductService,
               private serviceMeasurement: MeasurementService,
               private messageService: MessageService,
               private _formBuilder: FormBuilder,
@@ -75,7 +75,7 @@ export class purchasesComponent {
     this.purchases = this.purchases.map(e => {
       e.total = 0;
       e.details.forEach(de => {
-        de.total = de.quantity * de.article.acquisitionValue;
+        de.total = de.quantity * de.product.unitValue;
         e.total = de.total + e.total;
       })
       return e;
@@ -105,7 +105,7 @@ export class purchasesComponent {
   }
 
   async getAllProducts() {
-    this.articles = await this.serviceArticle.getAll();
+    this.products = await this.serviceProduct.getAll();
   }
 
   async getAllMeasurements() {
@@ -136,7 +136,7 @@ export class purchasesComponent {
   calculateTotal() {
     this.model.total = 0;
     this.model.details.forEach(item => {
-      item.total = item.quantity * item.article.acquisitionValue;
+      item.total = item.quantity * item.product.unitValue;
       this.model.total = item.total + this.model.total;
     })
   }

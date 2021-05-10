@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
-import { Article, MovementOrder, ProductionOrder } from '@core/models';
+import { Product, MovementOrder, ProductionOrder } from '@core/models';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { generatePdf } from '@core/helpers/production_order.pdf'
 
 //servicios
-import { ArticleService } from '@core/services/article.service';
+import { ProductService } from '@core/services/product.service';
 import { ProductionOrderService } from '@core/services/production_order.service';
 import { first } from 'rxjs/operators';
 
@@ -19,15 +19,15 @@ import { first } from 'rxjs/operators';
 export class ProductionComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
-  articles: Article[] = [];
-  article: Article = new Article();
+  products: Product[] = [];
+  product: Product = new Product();
   productionOrder: ProductionOrder = new ProductionOrder();
   productionOrders: ProductionOrder[];
   isChangeState: boolean = false;
   form_production: FormGroup;
   showEdit: boolean = false;
   constructor(private routeStateService: RouteStateService,
-    private articleService: ArticleService,
+    private productService: ProductService,
     private confirmationService: ConfirmationService,
     private productionService: ProductionOrderService,
     private _formuilder: FormBuilder,
@@ -42,8 +42,8 @@ export class ProductionComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.routeStateService.add("Productos", "/inventary/productions", null, false);
-    this.getAllArticles();
+    this.routeStateService.add("Produccion", "/inventary/productions", null, false);
+    this.getAllProducts();
     this.getAllProduction();
   }
 
@@ -84,11 +84,10 @@ export class ProductionComponent implements OnInit {
     }
   }
 
-  async getAllArticles() {
+  async getAllProducts() {
     try {
       this.isLoading = true;
-      const data = await this.articleService.getAll();
-      this.articles = data.filter(e => e.rawMaterials != null && e.rawMaterials.length > 0);
+      this.products = await this.productService.getAll();
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -97,8 +96,8 @@ export class ProductionComponent implements OnInit {
   }
 
   addRow() {
-    this.articles = [...this.articles];
-    this.articles.push(new Article());
+    this.products = [...this.products];
+    this.products.push(new Product());
   }
 
   modifyProductionOrder(productionOrder: ProductionOrder) {
@@ -109,11 +108,9 @@ export class ProductionComponent implements OnInit {
       }
     });
     this.showEdit = true;
-    console.log(productionOrder);
   }
 
   saveProductionOrder(){
-    console.log(this.productionOrder);
     this.productionService.create(this.productionOrder).subscribe(
       data => {
         console.log(data);
