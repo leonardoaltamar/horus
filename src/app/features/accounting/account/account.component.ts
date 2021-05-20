@@ -18,8 +18,8 @@ export class AccountComponent {
   isLoading: boolean = false;
   showModal: boolean = false;
   natures: SelectItem[] = [
-    { label: 'Debito', value: 'D' },
-    { label: 'Credito', value: 'C' },
+    { label: 'Débito', value: 'D' },
+    { label: 'Crédito', value: 'C' },
   ];
 
   constructor(
@@ -46,11 +46,13 @@ export class AccountComponent {
   }
 
   newAccount() {
+    this.model = new Account();
     this.showModal = true;
   }
 
   modifyAccount(account: Account) {
     this.model = account;
+    console.log(this.model);
     this.showModal = true;
   }
 
@@ -67,7 +69,7 @@ export class AccountComponent {
             this.messageService.add({
               severity: 'success',
               summary: `Cuenta creada con éxito`,
-              detail: `Código: ${this.model.code} Descripción: ${this.model.description}`,
+              detail: `Código: ${this.model.code} Descripción: ${this.model.name}`,
             });
           },
           (error) => console.error(error)
@@ -98,7 +100,7 @@ export class AccountComponent {
   deletedAccount(account: Account) {
     this.confirmationService.confirm({
       header: 'Alerta',
-      message: `Está eliminando: ${account.code} - ${account.description}`,
+      message: `Está eliminando: ${account.code} - ${account.name}`,
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         this.service

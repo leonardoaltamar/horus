@@ -14,6 +14,7 @@ import { TypeSupplierComponent } from './type-supplier/type-supplier.component';
 import { SettingComponent } from './setting/setting.component';
 
 //Importaciones primeng
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
@@ -26,10 +27,13 @@ import { CalendarModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
 import { SupplierComponent } from './supplier/supplier.component';
 import { CityComponent } from './city/city.component';
+import { ProcessTypeComponent } from './process-type/process-type.component';
+import { TaxRegimeComponent } from './tax-regime/tax-regime.component';
 import { ToastModule } from 'primeng/toast';
 import { MeasurementComponent } from './measurement/measurement.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { StateComponent } from './state/state.component';
+
 
 @NgModule({
   declarations: [
@@ -45,11 +49,14 @@ import { StateComponent } from './state/state.component';
     TypeEmployeeComponent,
     TypePaymentComponent,
     TypeSupplierComponent,
+    ProcessTypeComponent,
+    TaxRegimeComponent,
     SettingComponent
   ],
   exports: [
   ],
   imports: [
+    AutoCompleteModule,
     CommonModule,
     ConfigurationRoutingModule,
     FormsModule,

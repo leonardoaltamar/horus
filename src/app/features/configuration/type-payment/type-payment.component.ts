@@ -29,7 +29,7 @@ export class TypePaymentComponent {
     private _formuilder: FormBuilder,
     private service: TypePaymentService){
       this.form_TypePayment = this._formuilder.group({
-        code: ['', [Validators.required], [this.validate_typePayment.bind(this)]],
+        code: ['', [Validators.required], []],
         description: ['', [Validators.required], []]
       })
     }
@@ -39,19 +39,7 @@ export class TypePaymentComponent {
     this.getAllTypePayment();
   }
 
-  async validate_typePayment(control: AbstractControl) {
-    const val = control.value;
-    const response = await this.service.getAll();
-    if (this.model.id) {
-      return null;
-    } else {
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].code == val) {
-          return { A: true }
-        }
-      }
-    }
-  }
+
 
   newTypePayment() {
     this.model = new TypePayment();
@@ -73,8 +61,13 @@ export class TypePaymentComponent {
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
-          this.typePayments.push(this.model);
+          if(data['errno']){
+            this.messageService.add({ severity: 'error', summary: data['sqlMessage'], detail: `descripcion: ${this.model.description}` });
+          }else{
+            this.typePayments.push(this.model);
           this.messageService.add({ severity: 'success', summary: `Tipo de pago creado con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+          }
+
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });

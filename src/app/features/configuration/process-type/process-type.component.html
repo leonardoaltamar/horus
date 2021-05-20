@@ -1,0 +1,118 @@
+<div class="card scroll">
+  <div class="card-header">
+    Tipo de procesos
+  </div>
+  <div class="card-body">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
+    <div class="table-responsive" *ngIf="!isLoading">
+      <p-table [value]="processTypes" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+        [globalFilterFields]="['code']">
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            <span class="p-input-icon-right">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar..."
+                (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
+            </span>
+
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo"
+              class="p-button" (click)="newProcessType()"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>*</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-processType let-rowIndex="rowIndex">
+          <tr>
+            <td>{{rowIndex+1}}</td>
+            <td>{{processType.code}}</td>
+            <td>{{processType.name}}</td>
+            <td>
+              <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"
+                (click)="modifyProcessType(processType)"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"
+                (click)="deletedProcessType(processType)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Nuevo tipo de proceso" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
+  [baseZIndex]="10000" [resizable]="false">
+  <form [formGroup]="form_processType" class="">
+    <div class="p-grid p-mt-2">
+      <div class="p-field p-col-3 p-sm-3">
+        <label for="code">Codigo</label>
+        <input id="code" formControlName="code" type="text" pInputText [(ngModel)]="model.code">
+        <ng-container *ngIf="form_processType.get('code').hasError('required') && form_processType.get('code').touched">
+          <small class="p-invalid p-text-center">El codigo es obligatorio</small>
+        </ng-container>
+      </div>
+      <div class="p-field p-col-6 p-sm-9">
+        <label for="name">Nombre</label>
+        <input id="name" formControlName="name" type="text" pInputText [(ngModel)]="model.name">
+        <ng-container
+          *ngIf="form_processType.get('name').hasError('required') && form_processType.get('name').touched">
+          <small class="caption p-text-center">El nombre es obligatorio</small>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-field p-col-6">
+        <label for="account">Cuenta Débito</label>
+        <p-autoComplete  class="p-field p-col-12"  [(ngModel)]="model.accountingProcess.debitAccount" lab formControlName="account"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name">
+        </p-autoComplete>
+      </div>
+      <div class="p-field p-col-6">
+        <label for="account">Cuenta Crédito</label>
+        <p-autoComplete  class="p-field p-col-12"  [(ngModel)]="model.accountingProcess.creditAccount" lab formControlName="account"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name">
+        </p-autoComplete>
+      </div>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-field p-col-6">
+        <label for="account">Cuenta de IVA</label>
+        <p-autoComplete class="p-field p-col-6 acount-iva" [(ngModel)]="model.accountingProcess.ivaAccount" formControlName="ivaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+      </div>
+      <div class="p-field p-col-6">
+        <label for="account">Cuenta retención IVA</label>
+        <p-autoComplete class="p-field p-col-6 acount-reteiva" [(ngModel)]="model.accountingProcess.reteIvaAccount" formControlName="reteIvaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+      </div>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-field p-col-6">
+        <label for="account">Cuenta retención de ICA</label>
+        <p-autoComplete class="p-field p-col-6  acount-reteica" [(ngModel)]="model.accountingProcess.reteIcaAccount" formControlName="reteIcaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+      </div>
+
+      <div class="p-field p-col-6">
+        <label for="account">Cuenta retención de fuente</label>
+        <p-autoComplete class="p-field p-col-6 acount-retefuente" [(ngModel)]="model.accountingProcess.reteFuenteAccount" formControlName="reteFuenteAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <p-footer class="p-grid">
+      <button type="submit" pButton pRipple icon="far fa-save" label="Guardar" class="p-button-save p-button p-ml-2"
+        (click)="saveProcessType()" [disabled]="form_processType.invalid"></button>
+      <button type="submit" pButton pRipple icon="fas fa-times" label=" Cerrar"
+        class="p-button-close button-text p-ml-2" (click)="showModal=false"></button>
+    </p-footer>
+  </form>
+</p-dialog>
+<p-confirmDialog class="dialog-small"></p-confirmDialog>
+<p-toast position="bottom-right"></p-toast>

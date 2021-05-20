@@ -111,7 +111,7 @@
           class="p-button button-text p-button-close" (click)="addRow()"></button>
       </div>
       <div class="table-responsive p-mb-3">
-        <p-table [value]="model.detailProducts" dataKey="id" styleClass="p-datatable-gridlines"
+        <p-table [value]="model.rawMaterials" dataKey="id" styleClass="p-datatable-gridlines"
           formArrayName="materials">
           <ng-template pTemplate="header">
             <tr>
@@ -128,10 +128,10 @@
                 <p-cellEditor>
                   <ng-template pTemplate="input">
                     <p-dropdown [options]="rawMaterials" optionLabel="name" id="rowMaterial" formControlName="description"
-                      placeholder="Selecciona" [(ngModel)]="dataRow.rawMaterial" [style]="{ width: '100%' }"></p-dropdown>
+                      placeholder="Selecciona" [(ngModel)]="dataRow.article" [style]="{ width: '100%' }"></p-dropdown>
                   </ng-template>
                   <ng-template pTemplate="output">
-                    {{ dataRow.rawMaterial.name || ''}}
+                    {{ dataRow.article.name|| ''}}
                   </ng-template>
                 </p-cellEditor>
               </td>

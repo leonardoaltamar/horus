@@ -14,6 +14,8 @@ import { EmployeeComponent } from './employee/employee.component';
 import { TypePaymentComponent } from './type-payment/type-payment.component';
 import { TypeSupplierComponent } from './type-supplier/type-supplier.component';
 import { TypeEmployeeComponent } from './type-employee/type-employee.component';
+import { ProcessTypeComponent } from './process-type/process-type.component';
+import { TaxRegimeComponent } from './tax-regime/tax-regime.component';
 import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
@@ -51,6 +53,10 @@ const routes: Routes = [
         component: MeasurementComponent,
       },
       {
+        path: 'process_types',
+        component: ProcessTypeComponent,
+      },
+      {
         path: 'states',
         component: StateComponent,
       },
@@ -69,6 +75,10 @@ const routes: Routes = [
       {
         path: 'type_supplier',
         component: TypeSupplierComponent,
+      },
+      {
+        path: 'tax_regime',
+        component: TaxRegimeComponent
       }
     ],
   },

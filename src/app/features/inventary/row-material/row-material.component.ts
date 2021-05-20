@@ -11,8 +11,10 @@ import { RawMaterial } from '@core/models/raw-material.model';
 //services
 import { CategoryService } from '@core/services/category.service';
 import { RawMaterialService } from '@core/services/raw-material.service';
+import { ArticleService } from '@core/services/article.service';
 import { MeasurementService } from '@core/services/measurement.service';
 import { LienService } from '@core/services/lien.service';
+import { Article } from '@core/models';
 
 @Component({
   selector: 'app-row-materials',
@@ -27,13 +29,13 @@ export class RawMaterialComponent implements OnInit {
   showModal: boolean = false;
   checked: boolean = false;
   //Modelos
-  model: RawMaterial = new RawMaterial();
-  rowMaterials: RawMaterial[] = [];
+  model: Article = new Article();
+  rowMaterials: Article[] = [];
   categories: SelectItem[] = [];
   measurements: SelectItem[] = [];
   liens: SelectItem[] = [];
 
-  constructor(private service: RawMaterialService,
+  constructor(private service: ArticleService,
     private routeStateService: RouteStateService,
     private _formuilder: FormBuilder,
     private categoryService: CategoryService,
@@ -43,12 +45,12 @@ export class RawMaterialComponent implements OnInit {
     private messageService: MessageService,
   ) {
     this.form_row_material = this._formuilder.group({
-      code: ['', [Validators.required], [this.validate_articles.bind(this)]],
+      code: ['', [Validators.required], []],
       name: ['', [Validators.required], []],
       stock: ['', [Validators.required], []],
       unitValue: [''],
       category: ['', [Validators.required], []],
-      measurement: ['', [Validators.required], []],
+      lien:['', [Validators.required], []],
       expeditionDate: [],
     });
   }
@@ -58,6 +60,7 @@ export class RawMaterialComponent implements OnInit {
     this.getAllRawMaterials();
     this.getAllCategory();
     this.getAllMeasurement();
+    this.getAllLiens();
   }
 
   async getAllRawMaterials() {
@@ -91,7 +94,7 @@ export class RawMaterialComponent implements OnInit {
     response.forEach(lien => {
       this.liens.push({
         label: lien.name,
-        value: lien.id
+        value: lien
       })
     })
   }
@@ -111,7 +114,7 @@ export class RawMaterialComponent implements OnInit {
   }
 
   newRawMaterial() {
-    this.model = new RawMaterial();
+    this.model = new Article();
     this.form_row_material.reset();
     this.showModal = true;
   }
@@ -120,9 +123,14 @@ export class RawMaterialComponent implements OnInit {
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
-          this.model = data;
-          this.rowMaterials.push(this.model);
-          this.messageService.add({ severity: 'success', summary: `Materia prima creada con éxito`, detail: `Nombre: ${this.model.name}` });
+          if (data['errno']) {
+            console.log("hola");
+            this.messageService.add({ severity: 'error', summary: data['sqlMessage'], detail: `Nombre: ${this.model.name}` });
+          }else{
+            this.model = data;
+            this.rowMaterials.push(this.model);
+            this.messageService.add({ severity: 'success', summary: `Materia prima creada con éxito`, detail: `Nombre: ${this.model.name}` });
+          }
         },
         error => console.error(`Error de guardado ${error}`)
       );
@@ -143,12 +151,12 @@ export class RawMaterialComponent implements OnInit {
     this.showModal = false;
   }
 
-  modifyRawMaterial(rawMaterial: RawMaterial) {
+  modifyRawMaterial(rawMaterial: Article) {
     this.model = rawMaterial;
     this.showModal = true;
   }
 
-  deleteRawMaterial(rawMaterial: RawMaterial) {
+  deleteRawMaterial(rawMaterial: Article) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `Está eliminando: ${rawMaterial.name}`,
@@ -167,18 +175,4 @@ export class RawMaterialComponent implements OnInit {
     });
   }
 
-  async validate_articles(control: AbstractControl) {
-    const val = control.value;
-    const response = await this.service.getAll();
-    if (this.model.id) {
-      return null;
-    } else {
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].code == val) {
-          return { A: true };
-        }
-      }
-    }
-    return null;
-  }
 }

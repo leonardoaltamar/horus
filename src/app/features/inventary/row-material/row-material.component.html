@@ -24,7 +24,8 @@
             <th>#</th>
             <th>Código</th>
             <th>Descripción</th>
-            <th>Valor unitario</th>
+            <th>stock</th>
+            <th>Valor de adquisición</th>
             <th>Categoría</th>
             <th>*</th>
           </tr>
@@ -34,7 +35,8 @@
             <td>{{rowIndex+1}}</td>
             <td>{{rawMaterial.code}}</td>
             <td>{{rawMaterial.name}}</td>
-            <td>{{rawMaterial.unitValue}}</td>
+            <td>{{rawMaterial.stock}}</td>
+            <td>{{rawMaterial.acquisitionValue}}</td>
             <td>{{rawMaterial.category.description}}</td>
             <td>
               <button pButton pRipple type="button" style="padding-right: 0.3em;" (click)="modifyRawMaterial(rawMaterial)"
@@ -65,7 +67,7 @@
       <div class="p-field p-col-3 p-sm-3">
         <label for="code">Código</label>
         <input id="code" formControlName="code" [(ngModel)]="model.code" type="text"
-          onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
+          onkeyup="javascript:this.value = this.value;" pInputText>
         <ng-container *ngIf="form_row_material.get('code').hasError('required') && form_row_material.get('code').touched">
           <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
@@ -92,8 +94,8 @@
 
 
         <div class="p-field p-col-12 p-sm-4">
-          <label for="unitValue">Valor unitario</label>
-          <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="text" pInputText>
+          <label for="unitValue">Valor de adquisición</label>
+          <input id="unitValue" [(ngModel)]="model.acquisitionValue" formControlName="unitValue" type="text" pInputText>
           <ng-container
             *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
             <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
@@ -115,18 +117,9 @@
           </ng-container>
         </div>
 
-        <div class="p-field p-col-12 p-sm-4">
-          <label for="categories">Unidad de medida</label>
-          <p-dropdown [options]="measurements" [(ngModel)]="model.measurement.id" formControlName="measurement"
-            placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
-          <ng-container *ngIf="form_row_material.get('measurement').hasError('required') && form_row_material.get('measurement').touched">
-            <small class="p-invalid p-text-center">La Unidad de medida es obligatoria</small>
-          </ng-container>
-        </div>
-
         <div class="p-field p-col-4 p-sm-4">
           <label for="lien">Gravámenes</label>
-          <p-dropdown [options]="liens" [(ngModel)]="model.lien.id" formControlName="lien"
+          <p-dropdown [options]="liens" [(ngModel)]="model.lien" formControlName="lien"
               placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
         </div>
     </div>

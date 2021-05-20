@@ -6,13 +6,13 @@ import { SelectItem } from 'primeng/api';
 import { first } from 'rxjs/operators';
 
 //models
-import { DetailProduct, Measurement, Product, } from '@core/models/';
-import { RawMaterial } from '@core/models/raw-material.model';
+import { RawMaterial, Measurement, Article} from '@core/models/';
+
 
 //services
 import { CategoryService } from '@core/services/category.service';
 import { LienService } from '@core/services/lien.service';
-import { ProductService } from '@core/services/product.service';
+import { ArticleService } from '@core/services/article.service';
 import { RawMaterialService } from '@core/services/raw-material.service';
 import { DetailProductService } from '@core/services/detail-product.service';
 import { MeasurementService } from '@core/services/measurement.service';
@@ -28,15 +28,15 @@ export class ProductComponent implements OnInit {
   form_product: FormGroup;
   isLoading: boolean = false;
   showModal: boolean = false;
-  rawMaterials: RawMaterial[] = [];
+  rawMaterials: Article[] = [];
   liens: SelectItem[] = [];
   //Modelos
-  model: Product = new Product();
-  products: Product[] = [];
+  model: Article = new Article();
+  products: Article[] = [];
   categories: SelectItem[] = [];
   measurements: Measurement[] = [];
 
-  constructor(private service: ProductService,
+  constructor(private service: ArticleService,
     private rawMaterialService: RawMaterialService,
     private detailProductService: DetailProductService,
     private lienService: LienService,
@@ -60,32 +60,21 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.routeStateService.add("Productos", "/inventary/products", null, false);
     this.getAllProducts();
-    this.getAllRawMaterials();
     this.getAllLiens();
     this.getAllCategory();
     this.getAllMeasurements();
+
   }
 
   async getAllProducts() {
     try {
       this.isLoading = true;
       this.products = await this.service.getAll();
-      console.log(this.products);
+      this.rawMaterials = this.products;
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
       console.error(error)
-    }
-  }
-
-  async getAllRawMaterials() {
-    try {
-      this.isLoading = true;
-      this.rawMaterials = await this.rawMaterialService.getAll();
-      this.isLoading = false;
-    } catch (error) {
-      this.isLoading = false;
-      console.error(error);
     }
   }
 
@@ -126,7 +115,7 @@ export class ProductComponent implements OnInit {
   }
 
   newProduct() {
-    this.model = new Product();
+    this.model = new Article();
     this.form_product.reset();
     this.showModal = true;
   }
@@ -135,7 +124,7 @@ export class ProductComponent implements OnInit {
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
-          console.log(data);
+
           this.model = data;
           this.products.push(this.model);
           this.messageService.add({ severity: 'success', summary: `Producto creado con éxito`, detail: `Nombre: ${this.model.name}` });
@@ -161,17 +150,17 @@ export class ProductComponent implements OnInit {
     this.showModal = false;
   }
 
-  modifyProduct(product: Product) {
+  modifyProduct(product: Article) {
     this.model = product;
-    this.model.detailProducts.forEach( item => {
-      if(this.model.detailProducts.length != this.materials.length){
+    this.model.rawMaterials.forEach( item => {
+      if(this.model.rawMaterials.length != this.materials.length){
         this.materials.push(this.addRowMaterialFormGroup())
       }
     });
     this.showModal = true;
   }
 
-  deleteProduct(product: Product) {
+  deleteProduct(product: Article) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `Está eliminando: ${product.name}`,
@@ -193,9 +182,9 @@ export class ProductComponent implements OnInit {
 
   //validations rawMaterials
   addRow() {
-    this.model.detailProducts = [...this.model.detailProducts];
-    this.model.detailProducts.push(new DetailProduct());
-    console.log(this.model.detailProducts);
+    this.model.rawMaterials = [...this.model.rawMaterials];
+    this.model.rawMaterials.push(new RawMaterial());
+    console.log(this.model.rawMaterials);
     this.materials.push(this.addRowMaterialFormGroup())
   }
 
@@ -208,27 +197,27 @@ export class ProductComponent implements OnInit {
       description: [''],
       measurement: [],
       quantity: [''],
-      main: [false]
+      article: [false]
     })
   }
 
 
-  deleteRow(row: DetailProduct, rowIndex: number) {
-    if (!row.id) {
-      this.model.detailProducts.splice(rowIndex, 1);
-    } else {
-      this.detailProductService.delete(row.id, row).pipe(first()).subscribe(
-        data => {
-          console.log(data)
-          if (data['success']) {
-            this.model.detailProducts = this.model.detailProducts.filter((x) => x.id != row.id);
-          }
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    }
+  deleteRow(row: RawMaterial, rowIndex: number) {
+    // if (!row.id) {
+    //   this.model.rawMaterials.splice(rowIndex, 1);
+    // } else {
+    //   this.detailProductService.delete(row.id, row).pipe(first()).subscribe(
+    //     data => {
+    //       console.log(data)
+    //       if (data['success']) {
+    //         this.model.detailProducts = this.model.detailProducts.filter((x) => x.id != row.id);
+    //       }
+    //     },
+    //     error => {
+    //       console.log(error);
+    //     }
+    //   );
+    // }
   }
 
 
@@ -249,8 +238,10 @@ export class ProductComponent implements OnInit {
 
   calculateProductionCost() {
     this.model.productionCost = 0;
-    this.model.detailProducts.forEach(material => {
-      const totalMaterial = material.rawMaterial.unitValue * material.quantity
+
+    this.model.rawMaterials.forEach(material => {
+      const totalMaterial = material.article.acquisitionValue * material.quantity;
+
       this.model.productionCost = this.model.productionCost + totalMaterial
     })
   }

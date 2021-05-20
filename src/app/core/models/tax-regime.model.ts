@@ -1,11 +1,9 @@
-export class Lien {
+export class TaxRegime {
   id?: number;
   name: string;
-  percentage: number;
 
   constructor() {
     this.id = null;
     this.name = '';
-    this.percentage = 0;
   }
 }
