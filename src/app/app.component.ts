@@ -14,7 +14,7 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'horus';
+  title = 'Horus';
   showOverlay: boolean = true;
 
   constructor(
