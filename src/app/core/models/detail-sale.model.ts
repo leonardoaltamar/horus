@@ -1,15 +1,15 @@
-import { Product } from './product.model';
+import { Article } from './article.model';
 import { Measurement } from './measurement.model';
 export class InventoryMovement {
   id?: number;
-  product: Product;
+  article: Article;
   quantity: number;
   total: number;
   measurement: Measurement;
 
   constructor() {
     this.id = null;
-    this.product = new Product();
+    this.article = new Article();
     this.quantity = 0;
     this.total = 0;
     this.measurement = new Measurement();

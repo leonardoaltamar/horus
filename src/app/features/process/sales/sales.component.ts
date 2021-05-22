@@ -1,18 +1,17 @@
 import { first } from 'rxjs/operators';
 import { PaymentService } from '@core/services/payment.service';
 import { SettingService } from '@core/services/setting.service';
-import { Product } from '@core/models/product.model';
 import { MessageService, SelectItem } from 'primeng/api';
 import { CustomerService } from '@core/services/customer.service';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
-import { ProductService } from '@core/services/product.service';
+import { ArticleService } from '@core/services/article.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
 import { EmployeeService } from '@core/services/employee.service';
 import { TypePaymentService } from '@core/services/type-payment.service';
 import { Process } from '@core/models/process.model';
 import { ProcessService } from '@core/services/process.service';
-import { Employee, Measurement } from '@core/models';
+import { Article, Employee, Measurement } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
 import * as moment from 'moment';
 import { Payment } from '@core/models/payment.model';
@@ -33,7 +32,7 @@ export class SalesComponent {
   sales: Process[] = [];
   payments: Payment[] = [];
   customers: SelectItem[] = [];
-  products: Product[] = [];
+  articles: Article[] = [];
   measurements: Measurement[] = [];
   viewPaymentCreate: boolean = false;
   showModal: boolean = false;
@@ -53,7 +52,7 @@ export class SalesComponent {
     private messageService: MessageService,
     private serviceTypePayment: TypePaymentService,
     private serviceSetting: SettingService,
-    private serviceProduct: ProductService){}
+    private serviceArticle: ArticleService){}
 
     formSale: FormGroup = this._fB.group({
       code: ['', [Validators.required]],
@@ -83,7 +82,7 @@ export class SalesComponent {
     this.getAllCustomer();
     this.getAllEmployee();
     this.getAllTypePayments();
-    this.getAllProducts();
+    this.getAllArticles();
     this.getAllMeasurements();
   }
 
@@ -99,7 +98,7 @@ export class SalesComponent {
     this.sales = this.sales.map(e => {
       e.total = 0;
       e.details.forEach(de => {
-        de.total = de.quantity * de.product.unitValue;
+        de.total = de.quantity * de.article.unitValue;
         e.total = de.total + e.total;
       })
       return e;
@@ -154,8 +153,8 @@ export class SalesComponent {
     })
   }
 
-  async getAllProducts() {
-    this.products = await this.serviceProduct.getAll();
+  async getAllArticles() {
+    this.articles = await this.serviceArticle.getAll();
   }
 
   async getAllMeasurements() {
@@ -228,7 +227,7 @@ export class SalesComponent {
   calculateTotal() {
     this.model.total = 0;
     this.model.details.forEach(item => {
-      item.total = item.quantity * item.product.unitValue;
+      item.total = item.quantity * item.article.unitValue;
       this.model.total = item.total + this.model.total;
     })
   }

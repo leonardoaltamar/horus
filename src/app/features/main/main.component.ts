@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexStroke, ApexTooltip, ApexXAxis, ChartComponent } from 'ng-apexcharts';
 import { ProcessService } from '@core/services/process.service';
 import { EmployeeService } from '@core/services/employee.service';
-import { Product, Employee } from '@core/models';
+import { Article, Employee } from '@core/models';
 import { Process } from '@core/models/process.model';
 import * as moment from 'moment';
 import { ProductionOrderService } from '@core/services/production_order.service';
@@ -35,7 +35,7 @@ export class MainComponent implements OnInit {
   numberProductsSold: number = 0;
   numberProductionOrder: number = 0;
   currentToday = moment().format('YYYY-MM-DD');
-  topProducts: Product[] = [];
+  topProducts: Article[] = [];
   lastSales: Process[] = [];
 
   constructor(private serviceProcess: ProcessService,

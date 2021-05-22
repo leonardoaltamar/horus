@@ -61,7 +61,7 @@
 
       <div class="card-body">
         <div class="p-grid">
-          <div class="p-col-12 p-sm-2">
+          <div class="p-col-12 p-sm-3">
             <div class="p-field p-fluid">
               <label for="numberInvoice">Código</label>
               <input id="disabled-input" type="text" pInputText readonly formControlName="code" [(ngModel)]="model.numberInvoice"/>
@@ -139,14 +139,14 @@
             <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
               <tr [formGroupName]="rowIndex">
                 <td>
-                  <p-dropdown [options]="products" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
+                  <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" optionLabel="name"></p-dropdown>
                 </td>
-                <td>$ {{detail.article.unitValue}}</td>
+                <td>$ {{detail.article.acquisitionValue}}</td>
                 <td style="width: 100px;">
                   <input type="number" pInputText pKeyFilter="num" formControlName="quantity" min="0" [(ngModel)]="detail.quantity" (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
                   <span class="text-Available">Disponible: {{detail.article.stock}}</span>
                 </td>
-                <td>$ {{detail.article.unitValue*detail.quantity}}</td>
+                <td>$ {{detail.article.acquisitionValue*detail.quantity}}</td>
                 <td style="width: 40px;">
                   <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
                 </td>

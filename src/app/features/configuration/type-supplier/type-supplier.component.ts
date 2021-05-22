@@ -72,6 +72,7 @@ export class TypeSupplierComponent {
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
+          console.log(data);
           this.typeSuppliers.push(this.model);
           this.messageService.add({ severity: 'success', summary: `tipo de proveedor creado con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
         },

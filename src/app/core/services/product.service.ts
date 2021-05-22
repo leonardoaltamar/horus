@@ -1,4 +1,4 @@
-import { Product } from './../models/';
+import { Article } from './../models/';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -18,29 +18,29 @@ export class ProductService {
   }
 
   async getAll() {
-    return this.http.get<Product[]>(`${this.endPoint}`).toPromise();
+    return this.http.get<Article[]>(`${this.endPoint}`).toPromise();
   }
 
   async getTop() {
-    return this.http.get<Product[]>(`${this.endPoint}/topProduct`).toPromise();
+    return this.http.get<Article[]>(`${this.endPoint}/topProduct`).toPromise();
   }
 
   getById(id: string) {
-    return this.http.get<Product>(`${this.endPoint}/${id}`).toPromise();
+    return this.http.get<Article>(`${this.endPoint}/${id}`).toPromise();
   }
 
-  create(product: Product) {
-    return this.http.post<Product>(`${this.endPoint}`, product);
+  create(product: Article) {
+    return this.http.post<Article>(`${this.endPoint}`, product);
   }
 
-  update(id: number, product: Product) {
+  update(id: number, product: Article) {
     return this.http.patch(`${this.endPoint}/${id}`, product);
     // .pipe(map(x => {
     //   return x;
     // }));
   }
 
-  delete(id: number, product: Product) {
+  delete(id: number, product: Article) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       body: product

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteStateService } from 'src/app/core/services/route-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
-import { Product, MovementOrder, ProductionOrder } from '@core/models';
+import { Article, MovementOrder, ProductionOrder } from '@core/models';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { generatePdf } from '@core/helpers/production_order.pdf'
 
@@ -19,8 +19,8 @@ import { first } from 'rxjs/operators';
 export class ProductionComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
-  products: Product[] = [];
-  product: Product = new Product();
+  products: Article[] = [];
+  product: Article = new Article();
   productionOrder: ProductionOrder = new ProductionOrder();
   productionOrders: ProductionOrder[];
   isChangeState: boolean = false;
@@ -97,7 +97,7 @@ export class ProductionComponent implements OnInit {
 
   addRow() {
     this.products = [...this.products];
-    this.products.push(new Product());
+    this.products.push(new Article());
   }
 
   modifyProductionOrder(productionOrder: ProductionOrder) {

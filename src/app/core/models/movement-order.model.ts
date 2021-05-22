@@ -1,13 +1,13 @@
-import { Product } from './product.model';
+import { Article } from './article.model';
 
 export class MovementOrder {
   id?: number;
-  product: Product;
+  product: Article;
   quantity: number;
 
   constructor() {
     this.id = null;
-    this.product =  new Product();
+    this.product =  new Article();
     this.quantity = 0;
   }
 }

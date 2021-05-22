@@ -90,7 +90,8 @@ export class SupplierComponent implements OnInit {
     if (!this.supplier.id) {
       this.supplierService.create(this.supplier).pipe(first()).subscribe(
         data => {
-          console.log(this.supplier)
+          console.log(this.supplier);
+          console.log(data);
           this.supplier = data;
           this.suppliers.push(this.supplier);
           this.messageService.add({
@@ -127,19 +128,19 @@ export class SupplierComponent implements OnInit {
   modifySupplier(supplier: Supplier) {
     this.supplier = supplier;
 
-    this.supplier.person.emails.forEach( email => {
+    this.supplier.person?.emails?.forEach( email => {
       if(this.supplier.person.emails.length != this.emails.length){
         this.emails.push(this.addEmailFormGroup())
       }
     });
 
-    this.supplier.person.locations.forEach( email => {
+    this.supplier.person?.locations?.forEach( email => {
       if(this.supplier.person.locations.length != this.locations.length){
         this.locations.push(this.addLocationGroupForm())
       }
     });
 
-    this.supplier.person.mobilePhones.forEach( email => {
+    this.supplier.person?.mobilePhones?.forEach( email => {
       if(this.supplier.person.mobilePhones.length != this.mobilePhones.length){
         this.mobilePhones.push(this.addMobileFormGroup())
       }

@@ -116,7 +116,6 @@ export class CustomerComponent implements OnInit {
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
-          this.customers.push(this.customer);
           this.customer = data;
           this.customers.push(this.customer);
           this.messageService.add({

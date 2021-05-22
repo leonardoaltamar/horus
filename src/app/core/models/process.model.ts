@@ -3,7 +3,7 @@ import { InventoryMovement } from './detail-sale.model';
 import { Employee } from './employee.model';
 import { Supplier } from './supplier.model';
 import { TypePayment } from './type-payment.model';
-
+import { ProcessType }  from './processType.model';
 export class Process {
   id?: number;
   description: string;
@@ -16,6 +16,7 @@ export class Process {
   seller: Employee;
   carrier: Employee;
   supplier: Supplier;
+  processType: ProcessType;
   state: string;
   address: string;
   total: number;
@@ -33,6 +34,7 @@ export class Process {
     this.seller = new Employee();
     this.carrier = new Employee();
     this.supplier = new Supplier();
+    this.processType = new ProcessType();
     this.state = '';
     this.address = '';
     this.total = 0;

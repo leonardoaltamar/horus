@@ -63,12 +63,23 @@
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
           <label for="supplier">Proveedor</label>
-          <p-dropdown [options]="suppliers" placeholder="Selecciona" formControlName="supplier" [(ngModel)]="model.supplier.id" id="supplier" [filter]="true"></p-dropdown>
+          <p-dropdown [options]="suppliers" placeholder="Selecciona" formControlName="supplier" [(ngModel)]="model.supplier" id="supplier" [filter]="true"></p-dropdown>
           <ng-container *ngIf="form_purchase.get('supplier').hasError('required') && form_purchase.get('supplier').touched">
             <small class="caption">El proveedor es obligatorio</small>
           </ng-container>
         </div>
       </div>
+
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="supplier">Tipo de proceso</label>
+          <p-dropdown [options]="processTypes" placeholder="Selecciona" formControlName="processType" [(ngModel)]="model.processType" id="processType" [filter]="true"></p-dropdown>
+          <ng-container *ngIf="form_purchase.get('processType').hasError('required') && form_purchase.get('processType').touched">
+            <small class="caption">El tipo de proceso es obligatorio</small>
+          </ng-container>
+        </div>
+      </div>
+
       <div class="p-col-12 p-sm-3">
         <div class="p-field p-fluid">
           <label for="date">Fecha</label>
@@ -91,7 +102,6 @@
         <tr>
           <th>Nombre</th>
           <th>Precio</th>
-          <th>Unidad de medida</th>
           <th style="width: 100px;">Cantidad</th>
           <th>Total</th>
           <th style="width: 40px;"></th>
@@ -100,12 +110,9 @@
       <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
         <tr [formGroupName]="rowIndex">
           <td>
-            <p-dropdown [options]="products" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
+            <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
           </td>
           <td>$ {{detail.article.acquisitionValue}}</td>
-          <td>
-            <p-dropdown [options]="measurements" [(ngModel)]="detail.measurement" formControlName="measurement" placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="code"></p-dropdown>
-          </td>
           <td style="width: 100px;">
             <input type="number" pInputText pKeyFilter="num" min="0" [(ngModel)]="detail.quantity"  formControlName="quantity" (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
             <span class="text-Available">Disponible: {{detail.article.stock}}</span>

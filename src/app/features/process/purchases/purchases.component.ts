@@ -4,11 +4,12 @@ import { Process } from '@core/models/process.model';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
-import { ProductService } from '@core/services/product.service';
-import { Product, Measurement } from '@core/models';
+import { ArticleService } from '@core/services/article.service';
+import { Article, Measurement, ProcessType } from '@core/models';
 import { SupplierService } from '@core/services/supplier.service';
 import * as moment from 'moment';
 import { MeasurementService } from '@core/services/measurement.service';
+import { ProcessTypeService } from '@core/services/process-type.service';
 import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -23,16 +24,18 @@ export class purchasesComponent {
   model: Process = new Process();
   purchases: Process[] = [];
   form_purchase: FormGroup;
-  products: Product[] = [];
+  articles: Article[] = [];
   suppliers: SelectItem[] = [];
+  processTypes: SelectItem[] = [];
   showModal: boolean = false;
   measurements: Measurement[] = [];
   showEdit: boolean = false;
 
   constructor(private service: ProcessService,
               private routeStateService: RouteStateService,
-              private serviceProduct: ProductService,
+              private serviceArticle: ArticleService,
               private serviceMeasurement: MeasurementService,
+              private processTypeService: ProcessTypeService,
               private messageService: MessageService,
               private _formBuilder: FormBuilder,
               private serviceSupplier: SupplierService) {
@@ -40,16 +43,17 @@ export class purchasesComponent {
                   code: ['', [Validators.required]],
                   date: ['', [Validators.required]],
                   supplier: ['', [Validators.required]],
+                  processType: ['', [Validators.required]],
                   details: this._formBuilder.array([this.addDetailsFormGroup()])
                 })
               }
-
   ngOnInit(): void {
     this.routeStateService.add("Compras", "/process/purchases", null, false);
     this.getAllPurchases();
     this.getAllSuppliers();
     this.getAllProducts();
     this.getAllMeasurements();
+    this.getAllProcessTypes();
   }
 
   newPurchases() {
@@ -58,6 +62,18 @@ export class purchasesComponent {
     this.genarateCode();
   }
 
+  async getAllProcessTypes(){
+    try {
+      (await this.processTypeService.getAll()).forEach(processType=>{
+          this.processTypes.push({
+              label: processType.name,
+              value: processType
+          });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   genarateCode() {
     const date = new Date();
     const numberCode = this.purchases.length + 1;
@@ -75,7 +91,7 @@ export class purchasesComponent {
     this.purchases = this.purchases.map(e => {
       e.total = 0;
       e.details.forEach(de => {
-        de.total = de.quantity * de.product.unitValue;
+        de.total = de.quantity * de.article.acquisitionValue;
         e.total = de.total + e.total;
       })
       return e;
@@ -99,13 +115,13 @@ export class purchasesComponent {
     data.forEach(item => {
       this.suppliers.push({
         label: `${item.person.name} ${item.person.surname} ${item.person.secondSurname}`,
-        value: item.id
+        value: item
       })
     })
   }
 
   async getAllProducts() {
-    this.products = await this.serviceProduct.getAll();
+    this.articles = await this.serviceArticle.getAll();
   }
 
   async getAllMeasurements() {
@@ -119,6 +135,7 @@ export class purchasesComponent {
   save() {
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
+    console.log(this.model);
     if(!this.model.id) {
       this.service.create(this.model).pipe().subscribe(
         data => {
@@ -136,7 +153,7 @@ export class purchasesComponent {
   calculateTotal() {
     this.model.total = 0;
     this.model.details.forEach(item => {
-      item.total = item.quantity * item.product.unitValue;
+      item.total = item.quantity * item.article.unitValue;
       this.model.total = item.total + this.model.total;
     })
   }

@@ -24,6 +24,7 @@ export class Article {
     this.stock = 0;
     this.unitValue = 0;
     this.dateExpiry = '';
+    this.acquisitionValue = 0;
     this.category = new Category();
     this.rawMaterials = [];
     this.lien = new Lien();

@@ -1,11 +1,11 @@
-import { Product } from './product.model';
+import { Article } from './article.model';
 import { RawMaterial } from './raw-material.model';
 import { Measurement } from './measurement.model';
 import { Process } from './process.model';
 
 export class InventoryMovement {
     id: number;
-    product: Product;
+    article: Article;
     rawMaterial: RawMaterial;
     date: string;
     typeMoviment: number;
@@ -16,7 +16,7 @@ export class InventoryMovement {
 
     constructor() {
       this.id = null;
-      this.product = new Product();
+      this.article = new Article();
       this.rawMaterial = new RawMaterial();
       this.date = '';
       this.typeMoviment = 0;

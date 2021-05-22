@@ -1,7 +1,6 @@
 export * from './accounts.model';
 export * from './article.model';
 export * from './accounting_process.model';
-export * from './product.model';
 export * from './processType.model'
 export * from './measurement.model';
 export * from './category.model';
