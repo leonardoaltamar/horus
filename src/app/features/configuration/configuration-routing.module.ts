@@ -17,6 +17,7 @@ import { TypeEmployeeComponent } from './type-employee/type-employee.component';
 import { ProcessTypeComponent } from './process-type/process-type.component';
 import { TaxRegimeComponent } from './tax-regime/tax-regime.component';
 import { SettingComponent } from './setting/setting.component';
+import { SectionComponent } from './section/section.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: 'suppliers',
         component: SupplierComponent,
+      },
+      {
+        path: 'sections',
+        component: SectionComponent
       },
       {
         path: 'cities',
