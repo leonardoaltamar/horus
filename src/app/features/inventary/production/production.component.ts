@@ -6,7 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { generatePdf } from '@core/helpers/production_order.pdf'
 
 //servicios
-import { ProductService } from '@core/services/product.service';
+import { ArticleService } from '@core/services/article.service';
 import { ProductionOrderService } from '@core/services/production_order.service';
 import { first } from 'rxjs/operators';
 
@@ -27,7 +27,7 @@ export class ProductionComponent implements OnInit {
   form_production: FormGroup;
   showEdit: boolean = false;
   constructor(private routeStateService: RouteStateService,
-    private productService: ProductService,
+    private productService: ArticleService,
     private confirmationService: ConfirmationService,
     private productionService: ProductionOrderService,
     private _formuilder: FormBuilder,

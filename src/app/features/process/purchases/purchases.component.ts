@@ -5,13 +5,15 @@ import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
 import { ArticleService } from '@core/services/article.service';
-import { Article, Measurement, ProcessType } from '@core/models';
+import { Article, Account,Measurement, Lien } from '@core/models';
 import { SupplierService } from '@core/services/supplier.service';
 import * as moment from 'moment';
 import { MeasurementService } from '@core/services/measurement.service';
 import { ProcessTypeService } from '@core/services/process-type.service';
 import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LienService } from '@core/services/lien.service';
+import { AccountService } from '@core/services/account.service';
 
 @Component({
   selector: 'purchases',
@@ -30,7 +32,11 @@ export class purchasesComponent {
   showModal: boolean = false;
   measurements: Measurement[] = [];
   showEdit: boolean = false;
-
+  liens: Lien[] = [];
+  accounts: Account[] = [];
+  subtotal:number = 0;
+  dataDetail: any[] = [];
+  filterAccounts: Account[] = [];
   constructor(private service: ProcessService,
               private routeStateService: RouteStateService,
               private serviceArticle: ArticleService,
@@ -38,9 +44,13 @@ export class purchasesComponent {
               private processTypeService: ProcessTypeService,
               private messageService: MessageService,
               private _formBuilder: FormBuilder,
-              private serviceSupplier: SupplierService) {
+              private serviceSupplier: SupplierService,
+              private accountService: AccountService,
+              private lienService: LienService) {
                 this.form_purchase = this._formBuilder.group({
                   code: ['', [Validators.required]],
+                  account: ['', [Validators.required]],
+                  description: [''],
                   date: ['', [Validators.required]],
                   supplier: ['', [Validators.required]],
                   processType: ['', [Validators.required]],
@@ -54,12 +64,22 @@ export class purchasesComponent {
     this.getAllProducts();
     this.getAllMeasurements();
     this.getAllProcessTypes();
+    this.getAllLiens();
+    this.getAllAccounts();
   }
 
   newPurchases() {
     this.showModal = true;
     this.model = new Process();
     this.genarateCode();
+  }
+
+  async getAllLiens() {
+    try {
+      this.liens = await this.lienService.getAll();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async getAllProcessTypes(){
@@ -74,6 +94,16 @@ export class purchasesComponent {
       console.error(error);
     }
   }
+
+  async getAllAccounts(){
+    this.accounts = await this.accountService.getAll();
+    this.accounts = this.accounts.map(account => {
+      account.name = account.code + " - " +account.name;
+      return account;
+    });
+    console.log(this.accounts);
+  }
+
   genarateCode() {
     const date = new Date();
     const numberCode = this.purchases.length + 1;
@@ -82,19 +112,25 @@ export class purchasesComponent {
 
   addProduct() {
     this.model.details.push(new InventoryMovement());
+    // this.dataDetail.push(new InventoryMovement());
     this.details.push(this.addDetailsFormGroup());
   }
 
   async getAllPurchases() {
     const data = await this.service.getAll();
     this.purchases = data.filter(e => e.typeMoviment === 'E');
-    this.purchases = this.purchases.map(e => {
-      e.total = 0;
-      e.details.forEach(de => {
-        de.total = de.quantity * de.article.acquisitionValue;
-        e.total = de.total + e.total;
+    console.log(this.purchases);
+    this.purchases = this.purchases.map(purchase => {
+      purchase.total = 0;
+      purchase.subTotal = 0;
+      purchase.totalLien = 0;
+      purchase.details.forEach(detail=>{
+        purchase.subTotal = (detail.article.acquisitionValue * detail.quantity);
+        purchase.totalLien = (detail.article.lien.percentage/100) * purchase.subTotal;
+        purchase.total += purchase.subTotal + purchase.totalLien;
+
       })
-      return e;
+      return purchase;
     })
   }
 
@@ -102,7 +138,8 @@ export class purchasesComponent {
     return this._formBuilder.group({
       article: [''],
       measurement: [''],
-      quantity: ['']
+      quantity: [''],
+      lien: ['']
     })
   }
 
@@ -151,12 +188,40 @@ export class purchasesComponent {
   }
 
   calculateTotal() {
-    this.model.total = 0;
+    console.log(this.model.details);
     this.model.details.forEach(item => {
-      item.total = item.quantity * item.article.unitValue;
+      item.subtotal = item.quantity * item.article.acquisitionValue;
+      item.totalLien = (item.article.lien.percentage / 100) * item.subtotal;
+      item.total = item.subtotal + item.totalLien;
+    })
+    this.getTotal();
+  }
+
+  getTotal(){
+    this.model.total = 0;
+    this.model.subTotal = 0;
+    this.model.totalLien = 0;
+    this.model.details.forEach(item=>{
+      this.model.subTotal = item.subtotal + this.model.subTotal;
+      this.model.totalLien  = item.totalLien + this.model.totalLien;
       this.model.total = item.total + this.model.total;
     })
   }
+
+  filterAccount(event): void {
+    let filtered: Account[] = [];
+    let { query } = event;
+
+    this.accounts.forEach( account => {
+      if (account.code.indexOf(query) >= 0) {
+          filtered.push(account);
+      }
+    });
+    this.filterAccounts = filtered;
+
+  }
+
+
 
   deleteInventoryMovement(index: number){
     this.model.details.splice(index,1);
@@ -166,4 +231,14 @@ export class purchasesComponent {
   downloadPdf(datarow){
     generatePdfPurchases(datarow);
   }
+
+  printTotal(...total){
+    return total;
+  }
+
+  subTotal(subtotal:number){
+    setTimeout(() => this.subtotal = subtotal, 200);
+    return subtotal;
+  }
+
 }

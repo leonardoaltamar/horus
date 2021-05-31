@@ -51,6 +51,7 @@ export class ProductComponent implements OnInit {
       code: ['', [Validators.required], [this.validate_articles.bind(this)]],
       name: ['', [Validators.required], []],
       stock: ['', [Validators.required], []],
+      lien: [''],
       unitValue: [''],
       expeditionDate: [],
       materials: this._formuilder.array([this.addRowMaterialFormGroup()])
@@ -71,6 +72,7 @@ export class ProductComponent implements OnInit {
       this.isLoading = true;
       this.products = await this.service.getAll();
       this.rawMaterials = this.products;
+      this.products = this.products.filter(article => article.rawMaterials.length > 0);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -121,10 +123,11 @@ export class ProductComponent implements OnInit {
   }
 
   saveProduct() {
+    console.log(this.model);
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
-
+          console.log(data);
           this.model = data;
           this.products.push(this.model);
           this.messageService.add({ severity: 'success', summary: `Producto creado con éxito`, detail: `Nombre: ${this.model.name}` });

@@ -5,6 +5,7 @@ export * from './processType.model'
 export * from './measurement.model';
 export * from './category.model';
 export * from './detail-product.model';
+export * from './detail-process.model';
 export * from './lien.model';
 export * from './processType.model';
 export * from './packing.model';

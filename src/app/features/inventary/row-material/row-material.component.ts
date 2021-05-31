@@ -67,6 +67,7 @@ export class RawMaterialComponent implements OnInit {
     try {
       this.isLoading = true;
       this.rowMaterials = await this.service.getAll();
+      this.rowMaterials = this.rowMaterials.filter(article => article.rawMaterials.length === 0);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -124,7 +125,6 @@ export class RawMaterialComponent implements OnInit {
       this.service.create(this.model).subscribe(
         data => {
           if (data['errno']) {
-            console.log("hola");
             this.messageService.add({ severity: 'error', summary: data['sqlMessage'], detail: `Nombre: ${this.model.name}` });
           }else{
             this.model = data;

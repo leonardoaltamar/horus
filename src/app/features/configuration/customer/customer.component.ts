@@ -36,7 +36,7 @@ export class CustomerComponent implements OnInit {
   customer: Customer = new Customer();
   customers: Customer[] = [];
   cities: SelectItem[] = [];
-  gender: SelectItem[] = [];
+  genders: SelectItem[] = [];
   document: SelectItem[] = [];
 
   constructor(private routeStateService: RouteStateService,
@@ -60,7 +60,10 @@ export class CustomerComponent implements OnInit {
       secondSurname: [''],
       emails: this._formBuilder.array([this.addEmailFormGroup()]),
       mobilePhones: this._formBuilder.array([this.addMobileFormGroup()]),
-      addresses: this._formBuilder.array([this.addAdressFormGroup()])
+      addresses: this._formBuilder.array([this.addAdressFormGroup()]),
+      businesNit: [''],
+      businesName: [''],
+      businesDane: ['']
     });
 
   }
@@ -80,7 +83,7 @@ export class CustomerComponent implements OnInit {
 
     this.gerderService.getAll().then(response =>
       response.forEach(gender =>
-        this.gender.push({
+        this.genders.push({
           label: gender.name,
           value: gender
         })
@@ -116,7 +119,7 @@ export class CustomerComponent implements OnInit {
     if (!this.customer.id) {
       this.customerService.create(this.customer).pipe(first()).subscribe(
         data => {
-          this.customer = data;
+
           this.customers.push(this.customer);
           this.messageService.add({
             severity: 'success', summary: `Cliente creado con éxito`, detail: `Documento: ${this.customer.person.documentNumber}
@@ -132,7 +135,8 @@ export class CustomerComponent implements OnInit {
     else {
       this.customerService.update(this.customer.id, this.customer).pipe(first()).subscribe(
         data => {
-          console.log(data['success'])
+          console.log(this.customer);
+          console.log(data)
           if (data['success']) {
             this.customers = this.customers.map(x => {
               if (x.id == this.customer.id)
@@ -150,7 +154,8 @@ export class CustomerComponent implements OnInit {
 
   modifyCustomer(customer: Customer) {
     this.customer = customer;
-
+    console.log(this.customer);
+    console.log(this.customer.person.expeditionCity);
     this.customer.person.emails.forEach( email => {
       if(this.customer.person.emails.length != this.emails.length){
         this.emails.push(this.addEmailFormGroup())
@@ -343,6 +348,7 @@ export class CustomerComponent implements OnInit {
       this.isLoading = true;
       this.customers = await this.customerService.getAll();
       this.isLoading = false;
+      console.log(this.customers);
     } catch (error) {
       this.isLoading = false;
       console.error(error);

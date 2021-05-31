@@ -13,12 +13,14 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple (click)="newPurchases()" icon="pi pi-plus" iconPos="right" label="Nuevo" class="button-text p-button-close"></button>
+            <button pButton pRipple (click)="newPurchases()" icon="pi pi-plus" iconPos="right" label="Nuevo"
+              class="button-text p-button-close"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Código</th>
+            <th>Descripción</th>
             <th>Proveedor</th>
             <th>Fecha</th>
             <th>Total</th>
@@ -28,12 +30,15 @@
         <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
           <tr>
             <td>{{dataRow.numberInvoice}}</td>
-            <td>{{dataRow.supplier.person.name}} {{dataRow.supplier.person.surname}} {{dataRow.supplier.person.secondSurname}}</td>
+            <td>{{dataRow.description}}</td>
+            <td>{{dataRow.supplier.person.name}} {{dataRow.supplier.person.surname}}
+              {{dataRow.supplier.person.secondSurname}}</td>
             <td>{{dataRow.dateInvoice}}</td>
             <td>$ {{dataRow.total}}</td>
             <td>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
-              <button pButton pRipple type="button" icon="pi pi-print" class="button-action" (click)="downloadPdf(dataRow)"></button>
+              <button pButton pRipple type="button" icon="pi pi-print" class="button-action"
+                (click)="downloadPdf(dataRow)"></button>
             </td>
           </tr>
         </ng-template>
@@ -43,10 +48,11 @@
 </div>
 
 
-<div class="card scroll" *ngIf="showModal" [formGroup]="form_purchase">
+<form class="card scroll" *ngIf="showModal" [formGroup]="form_purchase">
   <div class="card-header p-d-flex p-jc-between p-ai-center">
     <span>Nueva compra</span>
-    <button pButton pRipple icon="fas fa-times" class="p-button-rounded p-button-text" (click)="showModal=false"></button>
+    <button pButton pRipple icon="fas fa-times" class="p-button-rounded p-button-text"
+      (click)="showModal=false"></button>
   </div>
 
   <div class="card-body">
@@ -54,18 +60,10 @@
       <div class="p-col-12 p-sm-2">
         <div class="p-field p-fluid">
           <label for="numberInvoice">Código</label>
-          <input id="disabled-input" type="text" pInputText readonly formControlName="code" [(ngModel)]="model.numberInvoice"/>
+          <input id="disabled-input" type="text" pInputText readonly formControlName="code"
+            [(ngModel)]="model.numberInvoice" />
           <ng-container *ngIf="form_purchase.get('code').hasError('required') && form_purchase.get('code').touched">
             <small class="caption">El código es obligatorio</small>
-          </ng-container>
-        </div>
-      </div>
-      <div class="p-col-12 p-sm-4">
-        <div class="p-field p-fluid">
-          <label for="supplier">Proveedor</label>
-          <p-dropdown [options]="suppliers" placeholder="Selecciona" formControlName="supplier" [(ngModel)]="model.supplier" id="supplier" [filter]="true"></p-dropdown>
-          <ng-container *ngIf="form_purchase.get('supplier').hasError('required') && form_purchase.get('supplier').touched">
-            <small class="caption">El proveedor es obligatorio</small>
           </ng-container>
         </div>
       </div>
@@ -73,17 +71,42 @@
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
           <label for="supplier">Tipo de proceso</label>
-          <p-dropdown [options]="processTypes" placeholder="Selecciona" formControlName="processType" [(ngModel)]="model.processType" id="processType" [filter]="true"></p-dropdown>
-          <ng-container *ngIf="form_purchase.get('processType').hasError('required') && form_purchase.get('processType').touched">
+          <p-dropdown [options]="processTypes" placeholder="Selecciona" formControlName="processType"
+            [(ngModel)]="model.processType" id="processType" [filter]="true"></p-dropdown>
+          <ng-container
+            *ngIf="form_purchase.get('processType').hasError('required') && form_purchase.get('processType').touched">
             <small class="caption">El tipo de proceso es obligatorio</small>
           </ng-container>
         </div>
       </div>
+    </div>
+    <div class="p-grid">
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="numberInvoice">Descripcion</label>
+          <input type="text" pInputText formControlName="description" [(ngModel)]="model.description" />
+        </div>
+      </div>
+
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="supplier">Proveedor</label>
+          <p-dropdown [options]="suppliers" placeholder="Selecciona" formControlName="supplier"
+            [(ngModel)]="model.supplier" id="supplier" [filter]="true"></p-dropdown>
+          <ng-container
+            *ngIf="form_purchase.get('supplier').hasError('required') && form_purchase.get('supplier').touched">
+            <small class="caption">El proveedor es obligatorio</small>
+          </ng-container>
+        </div>
+      </div>
+
+
 
       <div class="p-col-12 p-sm-3">
         <div class="p-field p-fluid">
           <label for="date">Fecha</label>
-          <p-calendar inputId="date" [(ngModel)]="model.dateInvoice" formControlName="date" dateFormat="yy-mm-dd"></p-calendar>
+          <p-calendar inputId="date" [(ngModel)]="model.dateInvoice" formControlName="date" dateFormat="yy-mm-dd">
+          </p-calendar>
           <ng-container *ngIf="form_purchase.get('date').hasError('required') && form_purchase.get('date').touched">
             <small class="caption">La fecha es obligatoria</small>
           </ng-container>
@@ -101,8 +124,11 @@
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
-          <th>Precio</th>
           <th style="width: 100px;">Cantidad</th>
+          <th>Precio</th>
+          <th>Gravamenes</th>
+          <th>Sub Total</th>
+          <th>Total gravamenes</th>
           <th>Total</th>
           <th style="width: 40px;"></th>
         </tr>
@@ -110,34 +136,51 @@
       <ng-template pTemplate="body" let-detail let-rowIndex="rowIndex">
         <tr [formGroupName]="rowIndex">
           <td>
-            <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article" placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
+            <p-dropdown [options]="articles" [(ngModel)]="detail.article" formControlName="article"
+              placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
           </td>
-          <td>$ {{detail.article.acquisitionValue}}</td>
           <td style="width: 100px;">
-            <input type="number" pInputText pKeyFilter="num" min="0" [(ngModel)]="detail.quantity"  formControlName="quantity" (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
+            <input type="number" pInputText pKeyFilter="num" min="0" [(ngModel)]="detail.quantity"
+              formControlName="quantity" (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
             <span class="text-Available">Disponible: {{detail.article.stock}}</span>
           </td>
-          <td>$ {{detail.article.acquisitionValue*detail.quantity}}</td>
+          <td>$ {{ detail.article.acquisitionValue }}</td>
+          <td>
+            <p-dropdown [options]="liens" [(ngModel)]="detail.article.lien" formControlName="lien"
+              placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
+          </td>
+          <td>$ {{ detail.article.acquisitionValue * detail.quantity }}</td>
+          <td>$ {{( detail.article.lien.percentage / 100) * (detail.article.acquisitionValue) * detail.quantity}}</td>
+          <td>$ {{ printTotal((detail.article.acquisitionValue * detail.quantity) + ((detail.article.lien.percentage /
+            100) * (detail.article.acquisitionValue) * detail.quantity)) }}</td>
           <td style="width: 40px;">
-            <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+            <button pButton pRipple type="button" (click)="deleteInventoryMovement(rowIndex)" icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-text"></button>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
         <tr>
           <td colspan="3">
-            <button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo Producto" (click)="addProduct()" class="p-button-text button-new-product"></button>
+            <button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo Producto" (click)="addProduct()"
+              class="p-button-text button-new-product"></button>
           </td>
         </tr>
-          <tr>
-            <td colspan="3" class="p-text-right">Total</td>
-            <td>$ {{model.total}}</td>
-          </tr>
+        <tr>
+          <td colspan="3" class="p-text-right">Sub Total</td>
+          <td>$ {{ model.subTotal }} </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="p-text-right">Total gravamenes</td>
+          <td>$ {{ model.totalLien }} </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="p-text-right">Total</td>
+          <td>$ {{model.total}} </td>
+        </tr>
       </ng-template>
     </p-table>
     <div class="p-mt-4">
       <p-button label="Guardar" (onClick)="save()" [disabled]="form_purchase.invalid"></p-button>
     </div>
   </div>
-
-</div>

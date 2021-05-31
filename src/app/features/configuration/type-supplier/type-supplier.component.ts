@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouteStateService } from '@core/services/route-state.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { AbstractControl } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -28,8 +27,8 @@ export class TypeSupplierComponent {
     private _formuilder: FormBuilder,
     private service: TypeSupplierService){
       this.form_TypeSupplier = this._formuilder.group({
-        code: ['', [Validators.required], [this.validate_typeSupplier.bind(this)]],
-        description: ['', [Validators.required], []]
+        code: ['', [Validators.required]],
+        description: ['', [Validators.required]]
       })
     }
 
@@ -38,19 +37,6 @@ export class TypeSupplierComponent {
     this.getAllTypeSupplier();
   }
 
-  async validate_typeSupplier(control: AbstractControl) {
-    const val = control.value;
-    const response = await this.service.getAll();
-    if (this.model.id) {
-      return null;
-    } else {
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].code == val) {
-          return { A: true }
-        }
-      }
-    }
-  }
 
   newTypeSupplier() {
     this.model = new TypeSupplier();
@@ -72,9 +58,12 @@ export class TypeSupplierComponent {
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
-          console.log(data);
-          this.typeSuppliers.push(this.model);
-          this.messageService.add({ severity: 'success', summary: `tipo de proveedor creado con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+          if(data['errno']){
+            this.messageService.add({ severity: 'error', summary: data['sqlMessage'], detail: `Descripción: ${this.model.description}` });
+          }else{
+            this.typeSuppliers.push(this.model);
+            this.messageService.add({ severity: 'success', summary: `tipo de empleado creado con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+          }
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });

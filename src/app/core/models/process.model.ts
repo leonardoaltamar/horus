@@ -3,7 +3,10 @@ import { InventoryMovement } from './detail-sale.model';
 import { Employee } from './employee.model';
 import { Supplier } from './supplier.model';
 import { TypePayment } from './type-payment.model';
+
 import { ProcessType }  from './processType.model';
+import { DetailProcess } from './detail-process.model';
+import { Account } from './accounts.model';
 export class Process {
   id?: number;
   description: string;
@@ -13,6 +16,7 @@ export class Process {
   typePayment: TypePayment;
   client: Customer;
   details: InventoryMovement[];
+  detailProcess: DetailProcess[];
   seller: Employee;
   carrier: Employee;
   supplier: Supplier;
@@ -20,7 +24,10 @@ export class Process {
   state: string;
   address: string;
   total: number;
+  subTotal: number;
+  totalLien:number;
   createdAt: string;
+  account: Account;
 
   constructor() {
     this.id = null;
@@ -31,6 +38,7 @@ export class Process {
     this.typePayment = new TypePayment();
     this.client = new Customer();
     this.details = [];
+    this.detailProcess = [];
     this.seller = new Employee();
     this.carrier = new Employee();
     this.supplier = new Supplier();
@@ -38,13 +46,11 @@ export class Process {
     this.state = '';
     this.address = '';
     this.total = 0;
+    this.subTotal= 0;
+    this.totalLien = 0;
     this.createdAt = '';
+    this.account = new Account();
+
   }
 
-  getTotal() {
-    this.details.forEach(item => {
-      this.total = item.total + this.total;
-    })
-    return this.total;
-  }
 }

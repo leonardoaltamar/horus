@@ -103,7 +103,7 @@
 
       <div class="p-field p-col-12 p-md-4">
         <label for="gerder">Genero</label>
-        <p-dropdown id="gender" [options]="gender" placeholder="Genero" [(ngModel)]="customer.person.gender"
+        <p-dropdown id="gender" [options]="genders" placeholder="Genero" [(ngModel)]="customer.person.gender"
           placeholder="Genero" formControlName="gender"></p-dropdown>
       </div>
     </div>
@@ -290,6 +290,31 @@
           </p-table>
         </div>
       </p-tabPanel>
+      <!-- Panel datos empresariales -->
+      <p-tabPanel header="Header II">
+        <ng-template pTemplate="header">
+          <span>Datos de empresa</span>
+        </ng-template>
+        <div class="p-fluid p-grid p-mt-2">
+          <div class="p-field p-col-12 p-md-4">
+            <h4 class="color-title">Nit</h4>
+            <input id="nit" type="text" pInputText class="p-mr-1" placeholder="Nit de la empresa"
+              formControlName="businesNit" [(ngModel)]="customer.business.nit">
+          </div>
+          <div class="p-field p-col-12 p-md-4">
+            <h4 class="color-title">Nombre</h4>
+            <input id="name" type="text" pInputText class="p-mr-1" placeholder="Nombre de la empresa"
+              formControlName="businesName" [(ngModel)]="customer.business.name">
+          </div>
+          <div class="p-field p-col-12 p-md-4">
+            <h4 class="color-title">Dane</h4>
+            <input id="direction" type="text" pInputText class="p-mr-1" placeholder="Direccion de la empresa"
+              formControlName="businesDane" [(ngModel)]="customer.business.dane">
+          </div>
+        </div>
+      </p-tabPanel>
+
+
     </p-tabView>
 
     <div class="p-mt-5">

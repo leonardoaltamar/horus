@@ -22,6 +22,10 @@ export class ArticleService {
     return this.http.get<Article[]>(`${this.endPoint}`).toPromise();
   }
 
+  async getTop() {
+    return this.http.get<Article[]>(`${this.endPoint}/topProduct`).toPromise();
+  }
+
   getById(id: string) {
     return this.http.get<Article>(`${this.endPoint}/${id}`).toPromise();
   }

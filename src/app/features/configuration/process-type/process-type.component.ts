@@ -56,7 +56,7 @@ export class ProcessTypeComponent {
       account.name = account.code + " - " +account.name;
       return account;
     });
- }
+  }
 
   newProcessType() {
     this.model = new ProcessType();

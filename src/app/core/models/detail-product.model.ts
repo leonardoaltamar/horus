@@ -13,4 +13,5 @@ export class DetailProduct {
     this.measurement = new Measurement();
     this.quantity = 0;
   }
+
 }

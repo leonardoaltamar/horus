@@ -6,7 +6,7 @@ import { Article, Employee } from '@core/models';
 import { Process } from '@core/models/process.model';
 import * as moment from 'moment';
 import { ProductionOrderService } from '@core/services/production_order.service';
-import { ProductService } from '@core/services/product.service';
+import { ArticleService } from '@core/services/article.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -40,7 +40,7 @@ export class MainComponent implements OnInit {
 
   constructor(private serviceProcess: ProcessService,
         private serviceEmplooyee: EmployeeService,
-        private serviceProduct: ProductService,
+        private serviceProduct: ArticleService,
         private serviceProdutionOrder: ProductionOrderService) {}
 
   ngOnInit(): void {
