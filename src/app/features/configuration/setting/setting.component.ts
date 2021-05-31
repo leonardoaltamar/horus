@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/api';
 import { SettingService } from '@core/services/setting.service';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
-import { TypeEmployeeService } from '@core/services/type-Employee.service';
+import { TypeEmployeeService } from '@core/services/type-employee.service';
 import { Setting } from '@core/models/setting.model';
 
 @Component({

@@ -20,7 +20,7 @@ import { GerderService } from '@core/services/gerder.service';
 import { Email } from '@core/models/email.model';
 import { MobilePhone } from '@core/models/mobilePhone.model';
 import { Employee } from '../../../core/models';
-import { TypeEmployeeService } from '@core/services/type-Employee.service';
+import { TypeEmployeeService } from '@core/services/type-employee.service';
 import * as moment from 'moment';
 
 @Component({
@@ -81,9 +81,9 @@ export class EmployeeComponent implements OnInit {
     this.routeStateService.add("Configuration", "/configuration/employee", null, false);
     this.getAllSalesMan();
     this.getAllTypeEmployee();
-  
+
     this.cityService.getAll().then(data => { this.cities = data; });
-  
+
     this.gerderService.getAll().then(data =>
       data.forEach(x =>
         this.gender.push({
@@ -148,7 +148,7 @@ export class EmployeeComponent implements OnInit {
     this.employee.person.emails.forEach((item, index) => { this.employee.person.emails[index].main = item.main ? 1 : 0 });
     this.employee.person.mobilePhones.forEach((item, index) => { this.employee.person.mobilePhones[index].main = item.main ? 1 : 0 });
     this.employee.person.locations.forEach((item, index) => { this.employee.person.locations[index].main = item.main ? 1 : 0 });
-    
+
     if(!this.employee.id) {
       this.employeeService.create(this.employee).pipe(first()).subscribe(
         response => {
@@ -179,7 +179,7 @@ export class EmployeeComponent implements OnInit {
 
   modifyEmployee(employee: Employee) {
     this.employee = employee;
-    
+
     this.employee.person.emails.forEach( email => {
       if(this.employee.person.emails.length != this.emails.length){
         this.emails.push(this.addEmailFormGroup())
@@ -378,6 +378,6 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
-  
+
 
 }

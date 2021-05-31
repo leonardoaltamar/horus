@@ -33,6 +33,7 @@ import { ToastModule } from 'primeng/toast';
 import { MeasurementComponent } from './measurement/measurement.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { StateComponent } from './state/state.component';
+import { SectionComponent } from './section/section.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { StateComponent } from './state/state.component';
     TypeSupplierComponent,
     ProcessTypeComponent,
     TaxRegimeComponent,
-    SettingComponent
+    SettingComponent,
+    SectionComponent
   ],
   exports: [
   ],

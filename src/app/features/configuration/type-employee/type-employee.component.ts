@@ -1,4 +1,4 @@
-import { TypeEmployeeService } from './../../../core/services/type-Employee.service';
+import { TypeEmployeeService } from '@core/services/type-employee.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouteStateService } from '@core/services/route-state.service';
