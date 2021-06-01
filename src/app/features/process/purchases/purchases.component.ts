@@ -49,7 +49,7 @@ export class purchasesComponent {
               private lienService: LienService) {
                 this.form_purchase = this._formBuilder.group({
                   code: ['', [Validators.required]],
-                  account: ['', [Validators.required]],
+                  account: [''],
                   description: [''],
                   date: ['', [Validators.required]],
                   supplier: ['', [Validators.required]],
