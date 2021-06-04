@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="states" [paginator]=" true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="models" [paginator]=" true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['code']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -53,7 +53,7 @@
     <div class="p-grid">
       <div class="p-col-12 p-sm-6">
         <label for="code">Código</label>
-        <input id="code" [(ngModel)]="state.code" formControlName="code" type="text" pInputText>
+        <input id="code" [(ngModel)]="model.code" formControlName="code" type="text" pInputText>
         <ng-container *ngIf="form_state.get('code').hasError('required') && form_state.get('code').touched">
           <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
@@ -63,14 +63,14 @@
       </div>
       <div class="p-col-12 p-sm-6 ">
         <label for="name">Nombre</label>
-        <input id="name" [(ngModel)]="state.name" formControlName="name" type="text" pInputText>
+        <input id="name" [(ngModel)]="model.name" formControlName="name" type="text" pInputText>
         <ng-container *ngIf="form_state.get('name').hasError('required') && form_state.get('name').touched">
           <small class="p-invalid p-text-center">El nombre es obligatoria</small>
         </ng-container>
       </div>
       <div class="p-col-12 p-sm-6">
         <label for="staet">Paíse</label>
-        <p-dropdown [options]="country" [(ngModel)]="state.country" formControlName="country"
+        <p-dropdown [options]="country" [(ngModel)]="model.country" formControlName="country"
           placeholder="Selecciona el pais" optionLabel="name" optionValue="name">
         </p-dropdown>
         <ng-container *ngIf="form_state.get('country').hasError('required') && form_state.get('country').touched">

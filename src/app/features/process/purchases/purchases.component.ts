@@ -172,10 +172,11 @@ export class purchasesComponent {
   }
 
   save() {
-    this.model.processType.accountingProcess.debitAccount.value = this.model.totalLien;
+    console.log(this.model);
+    this.model.processType.accountingProcess.debitAccount.value = this.model.subTotal;
     this.model.processType.accountingProcess.debitAccount.nature = this.model.processType.accountingProcess.processNature==='C' ? 'C':'D';
 
-    this.model.processType.accountingProcess.creditAccount.value = this.model.reteFuente;
+    this.model.processType.accountingProcess.creditAccount.value = this.model.total;
     this.model.processType.accountingProcess.creditAccount.nature = this.model.processType.accountingProcess.processNature==='C' ? 'D':'C';
 
     this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
@@ -186,6 +187,7 @@ export class purchasesComponent {
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
     if(!this.model.id) {
+      console.log(this.model);
       this.service.create(this.model).pipe().subscribe(
         data => {
           console.log(data);

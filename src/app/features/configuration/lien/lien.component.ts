@@ -16,7 +16,7 @@ import { LienService } from '@core/services/lien.service';
 export class LienComponent {
   form_lien: FormGroup;
   model: Lien = new Lien();
-  liens: Lien[] = [];
+  models: Lien[] = [];
   isLoading: boolean = false;
   showModal: boolean = false;
 
@@ -44,7 +44,7 @@ export class LienComponent {
   async getAllLiens() {
     try {
       this.isLoading = true;
-      this.liens = await this.service.getAll();
+      this.models = await this.service.getAll();
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -56,8 +56,14 @@ export class LienComponent {
     if (!this.model.id) {
       this.service.create(this.model).subscribe(
         data => {
-          this.liens.push(this.model);
-          this.messageService.add({ severity: 'success', summary: `Gravamen creado con éxito`, detail: `Nombre: ${data.name}` });
+          if (data['errno']) {
+            this.messageService.add({ severity: 'error', summary: 'Dato duplicado', detail: data['sqlMessage'] });
+          }else{
+            this.model = data;
+            this.models.push(this.model);
+            this.messageService.add({ severity: 'success', summary: `Gravamen creado con éxito`, detail: `Name: ${data.name} percentage: ${data.percentage} ` });
+          }
+
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
@@ -68,7 +74,7 @@ export class LienComponent {
       this.service.update(this.model.id, this.model).pipe(first()).subscribe(
         data => {
           if (data['success']) {
-            this.liens = this.liens.map(x => {
+              this.models = this.models.map(x => {
               if (x.id == this.model.id)
                 x = this.model;
               return x
@@ -80,6 +86,7 @@ export class LienComponent {
     }
     this.showModal = false;
   }
+
 
   modifyLien(lien: Lien) {
     this.model = lien;
@@ -95,7 +102,7 @@ export class LienComponent {
         this.service.delete(lien.id, lien).pipe(first()).subscribe(
           data => {
             if (data['success']) {
-              this.liens = this.liens.filter((x) => x.id != lien.id);
+              this.models = this.models.filter((x) => x.id != lien.id);
               this.messageService.add({ severity: 'success', summary: '', detail: 'Gravamen eliminado con éxito' });
             }
           },

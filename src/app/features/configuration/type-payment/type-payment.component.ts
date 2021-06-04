@@ -64,8 +64,10 @@ export class TypePaymentComponent {
           if(data['errno']){
             this.messageService.add({ severity: 'error', summary: data['sqlMessage'], detail: `descripcion: ${this.model.description}` });
           }else{
+            this.model = data;
             this.typePayments.push(this.model);
           this.messageService.add({ severity: 'success', summary: `Tipo de pago creado con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+
           }
 
         },
@@ -73,8 +75,7 @@ export class TypePaymentComponent {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
         }
       );
-    }
-    else {
+    }else {
       this.service.update(this.model.id, this.model).pipe(first()).subscribe(
         data => {
           if (data['success']) {
@@ -93,6 +94,8 @@ export class TypePaymentComponent {
 
   modifyTypePayment(typePayment: TypePayment) {
     this.model = typePayment;
+    console.log(this.model );
+
     this.showModal = true;
   }
 
@@ -106,6 +109,7 @@ export class TypePaymentComponent {
           data => {
             if (data['success']) {
               this.typePayments = this.typePayments.filter((x) => x.id != typePayment.id);
+              this.messageService.add({ severity: 'success', summary: `Tipo de pago eliminado con éxito` });
             }
           },
           error => {
