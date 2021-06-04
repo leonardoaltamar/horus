@@ -39,7 +39,7 @@ export class SalesComponent {
   suppliers: SelectItem[] = [];
   employees: SelectItem[] = [];
   customers: SelectItem[] = [];
-  typePayments:SelectItem[] = [];
+  typePayments: SelectItem[] = [];
   sellers: SelectItem[] = [];
   carriers: SelectItem[] = [];
   processTypes: SelectItem[] = [];
@@ -48,34 +48,34 @@ export class SalesComponent {
   showEdit: boolean = false;
   liens: Lien[] = [];
   accounts: Account[] = [];
-  subtotal:number = 0;
+  subtotal: number = 0;
   dataDetail: any[] = [];
   filterAccounts: Account[] = [];
   constructor(private service: ProcessService,
-              private employeeService: EmployeeService,
-              private serviceSetting: SettingService,
-              private serviceCustomer: CustomerService,
-              private serviceTypePayment: TypePaymentService,
-              private routeStateService: RouteStateService,
-              private serviceArticle: ArticleService,
-              private serviceMeasurement: MeasurementService,
-              private processTypeService: ProcessTypeService,
-              private messageService: MessageService,
-              private confirmationService: ConfirmationService,
-              private _formBuilder: FormBuilder,
-              private lienService: LienService) {
-                this.form_purchase = this._formBuilder.group({
-                  code: ['', [Validators.required]],
-                  description: [''],
-                  date: ['', [Validators.required]],
-                  seller: ['', [Validations.validateDropdown]],
-                  customer:['', [Validations.validateDropdown]],
-                  carrier: [''],
-                  processType: ['', [Validations.validateDropdown]],
-                  typePayment: ['', [Validations.validateDropdown]],
-                  details: this._formBuilder.array([this.addDetailsFormGroup()])
-                })
-              }
+    private employeeService: EmployeeService,
+    private serviceSetting: SettingService,
+    private serviceCustomer: CustomerService,
+    private serviceTypePayment: TypePaymentService,
+    private routeStateService: RouteStateService,
+    private serviceArticle: ArticleService,
+    private serviceMeasurement: MeasurementService,
+    private processTypeService: ProcessTypeService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private _formBuilder: FormBuilder,
+    private lienService: LienService) {
+    this.form_purchase = this._formBuilder.group({
+      code: ['', [Validators.required]],
+      description: [''],
+      date: ['', [Validators.required]],
+      seller: ['', [Validations.validateDropdown]],
+      customer: ['', [Validations.validateDropdown]],
+      carrier: [''],
+      processType: ['', [Validations.validateDropdown]],
+      typePayment: ['', [Validations.validateDropdown]],
+      details: this._formBuilder.array([this.addDetailsFormGroup()])
+    })
+  }
   ngOnInit(): void {
     this.routeStateService.add("Compras", "/process/sales", null, false);
     this.getAllSales();
@@ -116,13 +116,13 @@ export class SalesComponent {
     }
   }
 
-  async getAllProcessTypes(){
+  async getAllProcessTypes() {
     try {
-      (await this.processTypeService.getAll()).forEach(processType=>{
-          this.processTypes.push({
-              label: processType.name,
-              value: processType
-          });
+      (await this.processTypeService.getAll()).forEach(processType => {
+        this.processTypes.push({
+          label: processType.name,
+          value: processType
+        });
       });
     } catch (error) {
       console.error(error);
@@ -151,9 +151,9 @@ export class SalesComponent {
       purchase.total = 0;
       purchase.subTotal = 0;
       purchase.totalLien = 0;
-      purchase.details.forEach(detail=>{
-        purchase.subTotal = (detail.article.acquisitionValue * detail.quantity);
-        purchase.totalLien = (detail.article.lien.percentage/100) * purchase.subTotal;
+      purchase.details.forEach(detail => {
+        purchase.subTotal = (detail.article.unitValue * detail.quantity);
+        purchase.totalLien = (detail.article.lien.percentage / 100) * purchase.subTotal;
         purchase.total += purchase.subTotal + purchase.totalLien;
 
       })
@@ -177,8 +177,8 @@ export class SalesComponent {
   async getAllEmployees() {
     const configuration = await this.serviceSetting.get();
     const data = await this.employeeService.getAll();
-    data.forEach( item => {
-      if(item.typeEmployee.id === configuration.carrierId) {
+    data.forEach(item => {
+      if (item.typeEmployee.id === configuration.carrierId) {
         this.carriers.push({
           label: `${item.person.name} ${item.person.surname} ${item.person.secondSurname}`,
           value: item
@@ -198,7 +198,7 @@ export class SalesComponent {
 
   async getAllCustomer() {
     const data = await this.serviceCustomer.getAll();
-    data.forEach( item => {
+    data.forEach(item => {
       this.customers.push({
         label: `${item.person.name} ${item.person.surname} ${item.person.secondSurname}`,
         value: item
@@ -208,6 +208,7 @@ export class SalesComponent {
 
   async getAllProducts() {
     this.articles = await this.serviceArticle.getAll();
+    this.articles = this.articles.filter(article => article.rawMaterials.length > 0);
   }
 
   async getAllMeasurements() {
@@ -217,45 +218,67 @@ export class SalesComponent {
   onChangeQuantity() {
     this.calculateTotal();
   }
-  modifySale(process: Process){
+  modifySale(process: Process) {
     this.model = process;
     console.log(this.model);
 
     this.showModal = true;
 
   }
+  OnChangeReteFuente() {
+    this.model.total += this.model.reteFuente;
+  }
+
+  OnChangeReteIva() {
+    this.model.total += this.model.reteIva;
+  }
+
+  OnChangeReteIca() {
+    this.model.total += this.model.reteIca;
+  }
   save() {
-      this.model.typeMoviment = 'S';
-      this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
-      if(!this.model.id) {
-        this.service.create(this.model).pipe().subscribe(
-          data => {
-            console.log(data);
-            this.model = data;
-            this.calculateTotal();
-            this.sales.push(this.model);
-            this.showModal = false;
-            this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
+    this.model.processType.accountingProcess.debitAccount.value = this.model.subTotal;
+    this.model.processType.accountingProcess.debitAccount.nature = this.model.processType.accountingProcess.processNature === 'C' ? 'C' : 'D';
+
+    this.model.processType.accountingProcess.creditAccount.value = this.model.total;
+    this.model.processType.accountingProcess.creditAccount.nature = this.model.processType.accountingProcess.processNature === 'C' ? 'D' : 'C';
+
+    this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
+    this.model.processType.accountingProcess.reteIvaAccount.value = this.model.reteIva;
+    this.model.processType.accountingProcess.reteFuenteAccount.value = this.model.reteFuente;
+    this.model.processType.accountingProcess.reteIcaAccount.value = this.model.reteIca;
+
+    this.model.typeMoviment = 'S';
+    this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
+    if (!this.model.id) {
+      this.service.create(this.model).pipe().subscribe(
+        data => {
+          console.log(data);
+          this.model = data;
+          this.calculateTotal();
+          this.sales.push(this.model);
+          this.showModal = false;
+          this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
+        }
+      )
+    } else {
+      this.service.update(this.model.id, this.model).pipe(first()).subscribe(
+        data => {
+          if (data['success']) {
+            this.sales = this.sales.map(x => {
+              if (x.id == this.model.id)
+                x = this.model;
+              return x
+            });
+            this.messageService.add({ severity: 'success', summary: `tipo de proceso actualizado con éxito` });
           }
-        )
-      }else{
-        this.service.update(this.model.id, this.model).pipe(first()).subscribe(
-          data => {
-            if (data['success']) {
-              this.sales = this.sales.map(x => {
-                if (x.id == this.model.id)
-                  x = this.model;
-                return x
-              });
-              this.messageService.add({ severity: 'success', summary: `tipo de proceso actualizado con éxito` });
-            }
-          }
-        )
-      }
-      this.showModal = false;
+        }
+      )
+    }
+    this.showModal = false;
 
   }
-  deleteSale(process: Process){
+  deleteSale(process: Process) {
     this.confirmationService.confirm({
       header: 'Alerta',
       message: `Está eliminando: ${process.description}`,
@@ -279,20 +302,20 @@ export class SalesComponent {
   calculateTotal() {
     console.log(this.model.details);
     this.model.details.forEach(item => {
-      item.subtotal = item.quantity * item.article.acquisitionValue;
+      item.subtotal = item.quantity * item.article.unitValue;
       item.totalLien = (item.article.lien.percentage / 100) * item.subtotal;
       item.total = item.subtotal + item.totalLien;
     })
     this.getTotal();
   }
 
-  getTotal(){
+  getTotal() {
     this.model.total = 0;
     this.model.subTotal = 0;
     this.model.totalLien = 0;
-    this.model.details.forEach(item=>{
+    this.model.details.forEach(item => {
       this.model.subTotal = item.subtotal + this.model.subTotal;
-      this.model.totalLien  = item.totalLien + this.model.totalLien;
+      this.model.totalLien = item.totalLien + this.model.totalLien;
       this.model.total = item.total + this.model.total;
     })
   }
@@ -301,18 +324,18 @@ export class SalesComponent {
 
 
 
-  deleteInventoryMovement(index: number){
-    this.model.details.splice(index,1);
+  deleteInventoryMovement(index: number) {
+    this.model.details.splice(index, 1);
     this.calculateTotal();
   }
 
 
 
-  printTotal(...total){
+  printTotal(...total) {
     return total;
   }
 
-  subTotal(subtotal:number){
+  subTotal(subtotal: number) {
     setTimeout(() => this.subtotal = subtotal, 200);
     return subtotal;
   }
