@@ -19,7 +19,7 @@ import { first } from 'rxjs/operators';
 export class ProductionComponent implements OnInit {
   isLoading: boolean = false;
   showModal: boolean = false;
-  products: Article[] = [];
+  articles: Article[] = [];
   product: Article = new Article();
   productionOrder: ProductionOrder = new ProductionOrder();
   productionOrders: ProductionOrder[];
@@ -78,6 +78,7 @@ export class ProductionComponent implements OnInit {
       this.isLoading = true;
       this.productionOrders = await this.productionService.getAll();
       this.isLoading = false;
+      console.log(this.productionOrders);
     } catch (error) {
       this.isLoading = false;
       console.error(error)
@@ -87,7 +88,8 @@ export class ProductionComponent implements OnInit {
   async getAllProducts() {
     try {
       this.isLoading = true;
-      this.products = await this.productService.getAll();
+      this.articles = await this.productService.getAll();
+      this.articles = this.articles.filter(article => article.rawMaterials.length > 0);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -96,8 +98,8 @@ export class ProductionComponent implements OnInit {
   }
 
   addRow() {
-    this.products = [...this.products];
-    this.products.push(new Article());
+    this.articles = [...this.articles];
+    this.articles.push(new Article());
   }
 
   modifyProductionOrder(productionOrder: ProductionOrder) {

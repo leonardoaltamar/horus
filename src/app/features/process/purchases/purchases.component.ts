@@ -35,6 +35,9 @@ export class purchasesComponent {
   liens: Lien[] = [];
   accounts: Account[] = [];
   subtotal:number = 0;
+  reteFuente:number = 0;
+  reteIca: number = 0;
+  reteIva:number = 0;
   dataDetail: any[] = [];
   filterAccounts: Account[] = [];
   constructor(private service: ProcessService,
@@ -53,8 +56,7 @@ export class purchasesComponent {
                   description: [''],
                   date: ['', [Validators.required]],
                   supplier: ['', [Validators.required]],
-                  processType: ['', [Validators.required]],
-                  details: this._formBuilder.array([this.addDetailsFormGroup()])
+                  processType: ['', [Validators.required]]
                 })
               }
   ngOnInit(): void {
@@ -113,7 +115,7 @@ export class purchasesComponent {
   addProduct() {
     this.model.details.push(new InventoryMovement());
     // this.dataDetail.push(new InventoryMovement());
-    this.details.push(this.addDetailsFormGroup());
+    // this.details.push(this.addDetailsFormGroup());
   }
 
   async getAllPurchases() {
@@ -170,15 +172,24 @@ export class purchasesComponent {
   }
 
   save() {
+    this.model.processType.accountingProcess.debitAccount.value = this.model.totalLien;
+    this.model.processType.accountingProcess.debitAccount.nature = this.model.processType.accountingProcess.processNature==='C' ? 'C':'D';
+
+    this.model.processType.accountingProcess.creditAccount.value = this.model.reteFuente;
+    this.model.processType.accountingProcess.creditAccount.nature = this.model.processType.accountingProcess.processNature==='C' ? 'D':'C';
+
+    this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
+    this.model.processType.accountingProcess.reteIvaAccount.value = this.model.reteIva;
+    this.model.processType.accountingProcess.reteFuenteAccount.value = this.model.reteFuente;
+    this.model.processType.accountingProcess.reteIcaAccount.value = this.model.reteIca;
+
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
-    console.log(this.model);
     if(!this.model.id) {
       this.service.create(this.model).pipe().subscribe(
         data => {
           console.log(data);
           this.model = data;
-          this.calculateTotal();
           this.purchases.push(this.model);
           this.showModal = false;
           this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
@@ -188,7 +199,6 @@ export class purchasesComponent {
   }
 
   calculateTotal() {
-    console.log(this.model.details);
     this.model.details.forEach(item => {
       item.subtotal = item.quantity * item.article.acquisitionValue;
       item.totalLien = (item.article.lien.percentage / 100) * item.subtotal;
@@ -206,6 +216,7 @@ export class purchasesComponent {
       this.model.totalLien  = item.totalLien + this.model.totalLien;
       this.model.total = item.total + this.model.total;
     })
+    this.model.total += this.model.reteFuente;
   }
 
   filterAccount(event): void {
@@ -221,7 +232,17 @@ export class purchasesComponent {
 
   }
 
+  OnChangeReteFuente(){
+    this.model.total += this.model.reteFuente;
+  }
 
+  OnChangeReteIva(){
+    this.model.total += this.model.reteIva;
+  }
+
+  OnChangeReteIca(){
+    this.model.total += this.model.reteIca;
+  }
 
   deleteInventoryMovement(index: number){
     this.model.details.splice(index,1);

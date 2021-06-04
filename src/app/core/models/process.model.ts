@@ -24,6 +24,9 @@ export class Process {
   state: string;
   address: string;
   total: number;
+  reteIva: number;
+  reteFuente:number;
+  reteIca: number;
   subTotal: number;
   totalLien:number;
   createdAt: string;
@@ -46,6 +49,9 @@ export class Process {
     this.state = '';
     this.address = '';
     this.total = 0;
+    this.reteFuente = 0;
+    this.reteIca = 0;
+    this.reteIva = 0;
     this.subTotal= 0;
     this.totalLien = 0;
     this.createdAt = '';

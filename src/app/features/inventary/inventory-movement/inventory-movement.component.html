@@ -23,12 +23,12 @@
             <tr>
               <td>{{rowIndex+1}}</td>
               <td>{{dataRow.article.name}}</td>
-              <td>{{dataRow.typeMoviment ? '+': '-'}} {{dataRow.quantity}}</td>
+              <td>{{dataRow.typeMoviment === 1 ? '+': '-'}} {{dataRow.quantity}}</td>
               <td>{{dataRow.measurement.description}}</td>
               <td>{{dataRow.date}}</td>
               <td>
-                  <span *ngIf="dataRow.typeMoviment" [class]="'sales-badge status-' + dataRow.typeMoviment">Entrada</span>
-                  <span *ngIf="!dataRow.typeMoviment" [class]="'sales-badge status-' + dataRow.typeMoviment">Salida</span>
+                  <span *ngIf="dataRow.typeMoviment===1" [class]="'sales-badge status-' + dataRow.typeMoviment">Entrada</span>
+                  <span *ngIf="dataRow.typeMoviment===-1" [class]="'sales-badge status-' + dataRow.typeMoviment">Salida</span>
               </td>
             </tr>
           </ng-template>

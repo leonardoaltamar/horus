@@ -8,6 +8,7 @@ export class AccountingProcess{
   reteIvaAccount:Account;
   reteIcaAccount:Account;
   reteFuenteAccount:Account;
+  processNature: string;
 
   constructor(){
     this.id = null;
@@ -17,6 +18,7 @@ export class AccountingProcess{
     this.reteIvaAccount = new Account();
     this.reteIcaAccount = new Account();
     this.reteFuenteAccount = new Account();
+    this.processNature = '';
   }
 
 }

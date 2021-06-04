@@ -69,8 +69,8 @@
       </div>
       <div class="container-state">
         <p-confirmPopup></p-confirmPopup>
-        <span *ngIf="productionOrder.state === 'A'" [class]="'sales-badge button-state status-' + productionOrder.state">Terminado</span>
-        <span *ngIf="productionOrder.state === 'E'" (click)="confirmState($event)" [class]="'sales-badge button-state status-' + productionOrder.state">Pendiente</span>
+        <span *ngIf="productionOrder.state === 'P'" [class]="'sales-badge button-state status-' + productionOrder.state">Pendiente</span>
+        <span *ngIf="productionOrder.state === 'F'" (click)="confirmState($event)" [class]="'sales-badge button-state status-' + productionOrder.state">Finalizado</span>
         <!-- <button  pButton icon="pi pi-check" [label]="productionOrder.state === 'A' ? 'Terminado': 'Pendiente'"></button> -->
       </div>
     </div>
