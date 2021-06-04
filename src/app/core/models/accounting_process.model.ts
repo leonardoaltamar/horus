@@ -4,7 +4,6 @@ export class AccountingProcess{
   id?:number;
   creditAccount:Account;
   debitAccount:Account;
-  processNature: string;
   ivaAccount:Account;
   ivaAccountNature: string;
   reteIvaAccount:Account;
