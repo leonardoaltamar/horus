@@ -36,6 +36,14 @@ export class MenuComponent {
         ]
       },
       {
+        label: 'Contabilidad',
+        icon: 'fas fa-book',
+        items:[
+          {label: 'Cuentas', icon: 'fas fa-dollar-sign', routerLink: ["/accounting/accounts"]},
+          {label: 'Tipo de Procesos', icon: 'fas fa-dollar-sign', routerLink: ["/configuration/process_types"]}
+        ]
+      },
+      {
         label: 'Inventario',
         icon: 'fas pi-pw fa-inventory',
         items: [
