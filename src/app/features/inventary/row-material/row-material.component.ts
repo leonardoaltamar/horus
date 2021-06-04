@@ -47,7 +47,6 @@ export class RawMaterialComponent implements OnInit {
     this.form_row_material = this._formuilder.group({
       code: ['', [Validators.required], []],
       name: ['', [Validators.required], []],
-      stock: ['', [Validators.required], []],
       unitValue: [''],
       category: ['', [Validators.required], []],
       lien:['', [Validators.required], []],

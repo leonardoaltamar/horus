@@ -20,11 +20,14 @@ import { Payment } from '@core/models/payment.model';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { generatePdf } from '@core/helpers/invoice-pdf'
+import { Validations } from '../../../../utils/validations';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'sales',
   templateUrl: 'sales.component.html',
-  styleUrls: ['sales.component.css']
+  styleUrls: ['sales.component.css'],
+  providers: [ConfirmationService]
 })
 
 export class SalesComponent {
@@ -58,17 +61,18 @@ export class SalesComponent {
               private serviceMeasurement: MeasurementService,
               private processTypeService: ProcessTypeService,
               private messageService: MessageService,
+              private confirmationService: ConfirmationService,
               private _formBuilder: FormBuilder,
               private lienService: LienService) {
                 this.form_purchase = this._formBuilder.group({
                   code: ['', [Validators.required]],
                   description: [''],
                   date: ['', [Validators.required]],
-                  seller: [''],
-                  customer:['', [Validators.required]],
+                  seller: ['', [Validations.validateDropdown]],
+                  customer:['', [Validations.validateDropdown]],
                   carrier: [''],
-                  processType: ['', [Validators.required]],
-                  typePayment: ['', [Validators.required]],
+                  processType: ['', [Validations.validateDropdown]],
+                  typePayment: ['', [Validations.validateDropdown]],
                   details: this._formBuilder.array([this.addDetailsFormGroup()])
                 })
               }
@@ -88,6 +92,8 @@ export class SalesComponent {
   newSales() {
     this.showModal = true;
     this.model = new Process();
+    console.log(this.model);
+
     this.genarateCode();
   }
 
@@ -100,6 +106,7 @@ export class SalesComponent {
       })
     })
   }
+
 
   async getAllLiens() {
     try {
@@ -183,6 +190,8 @@ export class SalesComponent {
         })
       }
     })
+    console.log(data);
+
   }
 
 
@@ -208,22 +217,63 @@ export class SalesComponent {
   onChangeQuantity() {
     this.calculateTotal();
   }
+  modifySale(process: Process){
+    this.model = process;
+    console.log(this.model);
 
+    this.showModal = true;
+
+  }
   save() {
-    this.model.typeMoviment = 'S';
-    this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
-    if(!this.model.id) {
-      this.service.create(this.model).pipe().subscribe(
-        data => {
-          console.log(data);
-          this.model = data;
-          this.calculateTotal();
-          this.sales.push(this.model);
-          this.showModal = false;
-          this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
-        }
-      )
-    }
+      this.model.typeMoviment = 'S';
+      this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
+      if(!this.model.id) {
+        this.service.create(this.model).pipe().subscribe(
+          data => {
+            console.log(data);
+            this.model = data;
+            this.calculateTotal();
+            this.sales.push(this.model);
+            this.showModal = false;
+            this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
+          }
+        )
+      }else{
+        this.service.update(this.model.id, this.model).pipe(first()).subscribe(
+          data => {
+            if (data['success']) {
+              this.sales = this.sales.map(x => {
+                if (x.id == this.model.id)
+                  x = this.model;
+                return x
+              });
+              this.messageService.add({ severity: 'success', summary: `tipo de proceso actualizado con éxito` });
+            }
+          }
+        )
+      }
+      this.showModal = false;
+
+  }
+  deleteSale(process: Process){
+    this.confirmationService.confirm({
+      header: 'Alerta',
+      message: `Está eliminando: ${process.description}`,
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.service.delete(process.id, process).pipe(first()).subscribe(
+          data => {
+            if (data['success']) {
+              this.sales = this.sales.filter((x) => x.id != process.id);
+              this.messageService.add({ severity: 'success', summary: '', detail: 'Venta eliminada con éxito' });
+            };
+          },
+          error => {
+            console.error(error);
+          }
+        );
+      }
+    });
   }
 
   calculateTotal() {
