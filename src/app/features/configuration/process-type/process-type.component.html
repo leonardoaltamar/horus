@@ -50,7 +50,7 @@
 <p-dialog header="Nuevo tipo de proceso" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
   [baseZIndex]="10000" [resizable]="false">
   <form [formGroup]="form_processType" class="">
-    <div class="p-grid p-mt-2">
+   <div class="p-grid p-mt-2">
       <div class="p-field p-col-3 p-sm-3">
         <label for="code">Codigo</label>
         <input id="code" formControlName="code" type="text" pInputText [(ngModel)]="model.code">
@@ -58,13 +58,17 @@
           <small class="p-invalid p-text-center">El codigo es obligatorio</small>
         </ng-container>
       </div>
-      <div class="p-field p-col-6 p-sm-9">
+      <div class="p-field p-col-4 p-sm-7">
         <label for="name">Nombre</label>
         <input id="name" formControlName="name" type="text" pInputText [(ngModel)]="model.name">
         <ng-container
           *ngIf="form_processType.get('name').hasError('required') && form_processType.get('name').touched">
           <small class="caption p-text-center">El nombre es obligatorio</small>
         </ng-container>
+      </div>
+      <div class="p-field-checkbox p-col-2 p-mt-5">
+        <p-checkbox [(ngModel)]="model.accountingProcess.processNature" [binary]="model.accountingProcess.processNature === 'C'? false:true" formControlName="processNature" [disabled]="!model.name" (onChange)="processNature($event.checked)"></p-checkbox>
+        <label for="model.accountingProcess.processNature">{{ model.accountingProcess.processNature === 'D'  ? 'Débito': 'Crédito' }}</label>
       </div>
     </div>
 
@@ -74,33 +78,49 @@
         <p-autoComplete  class="p-field p-col-12"  [(ngModel)]="model.accountingProcess.debitAccount" lab formControlName="account"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name">
         </p-autoComplete>
       </div>
+
       <div class="p-field p-col-6">
-        <label for="account">Cuenta Crédito</label>
-        <p-autoComplete  class="p-field p-col-12"  [(ngModel)]="model.accountingProcess.creditAccount" lab formControlName="account"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name">
+        <label for="caccount">Cuenta Crédito</label>
+        <p-autoComplete  class="p-field p-col-12"  [(ngModel)]="model.accountingProcess.creditAccount" lab formControlName="caccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name">
         </p-autoComplete>
       </div>
     </div>
 
     <div class="p-grid">
-      <div class="p-field p-col-6">
+      <div class="p-field p-col-4">
         <label for="account">Cuenta de IVA</label>
-        <p-autoComplete class="p-field p-col-6 acount-iva" [(ngModel)]="model.accountingProcess.ivaAccount" formControlName="ivaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+        <p-autoComplete class="p-field p-col-12" [(ngModel)]="model.accountingProcess.ivaAccount" formControlName="ivaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
       </div>
-      <div class="p-field p-col-6">
+      <div class="p-field-checkbox p-col-2 p-mt-5">
+        <p-checkbox [(ngModel)]="model.accountingProcess.ivaAccountNature" [binary]="model.accountingProcess.ivaAccountNature === 'C'? false:true" formControlName="ivaAccountNature" [disabled]="!model.accountingProcess.ivaAccount?.id" (onChange)="ivaAccountNature($event.checked)"></p-checkbox>
+        <label for="model.accountingProcess.ivaAccountNature">{{ model.accountingProcess.ivaAccountNature === 'D'  ? 'Débito': 'Crédito' }}</label>
+      </div>
+      <div class="p-field p-col-4">
         <label for="account">Cuenta retención IVA</label>
-        <p-autoComplete class="p-field p-col-6 acount-reteiva" [(ngModel)]="model.accountingProcess.reteIvaAccount" formControlName="reteIvaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+        <p-autoComplete class="p-field p-col-12" [(ngModel)]="model.accountingProcess.reteIvaAccount" formControlName="reteIvaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+      </div>
+      <div class="p-field-checkbox p-col-2 p-mt-5">
+        <p-checkbox [(ngModel)]="model.accountingProcess.reteIvaAccountNature" [binary]="model.accountingProcess.reteIvaAccountNature === 'C'? false:true" formControlName="reteIvaAccountNature" [disabled]="!model.accountingProcess.reteIvaAccount?.id" (onChange)="reteIvaAccountNature($event.checked)"></p-checkbox>
+        <label for="model.accountingProcess.reteIvaAcountNature">{{ model.accountingProcess.reteIvaAccountNature === 'D'  ? 'Débito': 'Crédito' }}</label>
       </div>
     </div>
 
     <div class="p-grid">
-      <div class="p-field p-col-6">
+      <div class="p-field p-col-4">
         <label for="account">Cuenta retención de ICA</label>
-        <p-autoComplete class="p-field p-col-6  acount-reteica" [(ngModel)]="model.accountingProcess.reteIcaAccount" formControlName="reteIcaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+        <p-autoComplete class="p-field p-col-12" [(ngModel)]="model.accountingProcess.reteIcaAccount" formControlName="reteIcaAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
       </div>
-
-      <div class="p-field p-col-6">
+      <div class="p-field-checkbox p-col-2 p-mt-5">
+        <p-checkbox [(ngModel)]="model.accountingProcess.reteIcaAccountNature" [binary]="model.accountingProcess.reteIcaAccountNature === 'C'? false:true" formControlName="reteIcaAccountNature" [disabled]="!model.accountingProcess.reteIcaAccount?.id" (onChange)="reteIcaAccountNature($event.checked)"></p-checkbox>
+        <label for="model.accountingProcess.reteIcaAccountNature">{{ model.accountingProcess.reteIcaAccountNature  === 'D'  ? 'Débito': 'Crédito' }}</label>
+      </div>
+      <div class="p-field p-col-4">
         <label for="account">Cuenta retención de fuente</label>
-        <p-autoComplete class="p-field p-col-6 acount-retefuente" [(ngModel)]="model.accountingProcess.reteFuenteAccount" formControlName="reteFuenteAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+        <p-autoComplete class="p-field p-col-12" [(ngModel)]="model.accountingProcess.reteFuenteAccount" formControlName="reteFuenteAccount"  [suggestions]="filterAccounts" (completeMethod)="filterAccount($event)" [forceSelection]="true"  field="name"></p-autoComplete>
+      </div>
+      <div class="p-field-checkbox p-col-2 p-mt-5">
+        <p-checkbox [(ngModel)]="model.accountingProcess.reteFuenteAccountNature" [binary]="model.accountingProcess.reteFuenteAccountNature === 'C'? false:true" formControlName="reteFuenteAccountNature" [disabled]="!model.accountingProcess.reteFuenteAccount?.id" (onChange)="reteFuenteAccountNature($event.checked)"></p-checkbox>
+        <label for="model.accountingProcess.reteFuenteAccountNature">{{ model.accountingProcess.reteFuenteAccountNature === 'D'  ? 'Débito': 'Crédito' }}</label>
       </div>
     </div>
 

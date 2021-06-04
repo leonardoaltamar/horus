@@ -50,7 +50,6 @@ export class ProductComponent implements OnInit {
     this.form_product = this._formuilder.group({
       code: ['', [Validators.required], [this.validate_articles.bind(this)]],
       name: ['', [Validators.required], []],
-      stock: ['', [Validators.required], []],
       lien: [''],
       unitValue: [''],
       expeditionDate: [],

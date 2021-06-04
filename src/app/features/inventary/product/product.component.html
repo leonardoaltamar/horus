@@ -60,7 +60,7 @@
 
   <form [formGroup]="form_product" class="">
     <div class="p-grid p-mt-2">
-      <div class="p-field p-col-3 p-sm-3">
+      <div class="p-field p-col-3">
         <label for="code">Código</label>
         <input id="code" formControlName="code" [(ngModel)]="model.code" type="text"
           onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
@@ -72,23 +72,14 @@
         </ng-container>
       </div>
 
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-3">
         <label for="description">Nombre</label>
         <input id="description" formControlName="name" [(ngModel)]="model.name" type="text" pInputText>
         <ng-container *ngIf="form_product.get('name').hasError('required') && form_product.get('name').touched">
           <small class="p-invalid p-text-center">El nombre del articulo es obligatorio</small>
         </ng-container>
       </div>
-
-      <div class="p-field p-col-3 p-sm-3">
-        <label for="stock">Stock</label>
-        <input id="stock" [(ngModel)]="model.stock " formControlName="stock" type="text" pInputText>
-        <ng-container *ngIf="form_product.get('stock').hasError('required') && form_product.get('stock').touched">
-          <small class="p-invalid p-text-center">El stock es obligatorio</small>
-        </ng-container>
-      </div>
-
-      <div class="p-field p-col-4 p-sm-4">
+      <div class="p-field p-col-3">
         <label for="unitValue">Valor unitario</label>
         <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="text" pInputText>
         <ng-container
@@ -97,20 +88,20 @@
         </ng-container>
       </div>
 
-      <div class="p-field p-col-4 p-sm-4">
+      <div class="p-field p-col-3">
         <label for="lien">Gravámen</label>
         <p-dropdown [options]="liens" [(ngModel)]="model.lien.id" formControlName="lien"
             placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
       </div>
     </div>
 
-    <div class="p-mt-2">
+    <div class="p-mt-5">
       <div class="p-d-flex p-jc-between p-ai-center p-mb-1">
         <h4 class="color-title">Materia prima</h4>
         <button pButton pRipple icon="fas fa-plus" iconPos="right" label="Agregar"
           class="p-button button-text p-button-close" (click)="addRow()"></button>
       </div>
-      <div class="table-responsive p-mb-3">
+      <div class="table-responsive p-mt-2 p-mb-3">
         <p-table [value]="model.rawMaterials" dataKey="id" styleClass="p-datatable-gridlines"
           formArrayName="materials">
           <ng-template pTemplate="header">

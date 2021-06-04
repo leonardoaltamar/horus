@@ -63,8 +63,8 @@
   </ng-template>
 
   <form [formGroup]="form_row_material" class="">
-    <div class="p-grid p-mt-2">
-      <div class="p-field p-col-3 p-sm-3">
+    <div class="p-grid p-mt-2 p-offset-1">
+      <div class="p-field p-col-3 ">
         <label for="code">Código</label>
         <input id="code" formControlName="code" [(ngModel)]="model.code" type="text"
           onkeyup="javascript:this.value = this.value;" pInputText>
@@ -76,7 +76,7 @@
         </ng-container>
       </div>
 
-      <div class="p-field p-col-6 p-sm-6">
+      <div class="p-field p-col-4 ">
         <label for="description">Nombre</label>
         <input id="description" formControlName="name" [(ngModel)]="model.name" type="text" pInputText>
         <ng-container *ngIf="form_row_material.get('name').hasError('required') && form_row_material.get('name').touched">
@@ -84,16 +84,7 @@
         </ng-container>
       </div>
 
-      <div class="p-field p-col-3 p-sm-3">
-        <label for="stock">Stock</label>
-        <input id="stock" [(ngModel)]="model.stock " formControlName="stock" type="text" pInputText>
-        <ng-container *ngIf="form_row_material.get('stock').hasError('required') && form_row_material.get('stock').touched">
-          <small class="p-invalid p-text-center">El stock es obligatorio</small>
-        </ng-container>
-      </div>
-
-
-        <div class="p-field p-col-12 p-sm-4">
+        <div class="p-field p-col-3 ">
           <label for="unitValue">Valor de adquisición</label>
           <input id="unitValue" [(ngModel)]="model.acquisitionValue" formControlName="unitValue" type="text" pInputText>
           <ng-container
@@ -102,13 +93,13 @@
           </ng-container>
         </div>
 
-        <div class="p-field p-col-12 p-sm-4">
+        <div class="p-field p-col-3">
           <label for="expeditionDate">Fecha de expiración</label>
           <input id="expeditionDate" type="date" formControlName="expeditionDate" [(ngModel)]=" model.dateExpiry"
-            formControlName="expeditionDate" pInputText>
+            formControlName="expeditionDate" style="height: 30px; font-size: 12px;" pInputText>
         </div>
 
-        <div class="p-field p-col-12 p-sm-4">
+        <div class="p-field p-col-4">
           <label for="categories">Categorias</label>
           <p-dropdown [options]="categories" [(ngModel)]="model.category.id" formControlName="category"
             placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
@@ -117,7 +108,7 @@
           </ng-container>
         </div>
 
-        <div class="p-field p-col-4 p-sm-4">
+        <div class="p-field p-col-3">
           <label for="lien">Gravámenes</label>
           <p-dropdown [options]="liens" [(ngModel)]="model.lien" formControlName="lien"
               placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>

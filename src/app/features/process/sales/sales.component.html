@@ -36,7 +36,8 @@
             <td>{{dataRow.dateInvoice}}</td>
             <td>$ {{dataRow.total}}</td>
             <td>
-              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action" (click)="modifySale(dataRow)"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action" (click)="deleteSale(dataRow)"></button>
               <button pButton pRipple type="button" icon="pi pi-print" class="button-action"
                 (click)="downloadPdf(dataRow)"></button>
             </td>
@@ -46,7 +47,7 @@
     </div>
   </div>
 </div>
-
+<p-confirmDialog class="dialog-small"></p-confirmDialog>
 
 <form class="card scroll" *ngIf="showModal" [formGroup]="form_purchase">
   <div class="card-header p-d-flex p-jc-between p-ai-center">
@@ -85,7 +86,7 @@
           <p-dropdown [options]="processTypes" placeholder="Selecciona" formControlName="processType"
             [(ngModel)]="model.processType" id="processType" [filter]="true"></p-dropdown>
           <ng-container
-            *ngIf="form_purchase.get('processType').hasError('required') && form_purchase.get('processType').touched">
+            *ngIf="form_purchase.get('processType').hasError('isNull') && form_purchase.get('processType').touched">
             <small class="caption">El tipo de proceso es obligatorio</small>
           </ng-container>
         </div>
@@ -106,7 +107,7 @@
           <p-dropdown [options]="sellers" placeholder="Selecciona" formControlName="seller"
             [(ngModel)]="model.seller" id="seller" [filter]="true"></p-dropdown>
           <ng-container
-            *ngIf="form_purchase.get('seller').hasError('required') && form_purchase.get('seller').touched">
+            *ngIf="form_purchase.get('seller').hasError('isNull') && form_purchase.get('seller').touched">
             <small class="caption">El vendedor es obligatorio</small>
           </ng-container>
         </div>
@@ -129,10 +130,9 @@
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
           <label for="customer">Cliente</label>
-          <p-dropdown [options]="customers" placeholder="Selecciona" formControlName="customer"
-            [(ngModel)]="model.client" id="customer" [filter]="true"></p-dropdown>
+          <p-dropdown [options]="customers" placeholder="Selecciona"  formControlName="customer"  id="customer" [filter]="true" [(ngModel)]="model.client"></p-dropdown>
           <ng-container
-            *ngIf="form_purchase.get('customer').hasError('required') && form_purchase.get('customer').touched">
+            *ngIf="form_purchase.get('customer').hasError('isNull') && form_purchase.get('customer').touched">
             <small class="caption">El cliente es obligatorio</small>
           </ng-container>
         </div>
@@ -141,7 +141,11 @@
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
           <label for="paymentType">Tipo de pago</label>
-          <p-dropdown [options]="typePayments" placeholder="Selecciona" formControlName="typePayment" id="paymentType" [(ngModel)]="model.typePayment"></p-dropdown>
+          <p-dropdown [options]="typePayments" placeholder="Selecciona"  formControlName="typePayment" id="paymentType" [(ngModel)]="model.typePayment"></p-dropdown>
+          <ng-container
+          *ngIf="form_purchase.get('typePayment').hasError('isNull') && form_purchase.get('typePayment').touched">
+          <small class="caption">El tipo de pago  es obligatorio</small>
+        </ng-container>
         </div>
       </div>
 
@@ -221,69 +225,3 @@
     </div>
   </div>
 
-
-  <div *ngIf="model.id">
-    <button pButton pRipple type="submit" label="Guardar" styleClass="p-button-lg"
-      class="button-width-100 p-px-2"></button>
-    <div class="card-payment">
-      <div class="card-payment-title">
-        <span>Total a pagar</span>
-        <h3>$ {{model.total}}</h3>
-      </div>
-      <div class="card-payment-balance">
-        <div class="balance debt">
-          <small>Deuda total</small>
-          <p>$ {{model.total - sumPayment}}</p>
-        </div>
-        <div class="balance paid">
-          <small>Pagado</small>
-          <p>$ {{sumPayment}}</p>
-        </div>
-      </div>
-      <div class="card-payment-footer">
-        <p-button label="Regitrar" styleClass="p-button-sm" (click)="viewPaymentCreate=!viewPaymentCreate"
-          *ngIf="sumPayment !== model.total"></p-button>
-        <p-button label="{{!viewPayment ? 'Ver Pagos': 'Ocultar'}}" (click)="viewPayment=!viewPayment" class="p-ml-2"
-          styleClass="p-button-sm p-button-text"></p-button>
-      </div>
-
-      <div class="view-payment p-mt-2" *ngIf="viewPayment">
-        <p-table [value]="payments">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>#</th>
-              <th>Fecha</th>
-              <th>Valor</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-payment let-rowIndexPayment="rowIndex">
-            <tr>
-              <td>{{rowIndexPayment+1}}</td>
-              <td>{{payment.datePay}}</td>
-              <td>$ {{payment.value}}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-
-      <div class="view-payment-create p-mt-2" *ngIf="viewPaymentCreate">
-        <div class="p-grid">
-          <div class="p-col-12 p-py-0">
-            <div class="p-field p-fluid">
-              <label for="date">Fecha</label>
-              <p-calendar inputId="date" [(ngModel)]="modelPayment.datePay" dateFormat="yy-mm-dd"></p-calendar>
-            </div>
-          </div>
-          <div class="p-col-12 p-py-0">
-            <label for="value">Valor</label>
-            <input id="value" type="text" [(ngModel)]="modelPayment.value" pInputText>
-          </div>
-        </div>
-
-        <div class="p-mt-2">
-          <p-button type="button" label="Guardar" styleClass="p-button-sm p-button-success" (onClick)="savePayment()">
-          </p-button>
-        </div>
-      </div>
-    </div>
-  </div>

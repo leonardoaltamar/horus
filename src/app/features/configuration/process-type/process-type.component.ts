@@ -36,10 +36,17 @@ export class ProcessTypeComponent {
         code: ['', [Validators.required], []],
         name: ['', [Validators.required], []],
         account: [''],
+        caccount: [''],
+        processNature: [''],
+        ivaAccountNature: [''],
         ivaAccount: [''],
+        ivaAcountNature: [''],
         reteIvaAccount: [''],
+        reteIvaAccountNature: [''],
         reteIcaAccount: [''],
-        reteFuenteAccount: ['']
+        reteIcaAccountNature: [''],
+        reteFuenteAccount: [''],
+        reteFuenteAccountNature: ['']
       })
     }
 
@@ -48,6 +55,8 @@ export class ProcessTypeComponent {
     this.routeStateService.add("Tipo de proceso", "/configuration/process_types", null, false);
     this.getAllprocessTypes();
     this.getAllAccounts();
+
+
   }
 
   async getAllAccounts(){
@@ -67,6 +76,7 @@ export class ProcessTypeComponent {
     try {
       this.isLoading = true;
       this.processTypes = await this.service.getAll();
+      console.log(this.processTypes);
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -79,6 +89,7 @@ export class ProcessTypeComponent {
       this.service.create(this.model).subscribe(
         data => {
           this.messageService.add({ severity: 'success', summary: `tipo de proceso creado con éxito`, detail: `Nombre: ${this.model.name}` });
+          console.log(data);
           this.model = data;
           this.processTypes.push(this.model);
         },
@@ -119,8 +130,8 @@ export class ProcessTypeComponent {
           data => {
             if (data['success']) {
               this.processTypes = this.processTypes.filter((x) => x.id != processType.id);
-              this.messageService.add({ severity: 'success', summary: '', detail: 'Gravamen eliminado con éxito' });
-            }
+              this.messageService.add({ severity: 'success', summary: '', detail: 'Tipo de proceso eliminado con éxito' });
+            };
           },
           error => {
             console.error(error);
@@ -145,6 +156,58 @@ export class ProcessTypeComponent {
   }
 
   filterReload(): void {
+
+  }
+
+  processNature(checked: boolean){
+    if (checked) {
+    this.model.accountingProcess.processNature = 'D';
+    }
+    if (!checked) {
+      this.model.accountingProcess.processNature = 'C';
+      }
+
+      console.log(this.model.accountingProcess.processNature);
+
+  }
+
+  ivaAccountNature(checked: boolean){
+    if (checked) {
+    this.model.accountingProcess.ivaAccountNature = 'D';
+    }
+    if (!checked) {
+      this.model.accountingProcess.ivaAccountNature = 'C';
+      }
+
+  }
+  reteIvaAccountNature(checked: boolean){
+    if (checked) {
+    this.model.accountingProcess.reteIvaAccountNature = 'D';
+    console.log(this.model)
+    }
+    if (!checked) {
+      this.model.accountingProcess.reteIvaAccountNature = 'C';
+      }
+
+
+  }
+
+  reteIcaAccountNature(checked: boolean){
+    if (checked) {
+    this.model.accountingProcess.reteIcaAccountNature = 'D';
+    }
+    if (!checked) {
+      this.model.accountingProcess.reteIcaAccountNature = 'C';
+      }
+
+  }
+  reteFuenteAccountNature(checked: boolean){
+    if (checked) {
+    this.model.accountingProcess.reteFuenteAccountNature = 'D';
+    }
+    if (!checked) {
+      this.model.accountingProcess.reteFuenteAccountNature = 'C';
+      }
 
   }
 
