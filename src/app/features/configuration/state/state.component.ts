@@ -23,8 +23,8 @@ export class StateComponent implements OnInit {
   isLoading: boolean = false;
   country: { name: string }[];
 
-  state: State = new State();
-  states: State[] = [];
+  model: State = new State();
+  models: State[] = [];
 
   constructor(private routeStateService: RouteStateService,
     private confirmationService: ConfirmationService,
@@ -32,7 +32,7 @@ export class StateComponent implements OnInit {
     private stateService: StateService,
     private messageService: MessageService) {
     this.form_state = this._formBuilder.group({
-      code: ['', [Validators.required], [this.validate_state.bind(this)]],
+      code: ['', [Validators.required]],
       name: ['', [Validators.required], []],
       country: ['', [Validators.required], []]
     })
@@ -56,24 +56,11 @@ export class StateComponent implements OnInit {
 
   }
 
-  async validate_state(control: AbstractControl) {
-    const val = control.value;
-    const response = await this.stateService.getAll();
-    if (this.state.id) {
-      return null;
-    } else {
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].code == val) {
-          return { A: true }
-        }
-      }
-    }
-  }
 
   async getAllState() {
     try {
       this.isLoading = true;
-      this.states = await this.stateService.getAll();
+      this.models = await this.stateService.getAll();
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -81,8 +68,13 @@ export class StateComponent implements OnInit {
     }
   }
 
+  newState() {
+    this.model = new State();
+    this.showModal = true;
+  }
+
   modifyState(state: State) {
-    this.state = state;
+    this.model = state;
     this.showModal = true;
   }
 
@@ -96,7 +88,7 @@ export class StateComponent implements OnInit {
           data => {
             console.log(data);
             if (data['success']) {
-              this.states = this.states.filter((x) => x.id != state.id);
+              this.models = this.models.filter((x) => x.id != state.id);
               this.messageService.add({ severity: 'success', summary: `Departamento eliminado con éxito` });
             }
           },
@@ -109,11 +101,17 @@ export class StateComponent implements OnInit {
   }
 
   saveState() {
-    if (!this.state.id) {
-      this.stateService.create(this.state).subscribe(
+    if (!this.model.id) {
+      this.stateService.create(this.model).subscribe(
         data => {
-          this.states.push(this.state);
-          this.messageService.add({ severity: 'success', summary: `Departamento creado con éxito`, detail: `Code: ${data.code} Nombre: ${data.name}` });
+          if (data['errno']) {
+            this.messageService.add({ severity: 'error', summary: 'Dato duplicado', detail: data['sqlMessage'] });
+          }else{
+            this.model = data;
+            this.models.push(this.model);
+            this.messageService.add({ severity: 'success', summary: `Departamento creado con éxito`, detail: `Code: ${data.code} Name: ${data.name} country: ${data.country}` });
+          }
+
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
@@ -121,12 +119,12 @@ export class StateComponent implements OnInit {
       );
     }
     else {
-      this.stateService.update(this.state.id, this.state).pipe(first()).subscribe(
+      this.stateService.update(this.model.id, this.model).pipe(first()).subscribe(
         data => {
           if (data['success']) {
-            this.states = this.states.map(x => {
-              if (x.id == this.state.id)
-                x = this.state;
+              this.models = this.models.map(x => {
+              if (x.id == this.model.id)
+                x = this.model;
               return x
             });
             this.messageService.add({ severity: 'success', summary: `Departamento actualizado con éxito` });
@@ -137,8 +135,5 @@ export class StateComponent implements OnInit {
     this.showModal = false;
   }
 
-  newState() {
-    this.state = new State();
-    this.showModal = true;
-  }
+
 }

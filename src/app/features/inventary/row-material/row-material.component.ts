@@ -48,7 +48,7 @@ export class RawMaterialComponent implements OnInit {
       code: ['', [Validators.required], []],
       name: ['', [Validators.required], []],
       stock: ['', [Validators.required], []],
-      unitValue: [''],
+      unitValue: ['',[Validators.required]],
       category: ['', [Validators.required], []],
       lien:['', [Validators.required], []],
       expeditionDate: [],

@@ -10,6 +10,7 @@ import { CityComponent } from './city/city.component';
 import { LienComponent } from './lien/lien.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { StateComponent } from './state/state.component';
+import { StoreComponent } from './stores/stores.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { TypePaymentComponent } from './type-payment/type-payment.component';
 import { TypeSupplierComponent } from './type-supplier/type-supplier.component';
@@ -64,6 +65,10 @@ const routes: Routes = [
       {
         path: 'states',
         component: StateComponent,
+      },
+      {
+        path: 'stores',
+        component: StoreComponent,
       },
       {
         path: 'settings',

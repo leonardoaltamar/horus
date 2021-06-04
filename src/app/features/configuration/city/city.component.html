@@ -7,7 +7,7 @@
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
     <div class="table-responsive" *ngIf="!isLoading">
-      <p-table [value]="cities" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+      <p-table [value]="models" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
         [globalFilterFields]="['code']">
         <ng-template pTemplate="caption">
           <div class="p-d-flex p-ai-center p-jc-between">
@@ -28,17 +28,17 @@
             <th>*</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-city let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-model let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{city.code}}</td>
-            <td>{{city.name}}</td>
-            <td>{{city.state.name}}</td>
+            <td>{{model.code}}</td>
+            <td>{{model.name}}</td>
+            <td>{{model.state.name}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"
-                (click)="modifyCity(city)"></button>
+                (click)="modifyCity(model)"></button>
               <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"
-                (click)="deleteCity(city)"></button>
+                (click)="deleteCity(model)"></button>
             </td>
           </tr>
         </ng-template>
@@ -53,7 +53,7 @@
     <div class="p-grid">
       <div class="p-col-6 p-sm-6">
         <label for="code">Código</label>
-        <input id="code" type="text" [(ngModel)]="city.code" formControlName="code" pInputText>
+        <input id="code" type="text" [(ngModel)]="model.code" formControlName="code" pInputText>
         <ng-container *ngIf="form_city.get('code').hasError('required') && form_city.get('code').touched">
           <small class="p-invalid p-text-center">El código es obligatorio</small>
         </ng-container>
@@ -63,14 +63,14 @@
       </div>
       <div class="p-col-6 p-sm-6">
         <label for="name">Nombre</label>
-        <input id="name" [(ngModel)]="city.name" formControlName="name" type="text" pInputText>
+        <input id="name" [(ngModel)]="model.name" formControlName="name" type="text" pInputText>
         <ng-container *ngIf="form_city.get('name').hasError('required') && form_city.get('name').touched">
           <small class="p-invalid p-text-center">El nombre es obligatorio</small>
         </ng-container>
       </div>
       <div class="p-col-6 p-sm-6">
         <label for="state">Departamento</label>
-        <p-dropdown id="state" [options]="states" [(ngModel)]="city.state.id" formControlName="state"
+        <p-dropdown id="state" [options]="states" [(ngModel)]="model.state.id" formControlName="state"
           placeholder="Selecciona">
         </p-dropdown>
         <ng-container *ngIf="form_city.get('state').hasError('required') && form_city.get('state').touched">
