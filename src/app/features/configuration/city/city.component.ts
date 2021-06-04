@@ -22,9 +22,10 @@ export class CityComponent implements OnInit {
   showModal: boolean = false;
   isLoading: boolean = false;
   form_city: FormGroup;
+  model:  City = new City();
+  models: City[] = [];
 
-  city: City = new City();
-  cities: City[] = [];
+
   states: SelectItem[] = [];
 
   constructor(private routeStateService: RouteStateService,
@@ -34,7 +35,7 @@ export class CityComponent implements OnInit {
     private messageService: MessageService,
     private _formBuilder: FormBuilder) {
     this.form_city = this._formBuilder.group({
-      code: ['', [Validators.required], [this.validate_city.bind(this)]],
+      code: ['', [Validators.required]],
       name: ['', [Validators.required], []],
       state: ['', [Validators.required], []]
     })
@@ -53,24 +54,11 @@ export class CityComponent implements OnInit {
     );
   }
 
-  async validate_city(control: AbstractControl) {
-    const val = control.value;
-    const response = await this.cityService.getAll();
-    if (this.city.id) {
-      return null;
-    } else {
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].code == val) {
-          return { A: true }
-        }
-      }
-    }
-  }
 
   async getAllCity() {
     try {
       this.isLoading = true;
-      this.cities = await this.cityService.getAll();
+      this.models = await this.cityService.getAll();
       this.isLoading = false;
     } catch (error) {
       this.isLoading = false;
@@ -79,13 +67,14 @@ export class CityComponent implements OnInit {
   }
 
   newCity() {
-    this.city = new City;
+    this.model = new City();
     this.showModal = true;
     this.form_city.reset();
   }
 
   modifyCity(city: City) {
-    this.city = city;
+   console.log(city);
+    this.model = city;
     this.showModal = true;
   }
 
@@ -98,7 +87,7 @@ export class CityComponent implements OnInit {
         this.cityService.delete(city.id, city).pipe(first()).subscribe(
           data => {
             if (data['success']) {
-              this.cities = this.cities.filter((x) => x.id != city.id);
+              this.models = this.models.filter((x) => x.id != city.id);
               this.messageService.add({ severity: 'success', summary: '', detail: 'Ciudad eliminada con é xito'});
             }
           },
@@ -111,36 +100,37 @@ export class CityComponent implements OnInit {
   }
 
   saveCity() {
-    if (!this.city.id) {
-      this.cityService.create(this.city).pipe(first()).subscribe(
-        data => {
-          this.city = data;
-          console.log(data);
-          this.cities.push(this.city);
-          this.messageService.add({ severity: 'success', summary: `Ciudad creada con éxito`, detail: `Código: ${data.code} Nombre: ${data.name}` });
-        },
+    if (!this.model.id) {
+          this.cityService.create(this.model).pipe(first()).subscribe(
+            data => {
+          if(data['errno']){
+            this.messageService.add({ severity: 'error', summary: 'Dato duplicado', detail: data['sqlMessage'] });
+        }else{
+          this.model = data;
+          this.models.push(this.model);
+          this.messageService.add({ severity: 'success', summary: `Ciudad creada con éxito`, detail: `Code: ${data.code} Name: ${data.name} state: ${data.state}` });
+        }
+
+      },
         error => {
-          console.log(error);
+          this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
         }
       );
     }
     else {
-      this.cityService.update(this.city.id, this.city).pipe(first()).subscribe(
+      this.cityService.update(this.model.id, this.model).pipe(first()).subscribe(
         data => {
           if (data['success']) {
-            this.cities = this.cities.map(x => {
-              if (x.id == this.city.id)
-                x = this.city;
-              return x
-            });
-            this.messageService.add({ severity: 'success', summary: `Ciudad actualizada con éxito` });
-          }
-        },
-        error => {
-          console.log(error);
+            this.models = this.models.map(x => {
+            if (x.id == this.model.id)
+              x = this.model;
+            return x
+          });
+          this.messageService.add({ severity: 'success', summary: `Ciudad actualizada con éxito` });
         }
-      );
-    }
-    this.showModal = false;
+      }
+    )
   }
+  this.showModal = false;
+}
 }

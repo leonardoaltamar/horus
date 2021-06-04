@@ -1,8 +1,9 @@
 <div class="card scroll">
+  <div class="card-body"></div>
   <div class="card-header">
-    Gravámenes
+    Bodega
   </div>
-  <div class="card-body">
+ <div class="card-body">
     <div *ngIf="isLoading" class="p-text-center">
       <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
     </div>
@@ -16,28 +17,27 @@
               <input type="text" pInputText placeholder="Buscar..."
                 (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
             </span>
-            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo"
-              class="p-button" (click)="newLien()"></button>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" (click)="newStore()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>#</th>
+            <th>Código</th>
             <th>Nombre</th>
-            <th>Porcentaje</th>
-            <th>*</th>
+            <th>Opciones</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-lien let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-store let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{lien.name}}</td>
-            <td>{{lien.percentage}}</td>
+            <td>{{store.code}}</td>
+            <td>{{store.name}}</td>
             <td>
               <button pButton pRipple type="button" icon="fas fa-edit" class="button-action"
-                (click)="modifyLien(lien)"></button>
+                (click)="modifyStore(store)"></button>
               <button pButton pRipple type="button" icon="fas fa-trash-alt" class="button-action"
-                (click)="deletedLien(lien)"></button>
+                (click)="deletedStore(store)"></button>
             </td>
           </tr>
         </ng-template>
@@ -45,32 +45,34 @@
     </div>
   </div>
 </div>
-
-<p-dialog header="Nuevo Gravámen" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
+<p-dialog header="Nueva Bodega" [(visible)]="showModal" [style]="{width: '40em'}" class="dialog-small" [modal]="true"
   [baseZIndex]="10000" [resizable]="false">
-  <form [formGroup]="form_lien" class="">
+  <form [formGroup]="form_store">
     <div class="p-grid p-mt-2">
       <div class="p-field p-col-6 p-sm-6">
-        <label for="name">Nombre</label>
-        <input id="name" formControlName="name" type="text" pInputText [(ngModel)]="model.name">
-        <ng-container *ngIf="form_lien.get('name').hasError('required') && form_lien.get('name').touched">
-          <small class="p-invalid p-text-center">El nombre es obligatorio</small>
+        <label for="code">Código</label>
+        <input id="code" formControlName="code" type="text" pInputText [(ngModel)]="model.code">
+        <ng-container *ngIf="form_store.get('code').hasError('required') && form_store.get('code').touched">
+          <small class="p-invalid p-text-center">El código es obligatorio</small>
+        </ng-container>
+        <ng-container *ngIf="form_store.get('code').hasError('A') && form_store.get('code').touched">
+          <small class="caption p-text-center">Esta código ya está registrado</small>
         </ng-container>
       </div>
       <div class="p-field p-col-6 p-sm-6">
-        <label for="percentage">Porcentaje</label>
-        <input id="percentage" formControlName="percentage" type="text" pInputText [(ngModel)]="model.percentage">
+        <label for="name">Nombre</label>
+        <input id="name" formControlName="name" type="text" pInputText [(ngModel)]="model.name">
         <ng-container
-          *ngIf="form_lien.get('percentage').hasError('required') && form_lien.get('percentage').touched">
-          <small class="caption p-text-center">El Porcentaje es obligatorio</small>
+          *ngIf="form_store.get('name').hasError('required') && form_store.get('name').touched">
+          <small class="caption p-text-center">El Nombre es obligatorio</small>
         </ng-container>
       </div>
     </div>
     <br>
     <br>
     <p-footer class="p-grid">
-      <button type="submit" pButton pRipple icon="far fa-save" label="Guardar" class="p-button-save p-button p-ml-2"
-        (click)="saveLien()" [disabled]="form_lien.invalid"></button>
+      <button type="submit" pButton pRipple icon="far fa-save" label=" Guardar" class="p-button-save p-button p-ml-2"
+        (click)="saveStore()" [disabled]="form_store.invalid"></button>
       <button type="submit" pButton pRipple icon="fas fa-times" label=" Cerrar"
         class="p-button-close button-text p-ml-2" (click)="showModal=false"></button>
     </p-footer>
@@ -78,3 +80,4 @@
 </p-dialog>
 <p-confirmDialog class="dialog-small"></p-confirmDialog>
 <p-toast position="bottom-right"></p-toast>
+

@@ -34,6 +34,7 @@ import { MeasurementComponent } from './measurement/measurement.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { StateComponent } from './state/state.component';
 import { SectionComponent } from './section/section.component';
+import { StoreComponent } from './stores/stores.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { SectionComponent } from './section/section.component';
     ProcessTypeComponent,
     TaxRegimeComponent,
     SettingComponent,
-    SectionComponent
+    SectionComponent,
+    StoreComponent
   ],
   exports: [
   ],

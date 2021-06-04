@@ -29,7 +29,7 @@ export class MeasurementComponent implements OnInit {
     private routeStateService: RouteStateService,
     private messageService: MessageService) {
     this.form_measurement = this._formuilder.group({
-      code: ['', [Validators.required], [this.validate_measurement.bind(this)]],
+      code: ['', [Validators.required]],
       description: ['', [Validators.required], []],
       equivalence: ['', [Validators.required], []]
     })
@@ -40,19 +40,6 @@ export class MeasurementComponent implements OnInit {
     this.getAllMeasurement();
   }
 
-  async validate_measurement(control: AbstractControl) {
-    const val = control.value;
-    const response = await this.measurementService.getAll();
-    if (this.model.id) {
-      return null;
-    } else {
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].code == val) {
-          return { A: true }
-        }
-      }
-    }
-  }
 
   async getAllMeasurement() {
     try {
@@ -101,8 +88,14 @@ export class MeasurementComponent implements OnInit {
     if (!this.model.id) {
       this.measurementService.create(this.model).subscribe(
         data => {
-          this.models.push(this.model);
-          this.messageService.add({ severity: 'success', summary: `Medida creada con éxito`, detail: `Code: ${data.code} Description: ${data.description}` });
+          if (data['errno']) {
+            this.messageService.add({ severity: 'error', summary: 'Dato duplicado', detail: data['sqlMessage'] });
+          }else{
+            this.model = data;
+            this.models.push(this.model);
+            this.messageService.add({ severity: 'success', summary: `Medida creada con éxito`, detail: `code: ${data.code} description: ${data.description} equivalence: ${data.equivalence}  ` });
+          }
+
         },
         error => {
           this.messageService.add({ severity: 'info', summary: `Error de guardado`, detail: error });
@@ -113,7 +106,7 @@ export class MeasurementComponent implements OnInit {
       this.measurementService.update(this.model.id, this.model).pipe(first()).subscribe(
         data => {
           if (data['success']) {
-            this.models = this.models.map(x => {
+              this.models = this.models.map(x => {
               if (x.id == this.model.id)
                 x = this.model;
               return x
@@ -125,6 +118,5 @@ export class MeasurementComponent implements OnInit {
     }
     this.showModal = false;
   }
-
 
 }
