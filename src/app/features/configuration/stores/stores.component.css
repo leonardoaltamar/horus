@@ -1,0 +1,82 @@
+/* Sobre escritura de style primeng */
+
+:host/deep/ .p-field {
+  margin-bottom: -0.5rem;
+}
+
+:host/deep/  .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.01rem #3646cd;
+}
+
+:host/deep/ .p-paginator .p-paginator-first,
+:host/deep/ .p-paginator .p-paginator-prev,
+:host/deep/ .p-paginator .p-paginator-next,
+:host/deep/ .p-paginator .p-paginator-last {
+  color: #3646cd;
+}
+
+:host/deep/ .p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 0.01rem #3646cd;
+}
+
+:host/deep/ .p-link:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.01rem #3646cd;
+}
+
+:host/deep/ .p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: #495057;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+
+:host/deep/ .p-datatable .p-datatable-tbody > tr > td {
+  text-align: left;
+}
+
+:host/deep/ .p-button {
+  background: rgba(54, 69, 205, 0.876);
+}
+
+:host/deep/ .p-button:enabled:hover{
+  background: rgba(54, 69, 205, 0.876);
+  border: 1px solid #3646CD;
+}
+
+:host/deep/ .p-button:enabled:active {
+  background: rgba(54, 69, 205, 0.876);
+  color: #ffffff;
+  border-color: #3646CD;
+}
+
+:host/deep/ .p-button:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.1rem #3645cd5e;
+}
+
+.p-button-close:enabled:hover, .p-button-close:enabled:focus {
+  color: #3646CD;
+  background: #3645cd1c;
+  border-color: #3646CD48 !important;
+  border: none;
+}
+
+.input-line {
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0px;
+  font-size: 14.5px;
+}
+
+.input-line:enabled:focus {
+  box-shadow: none ;
+}
+
