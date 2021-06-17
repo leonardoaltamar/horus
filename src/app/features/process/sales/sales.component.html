@@ -39,7 +39,7 @@
               <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action" (click)="modifySale(dataRow)"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action" (click)="deleteSale(dataRow)"></button>
               <button pButton pRipple type="button" icon="pi pi-print" class="button-action" (click)="downloadPdf(dataRow)"></button>
-              <button pButton pRipple type="button" icon="pi pi-dollar" class="button-action" (click)="downloadPdf(dataRow)"></button>
+              <button pButton pRipple type="button" icon="pi pi-dollar" class="button-action" (click)="modalPayment(dataRow)"></button>
             </td>
           </tr>
         </ng-template>
@@ -216,3 +216,49 @@
     </div>
   </div>
 </div>
+
+<p-dialog header="Nuevo pago" class="modal"  [style]="{width: '40em'}"  [(visible)]="showModalPayment" [modal]="true" [baseZIndex]="10000"
+  [resizable]="false">
+  <div class="target">
+    <div class="card-payment">
+      <div class="card-payment-title">
+        <span>Total a pagar</span>
+        <h3>$ {{model.total}}</h3>
+      </div>
+      <div class="card-payment-balance">
+        <div class="balance debt">
+          <small>Deuda total</small>
+          <p>$  {{model.total - sumPayment}}</p>
+        </div>
+        <div class="balance paid">
+          <small>Pagado</small>
+          <p>$ {{sumPayment}}</p>
+        </div>
+      </div>
+      <div class="card-payment-footer">
+        <p-button label="{{!viewPayment ? 'Ver Pagos': 'Registrar pagos'}}" (click)="viewPayment=!viewPayment" class="p-ml-2" styleClass="p-button-sm p-button-text"></p-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="view-payment p-mt-2 table-responsive" *ngIf="viewPayment">
+    <p-table [value]="payments " styleClass="p-datatable-gridlines" >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Valor</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payment let-rowIndexPayment="rowIndex">
+        <tr>
+          <td>{{rowIndexPayment+1}}</td>
+          <td>{{payment.process.dateInvoice}}</td>
+          <td>$ {{payment.value}}</td>
+        </tr>
+      </ng-template>
+  </p-table>
+  </div>
+
+  <form-pay form-pay [associateProcess]="model" [processCategory]="4" [isSale]="true" *ngIf="!viewPayment"></form-pay>
+</p-dialog>

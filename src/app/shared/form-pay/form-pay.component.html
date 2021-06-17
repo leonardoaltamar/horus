@@ -1,0 +1,45 @@
+<div class="card-body body">
+  <div class="p-grid">
+
+    <div class="p-col-12 p-sm-4">
+      <div class="p-field p-fluid">
+        <label for="numberInvoice">Código</label>
+        <input id="disabled-input" type="text" pInputText readonly [(ngModel)]="model.process.numberInvoice" />
+      </div>
+    </div>
+
+    <div class="p-col-12 p-sm-4">
+      <div class="p-field p-fluid">
+        <label for="date">Fecha</label>
+        <p-calendar inputId="date" [(ngModel)]="model.process.dateInvoice" dateFormat="yy-mm-dd">
+        </p-calendar>
+      </div>
+    </div>
+
+    <div class="p-col-12 p-sm-4">
+      <div class="p-field p-fluid">
+        <label for="supplier">Tipo de proceso</label>
+        <p-dropdown [options]="processTypes" placeholder="Selecciona" [(ngModel)]="model.process.processType" id="processType"
+          [filter]="true"></p-dropdown>
+      </div>
+    </div>
+
+    <div class="p-col-12 p-sm-12">
+      <div class="p-field p-fluid">
+        <label for="numberInvoice">Observación</label>
+        <input type="text" pInputText [(ngModel)]="model.process.description" />
+      </div>
+    </div>
+
+    <div class="p-col-12 p-sm-12">
+      <div class="p-field p-fluid">
+        <label for="numberInvoice">Valor a pagar</label>
+        <input type="number" pInputText [(ngModel)]="model.value" [max]="associateProcess.total"/>
+      </div>
+    </div>
+
+    <div class="p-d-flex p-jc-center">
+      <p-button label="Guardar" (onClick)="savePayment()"></p-button>
+    </div>
+  </div>
+</div>

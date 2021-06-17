@@ -34,6 +34,10 @@
   color: #656565;
   height: fit-content;
 }
+.target{
+  margin-left: 5.5em;
+  margin-bottom: 1em;
+}
 
 .card-payment-title {
   text-align: center;
@@ -127,5 +131,5 @@
   .table-responsive-detail {
     overflow-x: auto;
   }
-  
+
 }

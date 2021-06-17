@@ -9,17 +9,19 @@ import { Process } from '@core/models/process.model';
 import { ProcessTypeService } from '@core/services/process-type.service';
 import { SupplierService } from '@core/services/supplier.service';
 import { CustomerService } from '@core/services/customer.service';
+
+//shared
 // Models
 
 
 
 @Component({
-  selector: 'app-pay',
-  templateUrl: './pay.component.html',
-  styleUrls: ['./pay.component.css'],
+  selector: 'app-egress',
+  templateUrl: './egress.component.html',
+  styleUrls: ['./egress.component.css'],
   providers: [ConfirmationService]
 })
-export class PayComponent implements OnInit {
+export class EgressComponent implements OnInit {
   showModal: boolean = false;
   isLoading: boolean = false;
   form_city: FormGroup;
@@ -39,7 +41,7 @@ export class PayComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.routeStateService.add("Pagos", "/process/pay", null, false);
+    this.routeStateService.add("Egresos", "/process/egress", null, false);
     this.getAllPurchases();
     this.getProcessTypeByCategory(this.processCategory);
     this.getAllSuppliers();

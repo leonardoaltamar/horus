@@ -6,8 +6,11 @@ import { ProcessComponent } from './process.component';
 import { SalesComponent } from './sales/sales.component';
 import { purchasesComponent } from './purchases/purchases.component';
 import { PayComponent } from './pay/pay.component';
+import { EgressComponent } from './egress/egress.component';
 import { ProcessRoutingModule } from './process-routing.module';
 
+//shared
+import { FormPayComponent } from '@shared/form-pay/form-pay.component';
 //Theme Primeng
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
@@ -29,7 +32,9 @@ import { MessagesModule } from 'primeng/messages';
     ProcessComponent,
     purchasesComponent,
     SalesComponent,
-    PayComponent
+    PayComponent,
+    EgressComponent,
+    FormPayComponent
   ],
   exports: [
   ],

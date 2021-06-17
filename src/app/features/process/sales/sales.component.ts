@@ -13,6 +13,7 @@ import { Process } from '@core/models/process.model';
 import { ProcessService } from '@core/services/process.service';
 import { Article, Employee, Measurement, Lien, Account } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
+import { PaymentService } from '@core/services/payment.service';
 import { LienService } from '@core/services/lien.service';
 import * as moment from 'moment';
 import { ProcessTypeService } from '@core/services/process-type.service';
@@ -36,6 +37,7 @@ export class SalesComponent {
   model: Process = new Process();
   sales: Process[] = [];
   stores: SelectItem[] = [];
+  payments: Payment[] = [];
   form_purchase: FormGroup;
   articles: Article[] = [];
   suppliers: SelectItem[] = [];
@@ -46,7 +48,10 @@ export class SalesComponent {
   carriers: SelectItem[] = [];
   processTypes: SelectItem[] = [];
   showModal: boolean = false;
+  showModalPayment: boolean = false;
   measurements: Measurement[] = [];
+  viewPaymentCreate: boolean = false;
+  viewPayment: boolean = false;
   showEdit: boolean = false;
   liens: Lien[] = [];
   accounts: Account[] = [];
@@ -54,7 +59,9 @@ export class SalesComponent {
   dataDetail: any[] = [];
   filterAccounts: Account[] = [];
   processCategory: string = "3";
+  sumPayment: number = 0;
   constructor(private service: ProcessService,
+    private paymentService: PaymentService,
     private storeService: StoreService,
     private employeeService: EmployeeService,
     private serviceSetting: SettingService,
@@ -248,13 +255,26 @@ export class SalesComponent {
   onChangeQuantity() {
     this.calculateTotal();
   }
+
   modifySale(process: Process) {
     this.model = process;
-    console.log(this.model);
-
     this.showModal = true;
-
   }
+
+  modalPayment(process: Process){
+    this.showModalPayment = true;
+    this.model = process;
+    this.getAllPaymentByProcess(process);
+  }
+
+  async getAllPaymentByProcess(process: Process){
+    this.payments = await this.paymentService.getByProcess(process.id);
+    console.log(this.payments);
+    this.payments.forEach(pay =>{
+      this.sumPayment += pay.value;
+    })
+  }
+
   OnChangeReteFuente() {
     this.model.total += this.model.reteFuente;
   }

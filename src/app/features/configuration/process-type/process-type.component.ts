@@ -208,7 +208,7 @@ export class ProcessTypeComponent {
     }
     if (!checked) {
       this.model.accountingProcess.reteIcaAccountNature = 'C';
-      }
+    }
 
   }
   reteFuenteAccountNature(checked: boolean){
@@ -217,7 +217,7 @@ export class ProcessTypeComponent {
     }
     if (!checked) {
       this.model.accountingProcess.reteFuenteAccountNature = 'C';
-      }
+    }
 
   }
 
