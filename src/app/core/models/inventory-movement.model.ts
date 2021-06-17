@@ -3,6 +3,7 @@ import { RawMaterial } from './raw-material.model';
 import { Measurement } from './measurement.model';
 import { Process } from './process.model';
 import { Account } from './accounts.model';
+import { Store } from './store.model';
 
 export class InventoryMovement {
     id: number;
@@ -15,6 +16,7 @@ export class InventoryMovement {
     unitValue: number;
     process: Process;
     account: Account;
+    store: Store;
     nature: string;
     total: number;
     totalLien: number;
@@ -29,6 +31,7 @@ export class InventoryMovement {
       this.unitValue = 0;
       this.process = new Process();
       this.account = new Account();
+      this.store = new Store();
       this.nature = '';
       this.total = 0;
       this.totalLien = 0;

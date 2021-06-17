@@ -1,5 +1,5 @@
 import { first } from 'rxjs/operators';
-import { PaymentService } from '@core/services/payment.service';
+
 import { SettingService } from '@core/services/setting.service';
 import { MessageService, SelectItem } from 'primeng/api';
 import { CustomerService } from '@core/services/customer.service';
@@ -11,7 +11,7 @@ import { EmployeeService } from '@core/services/employee.service';
 import { TypePaymentService } from '@core/services/type-payment.service';
 import { Process } from '@core/models/process.model';
 import { ProcessService } from '@core/services/process.service';
-import { Article, Employee, Measurement, Lien } from '@core/models';
+import { Article, Employee, Measurement, Lien, Account } from '@core/models';
 import { MeasurementService } from '@core/services/measurement.service';
 import { LienService } from '@core/services/lien.service';
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ import { Validators } from '@angular/forms';
 import { generatePdf } from '@core/helpers/invoice-pdf'
 import { Validations } from '../../../../utils/validations';
 import { ConfirmationService } from 'primeng/api';
+import { StoreService } from '@core/services/store.service';
 
 @Component({
   selector: 'sales',
@@ -34,6 +35,7 @@ export class SalesComponent {
 
   model: Process = new Process();
   sales: Process[] = [];
+  stores: SelectItem[] = [];
   form_purchase: FormGroup;
   articles: Article[] = [];
   suppliers: SelectItem[] = [];
@@ -51,7 +53,9 @@ export class SalesComponent {
   subtotal: number = 0;
   dataDetail: any[] = [];
   filterAccounts: Account[] = [];
+  processCategory: string = "3";
   constructor(private service: ProcessService,
+    private storeService: StoreService,
     private employeeService: EmployeeService,
     private serviceSetting: SettingService,
     private serviceCustomer: CustomerService,
@@ -82,11 +86,11 @@ export class SalesComponent {
     this.getAllEmployees();
     this.getAllProducts();
     this.getAllMeasurements();
-    this.getAllProcessTypes();
+    this.getProcessTypeByCategory(this.processCategory);
     this.getAllCustomer();
     this.getAllTypePayments();
     this.getAllLiens();
-
+    this.getAllStores();
   }
 
   newSales() {
@@ -111,6 +115,32 @@ export class SalesComponent {
   async getAllLiens() {
     try {
       this.liens = await this.lienService.getAll();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getAllStores() {
+    try {
+      (await this.storeService.getAll()).forEach(store =>{
+          this.stores.push({
+            label: store.name,
+            value: store
+          })
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getProcessTypeByCategory(processCategory:string ){
+    try {
+      (await this.processTypeService.getProcessTypeByCategory(processCategory)).forEach(processType=>{
+          this.processTypes.push({
+              label: processType.name,
+              value: processType
+          });
+      });
     } catch (error) {
       console.error(error);
     }
@@ -238,10 +268,9 @@ export class SalesComponent {
   }
   save() {
     this.model.processType.accountingProcess.debitAccount.value = this.model.subTotal;
-    this.model.processType.accountingProcess.debitAccount.nature = this.model.processType.accountingProcess.processNature === 'C' ? 'C' : 'D';
 
     this.model.processType.accountingProcess.creditAccount.value = this.model.total;
-    this.model.processType.accountingProcess.creditAccount.nature = this.model.processType.accountingProcess.processNature === 'C' ? 'D' : 'C';
+
 
     this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
     this.model.processType.accountingProcess.reteIvaAccount.value = this.model.reteIva;

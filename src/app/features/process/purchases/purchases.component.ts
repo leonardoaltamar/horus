@@ -14,7 +14,7 @@ import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LienService } from '@core/services/lien.service';
 import { AccountService } from '@core/services/account.service';
-
+import { StoreService } from '@core/services/store.service';
 @Component({
   selector: 'purchases',
   templateUrl: 'purchases.component.html',
@@ -25,9 +25,12 @@ export class purchasesComponent {
 
   model: Process = new Process();
   purchases: Process[] = [];
+  processCategory: string = "1";
+
   form_purchase: FormGroup;
   articles: Article[] = [];
   suppliers: SelectItem[] = [];
+  stores: SelectItem[] = [];
   processTypes: SelectItem[] = [];
   showModal: boolean = false;
   measurements: Measurement[] = [];
@@ -41,6 +44,7 @@ export class purchasesComponent {
   dataDetail: any[] = [];
   filterAccounts: Account[] = [];
   constructor(private service: ProcessService,
+              private storeService: StoreService,
               private routeStateService: RouteStateService,
               private serviceArticle: ArticleService,
               private serviceMeasurement: MeasurementService,
@@ -61,14 +65,16 @@ export class purchasesComponent {
               }
   ngOnInit(): void {
     this.routeStateService.add("Compras", "/process/purchases", null, false);
+    this.getProcessTypeByCategory(this.processCategory);
     this.getAllPurchases();
+    this.getAllStores();
     this.getAllSuppliers();
     this.getAllProducts();
     this.getAllMeasurements();
-    this.getAllProcessTypes();
     this.getAllLiens();
-    this.getAllAccounts();
   }
+
+
 
   newPurchases() {
     this.showModal = true;
@@ -84,9 +90,22 @@ export class purchasesComponent {
     }
   }
 
-  async getAllProcessTypes(){
+  async getAllStores() {
     try {
-      (await this.processTypeService.getAll()).forEach(processType=>{
+      (await this.storeService.getAll()).forEach(store =>{
+          this.stores.push({
+            label: store.name,
+            value: store
+          })
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getProcessTypeByCategory(processCategory:string ){
+    try {
+      (await this.processTypeService.getProcessTypeByCategory(processCategory)).forEach(processType=>{
           this.processTypes.push({
               label: processType.name,
               value: processType
@@ -95,15 +114,6 @@ export class purchasesComponent {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async getAllAccounts(){
-    this.accounts = await this.accountService.getAll();
-    this.accounts = this.accounts.map(account => {
-      account.name = account.code + " - " +account.name;
-      return account;
-    });
-    console.log(this.accounts);
   }
 
   genarateCode() {
@@ -174,15 +184,25 @@ export class purchasesComponent {
   save() {
     console.log(this.model);
     this.model.processType.accountingProcess.debitAccount.value = this.model.subTotal;
-    this.model.processType.accountingProcess.debitAccount.nature = this.model.processType.accountingProcess.processNature==='C' ? 'C':'D';
 
     this.model.processType.accountingProcess.creditAccount.value = this.model.total;
-    this.model.processType.accountingProcess.creditAccount.nature = this.model.processType.accountingProcess.processNature==='C' ? 'D':'C';
 
     this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
     this.model.processType.accountingProcess.reteIvaAccount.value = this.model.reteIva;
     this.model.processType.accountingProcess.reteFuenteAccount.value = this.model.reteFuente;
     this.model.processType.accountingProcess.reteIcaAccount.value = this.model.reteIca;
+
+    if(this.model.processType.accountingProcess.ivaAccount){
+      this.model.processType.accountingProcess.ivaAccount.nature = this.model.processType.accountingProcess.ivaAccountNature;
+    }
+
+    if(this.model.processType.accountingProcess.reteIcaAccount){
+      this.model.processType.accountingProcess.reteIcaAccount.nature = this.model.processType.accountingProcess.reteIcaAccountNature;
+    }
+
+    if(this.model.processType.accountingProcess.reteFuenteAccount){
+      this.model.processType.accountingProcess.reteFuenteAccount.nature = this.model.processType.accountingProcess.reteFuenteAccountNature;
+    }
 
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');

@@ -5,10 +5,12 @@ export class ProcessType {
   name: string;
   code: string;
   accountingProcess: AccountingProcess;
+  processCategory: number;
   constructor() {
     this.id = null;
     this.name = '';
     this.code = '';
+    this.processCategory = 0;
     this.accountingProcess = new AccountingProcess();
   }
 }

@@ -71,14 +71,13 @@
           <label for="supplier">Tipo de proceso</label>
           <p-dropdown [options]="processTypes" placeholder="Selecciona"
             [(ngModel)]="model.processType" id="processType" [filter]="true"></p-dropdown>
-
         </div>
       </div>
     </div>
     <div class="p-grid">
       <div class="p-col-12 p-sm-4">
         <div class="p-field p-fluid">
-          <label for="numberInvoice">Descripcion</label>
+          <label for="numberInvoice">Observación< </label>
           <input type="text" pInputText [(ngModel)]="model.description" />
         </div>
       </div>
@@ -88,12 +87,8 @@
           <label for="supplier">Proveedor</label>
           <p-dropdown [options]="suppliers" placeholder="Selecciona"
             [(ngModel)]="model.supplier" id="supplier" [filter]="true"></p-dropdown>
-
         </div>
       </div>
-
-
-
       <div class="p-col-12 p-sm-3">
         <div class="p-field p-fluid">
           <label for="date">Fecha</label>
@@ -114,6 +109,7 @@
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
+          <th>Bodega</th>
           <th style="width: 100px;">Cantidad</th>
           <th>Precio</th>
           <th>Gravamenes</th>
@@ -129,9 +125,13 @@
             <p-dropdown [options]="articles" [(ngModel)]="detail.article"
             placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
           </td>
+          <td>
+            <p-dropdown [options]="stores" [(ngModel)]="detail.store"
+            placeholder="Selecciona" [filter]="true"></p-dropdown>
+          </td>
           <td style="width: 100px;">
-            <input type="number" pInputText pKeyFilter="num" min="0" [(ngModel)]="detail.quantity"
-               (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
+            <input type="number"  pInputText pKeyFilter="num" min="1" [(ngModel)]="detail.quantity"
+               (keyup)="onChangeQuantity()" (change)="onChangeQuantity()"  >
             <span class="text-Available">Disponible: {{detail.article.stock}}</span>
           </td>
           <td>$ {{ detail.article.acquisitionValue }}</td>

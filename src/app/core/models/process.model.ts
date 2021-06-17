@@ -11,6 +11,7 @@ export class Process {
   id?: number;
   description: string;
   numberInvoice: string;
+  numLote: string;
   dateInvoice: string;
   typeMoviment: string;
   typePayment: TypePayment;
@@ -30,12 +31,12 @@ export class Process {
   subTotal: number;
   totalLien:number;
   createdAt: string;
-  account: Account;
 
   constructor() {
     this.id = null;
     this.description = '';
     this.numberInvoice = '';
+    this.numLote = '';
     this.dateInvoice = '';
     this.typeMoviment = '';
     this.typePayment = new TypePayment();
@@ -46,7 +47,7 @@ export class Process {
     this.carrier = new Employee();
     this.supplier = new Supplier();
     this.processType = new ProcessType();
-    this.state = '';
+    this.state = 'P';
     this.address = '';
     this.total = 0;
     this.reteFuente = 0;
@@ -55,7 +56,6 @@ export class Process {
     this.subTotal= 0;
     this.totalLien = 0;
     this.createdAt = '';
-    this.account = new Account();
 
   }
 

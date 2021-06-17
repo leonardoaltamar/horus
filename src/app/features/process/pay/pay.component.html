@@ -1,0 +1,111 @@
+<div styleClass="ssw-panel" class="card scroll">
+  <div class="card-header">
+    Ingresos
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <p-table [value]="pays" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+        [globalFilterFields]="['descripcion']">
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            <span class="p-input-icon-right">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar..."
+                (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
+            </span>
+            <button pButton pRipple (click)="newPay()" icon="pi pi-plus" iconPos="right" label="Nuevo"
+              class="button-text p-button-close"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Proveedor</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>*</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
+          <tr>
+            <td>{{dataRow.numberInvoice}}</td>
+            <td>{{dataRow.description}}</td>
+            <td>{{dataRow.supplier.person.name}} {{dataRow.supplier.person.surname}}
+              {{dataRow.supplier.person.secondSurname}}</td>
+            <td>{{dataRow.dateInvoice}}</td>
+            <td>$ {{dataRow.total}}</td>
+            <td>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="button-action"></button>
+              <button pButton pRipple type="button" icon="pi pi-print" class="button-action"
+                (click)="downloadPdf(dataRow)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Nuevo pago" class="modal"  [style]="{width: '60em'}" [(visible)]="showModal" [modal]="true" [baseZIndex]="10000"
+  [resizable]="false">
+
+  <div class="card-body body">
+    <div class="p-grid">
+      <div class="p-col-12 p-sm-2">
+        <div class="p-field p-fluid">
+          <label for="numberInvoice">Código</label>
+          <input id="disabled-input" type="text" pInputText readonly [(ngModel)]="model.numberInvoice" />
+        </div>
+      </div>
+
+      <div class="p-col-12 p-sm-2">
+        <div class="p-field p-fluid">
+          <label for="date">Fecha</label>
+          <p-calendar inputId="date" [(ngModel)]="model.dateInvoice" dateFormat="yy-mm-dd">
+          </p-calendar>
+        </div>
+      </div>
+
+
+      <div class="p-col-12 p-sm-3">
+        <div class="p-field p-fluid">
+          <label for="supplier">Tipo de proceso</label>
+          <p-dropdown [options]="processTypes" placeholder="Selecciona" [(ngModel)]="model.processType" id="processType"
+            [filter]="true"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="numberInvoice">Observación</label>
+          <input type="text" pInputText [(ngModel)]="model.description" />
+        </div>
+      </div>
+
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="customer">Cliente</label>
+          <p-dropdown [options]="customers" placeholder="Selecciona" id="customer" [filter]="true"
+            [(ngModel)]="model.client"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="supplier">Proveedor</label>
+          <p-dropdown [options]="suppliers" placeholder="Selecciona" [(ngModel)]="model.supplier" id="supplier"
+            [filter]="true"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-col-12 p-sm-3">
+        <div class="p-field p-fluid">
+          <label for="numberInvoice">Valor a pagar</label>
+          <input id="disabled-input" type="text" pInputText readonly [(ngModel)]="model.numberInvoice" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</p-dialog>

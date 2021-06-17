@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouteStateService } from '@core/services/route-state.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ProcessType, Account, AccountingProcess } from '@core/models'
 import { ProcessTypeService } from '@core/services/process-type.service';
 import { AccountService } from '@core/services/account.service';
@@ -21,6 +21,7 @@ export class ProcessTypeComponent {
   processTypes: ProcessType[] = [];
   accounts: Account[] = [];
   filterAccounts: Account[] = [];
+  processCategories: SelectItem[] = [];
   accountingProcess: AccountingProcess = new AccountingProcess();
   isLoading: boolean = false;
   showModal: boolean = false;
@@ -38,6 +39,7 @@ export class ProcessTypeComponent {
         account: [''],
         caccount: [''],
         processNature: [''],
+        processCategory: ['', [Validators.required]],
         ivaAccountNature: [''],
         ivaAccount: [''],
         ivaAcountNature: [''],
@@ -55,8 +57,26 @@ export class ProcessTypeComponent {
     this.routeStateService.add("Tipo de proceso", "/configuration/process_types", null, false);
     this.getAllprocessTypes();
     this.getAllAccounts();
-
-
+    this.processCategories.push({
+      label: "Compras",
+      value: 1
+    });
+    this.processCategories.push({
+      label: "Egresos",
+      value: 2
+    });
+    this.processCategories.push({
+      label: "Ventas",
+      value: 3
+    });
+    this.processCategories.push({
+      label: "Ingresos",
+      value: 4
+    });
+    this.processCategories.push({
+      label: "Producción",
+      value: 5
+    });
   }
 
   async getAllAccounts(){
@@ -99,6 +119,7 @@ export class ProcessTypeComponent {
       );
     }
     else {
+      console.log(this.model);
       this.service.update(this.model.id, this.model).pipe(first()).subscribe(
         data => {
           if (data['success']) {
@@ -159,17 +180,6 @@ export class ProcessTypeComponent {
 
   }
 
-  processNature(checked: boolean){
-    if (checked) {
-    this.model.accountingProcess.processNature = 'D';
-    }
-    if (!checked) {
-      this.model.accountingProcess.processNature = 'C';
-      }
-
-      console.log(this.model.accountingProcess.processNature);
-
-  }
 
   ivaAccountNature(checked: boolean){
     if (checked) {

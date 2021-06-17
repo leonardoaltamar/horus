@@ -17,19 +17,25 @@
               <th>Medida</th>
               <th>Fecha</th>
               <th>Tipo de movimiento</th>
+              <th>Proceso</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-dataRow let-rowIndex="rowIndex">
             <tr>
               <td>{{rowIndex+1}}</td>
               <td>{{dataRow.article.name}}</td>
-              <td>{{dataRow.typeMoviment === 1 ? '+': '-'}} {{dataRow.quantity}}</td>
+              <td>{{dataRow.typeMoviment === 1 || dataRow.typeMoviment === 0 ? '+': '-'}} {{dataRow.quantity}}</td>
               <td>{{dataRow.measurement.description}}</td>
               <td>{{dataRow.date}}</td>
               <td>
-                  <span *ngIf="dataRow.typeMoviment===1" [class]="'sales-badge status-' + dataRow.typeMoviment">Entrada</span>
+                  <span *ngIf="dataRow.typeMoviment===1 || dataRow.typeMoviment === 0" [class]="'sales-badge status-1'">Entrada</span>
                   <span *ngIf="dataRow.typeMoviment===-1" [class]="'sales-badge status-' + dataRow.typeMoviment">Salida</span>
               </td>
+              <td>
+                <span *ngIf="dataRow.typeMoviment===1">Compra</span>
+                <span *ngIf="dataRow.typeMoviment===0">Producción</span>
+                <span *ngIf="dataRow.typeMoviment===-1">Ventas</span>
+            </td>
             </tr>
           </ng-template>
         </p-table>

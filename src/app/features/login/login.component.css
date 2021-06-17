@@ -8,6 +8,7 @@
 .container__body{
     font-family: sans-serif, 'Roboto';
     overflow: hidden;
+    margin-left: 35%;
 }
 
 .wave{

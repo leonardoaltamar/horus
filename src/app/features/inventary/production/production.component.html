@@ -32,12 +32,12 @@
         <ng-template pTemplate="body" let-productionOrder let-rowIndex="rowIndex">
           <tr>
             <td>{{rowIndex+1}}</td>
-            <td>{{productionOrder.numOrder}}</td>
-            <td>{{productionOrder.date || ""}} </td>
+            <td>{{productionOrder.numberInvoice}}</td>
+            <td>{{productionOrder.dateInvoice || ""}} </td>
             <td>{{productionOrder.numLote || ""}}</td>
             <td>
-              <span *ngIf="productionOrder.state === 'A'" [class]="'sales-badge status-' + productionOrder.state">Terminado</span>
-              <span *ngIf="productionOrder.state === 'E'" [class]="'sales-badge status-' + productionOrder.state">Pendiente</span>
+              <span *ngIf="productionOrder.state === 'F'" [class]="'sales-badge status-' + productionOrder.state">Terminado</span>
+              <span *ngIf="productionOrder.state === 'P'" [class]="'sales-badge status-' + productionOrder.state">Pendiente</span>
             </td>
             <td>
               <button pButton pRipple type="button"
@@ -63,8 +63,8 @@
   <div class="card-body">
     <div class="p-d-flex p-jc-between">
       <div class="order-detail-title">
-        <p>Fecha de inicio: {{productionOrder.date}}</p>
-        <p>Número de orden: {{productionOrder.numOrder}}</p>
+        <p>Fecha de inicio: {{productionOrder.dateInvoice}}</p>
+        <p>Número de orden: {{productionOrder.numberInvoice}}</p>
         <p>Número de lote: {{productionOrder.numLote}}</p>
       </div>
       <div class="container-state">
@@ -134,7 +134,7 @@
 
       <div class="p-field p-col-5 p-sm-5">
         <label for="date">Fecha de inicio</label>
-        <input id="date" type="date" formControlName="date" [(ngModel)]="productionOrder.date"
+        <input id="date" type="date" formControlName="date" [(ngModel)]="productionOrder.dateInvoice"
           onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
         <ng-container *ngIf="form_production.get('date').hasError('required') && form_production.get('date').touched">
           <small class="p-invalid p-text-center">El codigo es obligatorio</small>
@@ -144,9 +144,20 @@
         </ng-container>
       </div>
 
+      <div class="p-col-12 p-sm-4">
+        <div class="p-field p-fluid">
+          <label for="supplier">Tipo de proceso</label>
+          <p-dropdown [options]="processTypes" formControlName="processType" placeholder="Selecciona"
+            [(ngModel)]="productionOrder.processType" id="processType" [filter]="true"></p-dropdown>
+        </div>
+        <ng-container *ngIf="form_production.get('processType').hasError('required') && form_production.get('processType').touched">
+          <small class="p-invalid p-text-center">El codigo es obligatorio</small>
+        </ng-container>
+      </div>
+
       <div class="p-field p-col-5 p-sm-3">
         <label for="numOrder">Numero de orden</label>
-        <input id="numOrder" formControlName="numOrder" [(ngModel)]="productionOrder.numOrder" type="text"
+        <input id="numOrder" formControlName="numOrder" [(ngModel)]="productionOrder.numberInvoice" type="text"
           onkeyup="javascript:this.value = this.value.toUpperCase();" pInputText>
         <ng-container *ngIf="form_production.get('numOrder').hasError('required') && form_production.get('numOrder').touched">
           <small class="p-invalid p-text-center">El codigo es obligatorio</small>

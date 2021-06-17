@@ -26,6 +26,10 @@ export class ProcessTypeService {
     return this.http.get<ProcessType>(`${this.endPoint}/${id}`).toPromise();
   }
 
+  getProcessTypeByCategory(categoryProcessId: string){
+    return this.http.get<ProcessType[]>(`${this.endPoint}/processCategory/${categoryProcessId}`).toPromise();
+  }
+
   create(processType: ProcessType) {
     return this.http.post<ProcessType>(`${this.endPoint}`, processType);
   }

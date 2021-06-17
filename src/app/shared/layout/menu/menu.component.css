@@ -8,6 +8,7 @@
   height: 100%;
   position: fixed;
   overflow: auto;
+  padding-bottom: 10em;
 }
 
 :host /deep/ .p-panelmenu .p-panelmenu-header > a{

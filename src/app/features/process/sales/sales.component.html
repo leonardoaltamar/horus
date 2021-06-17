@@ -38,8 +38,8 @@
             <td>
               <button pButton pRipple type="button" icon="pi pi-pencil" class="button-action" (click)="modifySale(dataRow)"></button>
               <button pButton pRipple type="button" icon="pi pi-trash" class="button-action" (click)="deleteSale(dataRow)"></button>
-              <button pButton pRipple type="button" icon="pi pi-print" class="button-action"
-                (click)="downloadPdf(dataRow)"></button>
+              <button pButton pRipple type="button" icon="pi pi-print" class="button-action" (click)="downloadPdf(dataRow)"></button>
+              <button pButton pRipple type="button" icon="pi pi-dollar" class="button-action" (click)="downloadPdf(dataRow)"></button>
             </td>
           </tr>
         </ng-template>
@@ -86,7 +86,7 @@
     <div class="p-grid">
       <div class="p-col-12 p-sm-6">
         <div class="p-field p-fluid">
-          <label for="numberInvoice">Descripcion</label>
+          <label for="numberInvoice">Observación</label>
           <input type="text" pInputText [(ngModel)]="model.description" />
         </div>
       </div>
@@ -130,7 +130,7 @@
   </div>
 
   <div class="card-header p-d-flex p-jc-between p-ai-center">
-    <span>Detalle de compra</span>
+    <span>Detalle de venta</span>
   </div>
 
   <div class="card-body">
@@ -138,6 +138,7 @@
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
+          <th>Bodega</th>
           <th style="width: 100px;">Cantidad</th>
           <th>Precio</th>
           <th>Gravamenes</th>
@@ -153,8 +154,12 @@
             <p-dropdown [options]="articles" [(ngModel)]="detail.article"
               placeholder="Selecciona" [filter]="true" filterBy="name" optionLabel="name"></p-dropdown>
           </td>
+          <td>
+            <p-dropdown [options]="stores" [(ngModel)]="detail.store"
+            placeholder="Selecciona" [filter]="true"></p-dropdown>
+          </td>
           <td style="width: 100px;">
-            <input type="number" pInputText pKeyFilter="num" min="0" [(ngModel)]="detail.quantity"
+            <input type="number" pInputText pKeyFilter="num" min="1" [max]="detail.article.stock"  [(ngModel)]="detail.quantity"
                (keyup)="onChangeQuantity()" (change)="onChangeQuantity()">
             <span class="text-Available">Disponible: {{detail.article.stock}}</span>
           </td>
@@ -210,4 +215,4 @@
       <p-button label="Guardar" (onClick)="save()"></p-button>
     </div>
   </div>
-
+</div>

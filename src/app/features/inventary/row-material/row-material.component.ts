@@ -66,6 +66,7 @@ export class RawMaterialComponent implements OnInit {
     try {
       this.isLoading = true;
       this.rowMaterials = await this.service.getAll();
+      console.log(this.rowMaterials);
       this.rowMaterials = this.rowMaterials.filter(article => article.rawMaterials.length === 0);
       this.isLoading = false;
     } catch (error) {

@@ -12,13 +12,12 @@ export class AccountingProcess{
   reteIcaAccountNature: string;
   reteFuenteAccount:Account;
   reteFuenteAccountNature: string;
-  processNature: string;
-
+  inventaryAccount:Account;
+  productAccount: Account;
   constructor(){
     this.id = null;
     this.creditAccount = new Account();
     this.debitAccount = new Account();
-    this.processNature = 'C';
     this.ivaAccount = new Account();
     this.ivaAccountNature= 'C';
     this.reteIvaAccount = new Account();
@@ -27,7 +26,8 @@ export class AccountingProcess{
     this.reteIcaAccountNature = 'C';
     this.reteFuenteAccount = new Account();
     this.reteFuenteAccountNature = "";
-    this.processNature = '';
+    this.inventaryAccount = new Account();
+    this.productAccount = new Account();
   }
 
 }

@@ -3,6 +3,7 @@ import { ProcessComponent } from './process.component';
 import { NgModule } from '@angular/core';
 import { SalesComponent } from './sales/sales.component';
 import { purchasesComponent } from './purchases/purchases.component';
+import { PayComponent } from './pay/pay.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
         path: 'purchases',
         component: purchasesComponent,
       },
+      {
+        path: 'pay',
+        component: PayComponent
+      }
     ],
   },
 ];
