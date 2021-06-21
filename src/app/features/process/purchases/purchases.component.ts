@@ -1,6 +1,7 @@
 import { ProcessService } from '@core/services/process.service';
 import { MessageService, SelectItem } from 'primeng/api';
 import { Process } from '@core/models/process.model';
+import { Payment } from '@core/models/payment.model';
 import { Component } from '@angular/core';
 import { RouteStateService } from '@core/services/route-state.service';
 import { InventoryMovement } from '@core/models/detail-sale.model';
@@ -15,6 +16,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LienService } from '@core/services/lien.service';
 import { AccountService } from '@core/services/account.service';
 import { StoreService } from '@core/services/store.service';
+import { PaymentService } from '@core/services/payment.service';
 @Component({
   selector: 'purchases',
   templateUrl: 'purchases.component.html',
@@ -31,16 +33,20 @@ export class purchasesComponent {
   articles: Article[] = [];
   suppliers: SelectItem[] = [];
   stores: SelectItem[] = [];
+  payments: Payment[] = [];
   processTypes: SelectItem[] = [];
   showModal: boolean = false;
   measurements: Measurement[] = [];
   showEdit: boolean = false;
+  showModalPayment: boolean = false;
+  viewPayment: boolean = false;
   liens: Lien[] = [];
   accounts: Account[] = [];
   subtotal:number = 0;
   reteFuente:number = 0;
   reteIca: number = 0;
   reteIva:number = 0;
+  sumPayment: number = 0;
   dataDetail: any[] = [];
   filterAccounts: Account[] = [];
   constructor(private service: ProcessService,
@@ -50,6 +56,7 @@ export class purchasesComponent {
               private serviceMeasurement: MeasurementService,
               private processTypeService: ProcessTypeService,
               private messageService: MessageService,
+              private paymentService: PaymentService,
               private _formBuilder: FormBuilder,
               private serviceSupplier: SupplierService,
               private accountService: AccountService,
@@ -179,6 +186,20 @@ export class purchasesComponent {
 
   onChangeQuantity() {
     this.calculateTotal();
+  }
+
+  modalPayment(process: Process){
+    this.showModalPayment = true;
+    this.model = process;
+    this.getAllPaymentByProcess(process);
+  }
+
+  async getAllPaymentByProcess(process: Process){
+    this.payments = await this.paymentService.getByProcess(process.id);
+    console.log(this.payments);
+    this.payments.forEach(pay =>{
+      this.sumPayment += pay.value;
+    })
   }
 
   save() {

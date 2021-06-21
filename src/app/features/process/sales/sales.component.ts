@@ -50,7 +50,6 @@ export class SalesComponent {
   showModal: boolean = false;
   showModalPayment: boolean = false;
   measurements: Measurement[] = [];
-  viewPaymentCreate: boolean = false;
   viewPayment: boolean = false;
   showEdit: boolean = false;
   liens: Lien[] = [];
