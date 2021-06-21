@@ -41,7 +41,7 @@ export class EgressComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.routeStateService.add("Egresos", "/process/egress", null, false);
+    this.routeStateService.add("Egresos", "/process/egress", null, true);
     this.getAllPurchases();
     this.getProcessTypeByCategory(this.processCategory);
     this.getAllSuppliers();

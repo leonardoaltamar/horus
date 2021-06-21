@@ -28,7 +28,7 @@ export class MenuComponent {
 
     this.items = [
       {
-        label: 'Remisiones',
+        label: 'Procesos',
         icon: 'fas pi-pw fa-list-alt',
         items: [
           { label: 'Ventas', icon: 'fas pi-fw fa-truck', routerLink: ["/process/sales"] },
@@ -40,7 +40,9 @@ export class MenuComponent {
         icon: 'fas fa-book',
         items:[
           {label: 'Cuentas', icon: 'fas fa-dollar-sign', routerLink: ["/accounting/accounts"]},
-          {label: 'Tipo de Procesos', icon: 'fas fa-dollar-sign', routerLink: ["/configuration/process_types"]}
+          {label: 'Tipo de Procesos', icon: 'fas fa-dollar-sign', routerLink: ["/configuration/process_types"]},
+          {label: 'Ingresos', icon: 'fas fa-dollar-sign', routerLink: ["/process/pay"]},
+          {label: 'Egresos', icon: 'fas fa-dollar-sign', routerLink: ["/process/egress"]}
         ]
       },
       {

@@ -39,7 +39,7 @@ export class PayComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.routeStateService.add("Pagos", "/process/pay", null, false);
+    this.routeStateService.add("Pagos", "/process/pay", null, true);
     this.getAllPurchases();
     this.getProcessTypeByCategory(this.processCategory);
     this.getAllSuppliers();
@@ -73,6 +73,7 @@ export class PayComponent implements OnInit {
               label: processType.name,
               value: processType
           });
+          console.log(this.processTypes);
       });
     } catch (error) {
       console.error(error);
