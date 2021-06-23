@@ -52,7 +52,7 @@ export class MainComponent implements OnInit {
     this.getLastSales();
     this.getTopEmployees();
     this.getAllOrderProdution();
-    this.getTopProduct();
+    // this.getTopProduct();
   }
 
   async getSalesYear() {

@@ -67,9 +67,7 @@ export class MenuComponent {
         items: [
           { label: 'Clientes', icon: 'fas pi-fw fa-users', routerLink: ["/configuration/customers"] },
           { label: 'Proveedores', icon: 'fas pi-fw fa-person-dolly', routerLink: ["/configuration/suppliers"] },
-          { label: 'Empleados', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/employee"] },
-          { label: 'Tipos de empleados', icon: 'fas fa-user-cog', routerLink: ["/configuration/type_employee"] },
-          { label: 'Tipos de proveedores', icon: 'fas pi-fw fa-people-carry', routerLink: ["/configuration/type_supplier"] }
+          { label: 'Empleados', icon: 'fas pi-fw fa-user-tie', routerLink: ["/configuration/employee"] }
         ]
       },
       {
@@ -82,6 +80,8 @@ export class MenuComponent {
           { label: 'Gravámenes', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/liens"] },
           { label: 'Medidas', icon: 'fas pi-fw fa-balance-scale-right', routerLink: ["/configuration/measurements"] },
           { label: 'Tipos de pago', icon: 'fas pi-fw fa-money-check-alt', routerLink: ["/configuration/type_payment"] },
+          { label: 'T.empleados', icon: 'fas fa-user-cog', routerLink: ["/configuration/type_employee"] },
+          { label: 'T.proveedores', icon: 'fas pi-fw fa-people-carry', routerLink: ["/configuration/type_supplier"] }
         ]
       }
     ];

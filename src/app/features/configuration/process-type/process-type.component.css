@@ -1,3 +1,13 @@
+:host/deep/ .p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: #495057;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+
 .acount-iva,.acount-reteiva, .acount-retefuente, .acount-reteica{
   width: 18em;
 }

@@ -60,9 +60,9 @@ form{
 
 .login-content h2{
 	margin: 15px 0;
-	color: #333;
+	color: rgb(170, 170, 170);
 	text-transform: uppercase;
-	font-size: 2.9rem;
+	font-size: 1.8rem;
 }
 
 .login-content .input-div{
@@ -111,7 +111,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #38d39f;
+	background-color: #185A73;
 	transition: .4s;
 }
 
@@ -133,7 +133,7 @@ form{
 }
 
 .input-div.focus > .i > i{
-	color: #38d39f;
+	color: #185A73;
 }
 
 .input-div > div > input{
@@ -165,7 +165,7 @@ a{
 }
 
 a:hover{
-	color: #38d39f;
+	color: #185A73;
 }
 
 .btn{
@@ -175,7 +175,7 @@ a:hover{
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+	background-image: linear-gradient(to right, #185A73, #234f5f, #1a576d);
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
