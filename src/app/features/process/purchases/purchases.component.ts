@@ -11,7 +11,7 @@ import { SupplierService } from '@core/services/supplier.service';
 import * as moment from 'moment';
 import { MeasurementService } from '@core/services/measurement.service';
 import { ProcessTypeService } from '@core/services/process-type.service';
-import { generatePdfPurchases } from '@core/helpers/invoice-pdf'
+import { generatePdfPurchases } from '@core/helpers/pdf-purchases'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LienService } from '@core/services/lien.service';
 import { AccountService } from '@core/services/account.service';
@@ -138,7 +138,6 @@ export class purchasesComponent {
   async getAllPurchases() {
     const data = await this.service.getAll();
     this.purchases = data.filter(e => e.typeMoviment === 'E');
-    console.log(this.purchases);
     this.purchases = this.purchases.map(purchase => {
       purchase.total = 0;
       purchase.subTotal = 0;
@@ -196,7 +195,6 @@ export class purchasesComponent {
 
   async getAllPaymentByProcess(process: Process){
     this.payments = await this.paymentService.getByProcess(process.id);
-    console.log(this.payments);
     this.payments.forEach(pay =>{
       this.sumPayment += pay.value;
     })
@@ -228,7 +226,6 @@ export class purchasesComponent {
     this.model.typeMoviment = 'E';
     this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
     if(!this.model.id) {
-      console.log(this.model);
       this.service.create(this.model).pipe().subscribe(
         data => {
           console.log(data);
@@ -236,6 +233,19 @@ export class purchasesComponent {
           this.purchases.push(this.model);
           this.showModal = false;
           this.messageService.add({ severity: 'success', summary: `Compra creada con exito`, detail: `Codigo: ${this.model.numberInvoice}` });
+        }
+      )
+    }else{
+      this.service.update(this.model.id,this.model).pipe().subscribe(
+        data =>{
+          if(data['success']){
+            this.purchases = this.purchases.map(purchase=>{
+              if(purchase.id === this.model.id){
+                purchase = this.model;
+                return purchase;
+              }
+            })
+          }
         }
       )
     }

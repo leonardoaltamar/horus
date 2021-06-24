@@ -182,7 +182,6 @@ export class SalesComponent {
   async getAllSales() {
     const data = await this.service.getAll();
     this.sales = data.filter(e => e.typeMoviment === 'S');
-    console.log(this.sales);
     this.sales = this.sales.map(purchase => {
       purchase.total = 0;
       purchase.subTotal = 0;
@@ -226,8 +225,6 @@ export class SalesComponent {
         })
       }
     })
-    console.log(data);
-
   }
 
 
@@ -268,7 +265,6 @@ export class SalesComponent {
 
   async getAllPaymentByProcess(process: Process){
     this.payments = await this.paymentService.getByProcess(process.id);
-    console.log(this.payments);
     this.payments.forEach(pay =>{
       this.sumPayment += pay.value;
     })
@@ -286,19 +282,15 @@ export class SalesComponent {
     this.model.total += this.model.reteIca;
   }
   save() {
-    this.model.processType.accountingProcess.debitAccount.value = this.model.subTotal;
-
-    this.model.processType.accountingProcess.creditAccount.value = this.model.total;
-
-
-    this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
-    this.model.processType.accountingProcess.reteIvaAccount.value = this.model.reteIva;
-    this.model.processType.accountingProcess.reteFuenteAccount.value = this.model.reteFuente;
-    this.model.processType.accountingProcess.reteIcaAccount.value = this.model.reteIca;
-
-    this.model.typeMoviment = 'S';
-    this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
     if (!this.model.id) {
+      this.model.processType.accountingProcess.debitAccount.value = this.model.subTotal;
+      this.model.processType.accountingProcess.creditAccount.value = this.model.total;
+      this.model.processType.accountingProcess.ivaAccount.value = this.model.totalLien;
+      this.model.processType.accountingProcess.reteIvaAccount.value = this.model.reteIva;
+      this.model.processType.accountingProcess.reteFuenteAccount.value = this.model.reteFuente;
+      this.model.processType.accountingProcess.reteIcaAccount.value = this.model.reteIca;
+      this.model.typeMoviment = 'S';
+      this.model.dateInvoice = moment(this.model.dateInvoice).format('YYYY-MM-DD');
       this.service.create(this.model).pipe().subscribe(
         data => {
           console.log(data);
@@ -318,7 +310,7 @@ export class SalesComponent {
                 x = this.model;
               return x
             });
-            this.messageService.add({ severity: 'success', summary: `tipo de proceso actualizado con éxito` });
+            this.messageService.add({ severity: 'success', summary: `Venta actualizada con éxito` });
           }
         }
       )

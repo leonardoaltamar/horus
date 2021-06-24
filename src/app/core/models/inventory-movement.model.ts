@@ -28,7 +28,7 @@ export class InventoryMovement {
       this.typeMoviment = 0;
       this.quantity = 0;
       this.measurement = new Measurement;
-      this.unitValue = 0;
+      this.unitValue;
       this.process = new Process();
       this.account = new Account();
       this.store = new Store();

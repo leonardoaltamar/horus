@@ -22,6 +22,7 @@
             <th>Código</th>
             <th>Descripción</th>
             <th>Vendedor</th>
+            <th>Estado</th>
             <th>Fecha</th>
             <th>Total</th>
             <th>*</th>
@@ -31,8 +32,11 @@
           <tr>
             <td>{{dataRow.numberInvoice}}</td>
             <td>{{dataRow.description}}</td>
-            <td>{{dataRow.seller.person.name}} {{dataRow.seller.person.surname}}
-              {{dataRow.seller.person.secondSurname}}</td>
+            <td>{{dataRow.seller.person.name}} {{dataRow.seller.person.surname}} {{dataRow.seller.person.secondSurname}}</td>
+            <td>
+              <span *ngIf="dataRow.state === 'F'" [class]="'sales-badge status-' + dataRow.state">Pagado</span>
+              <span *ngIf="dataRow.state === 'P'" [class]="'sales-badge status-' + dataRow.state">Pendiente</span>
+            </td>
             <td>{{dataRow.dateInvoice}}</td>
             <td>$ {{dataRow.total}}</td>
             <td>
@@ -262,5 +266,5 @@
   </p-table>
   </div>
 
-  <form-pay [associateProcess]="model" [processCategory]="2" [isSale]="true" *ngIf="!viewPayment"></form-pay>
+  <form-pay [associateProcess]="model" [processCategory]="4" [isSale]="true" *ngIf="!viewPayment"></form-pay>
 </p-dialog>

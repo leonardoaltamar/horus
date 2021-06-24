@@ -103,7 +103,7 @@ export const generatePdfPurchases= (modelPayment)=>{
 
   pdf.add(new Table([[new Txt("Datos del proveedor").bold().end]]).widths([500]).margin([0,10,0,5]).end);
 
-  //datos del cliente
+  //datos del proveedor
   pdf.add(new Columns(
     [new Columns([ new Txt('Nombre completo').bold().end, new Txt(`${modelPayment.supplier?.person?.name} ${modelPayment.supplier?.person?.surname} ${modelPayment?.supplier?.person?.secondSurname} `).end ]).columnGap(-25).end,
      new Columns([ new Txt('Fecha de pago').bold().end, new Txt(`${modelPayment.dateInvoice}`).end ]).columnGap(-25).end
@@ -115,7 +115,7 @@ export const generatePdfPurchases= (modelPayment)=>{
     ]).margin([0,0,0,5]).columnGap(60).end);
 
   pdf.add(new Columns(
-    [new Columns([ new Txt('Empresa ').bold().end, new Txt(`${modelPayment?.supplier?.bussiness.name}`).end ]).columnGap(-25).end,
+    [new Columns([ new Txt('Empresa ').bold().end, new Txt(`${modelPayment?.supplier?.bussiness?.name}`).end ]).columnGap(-25).end,
       new Columns([ new Txt('Tipo de pago').bold().end, new Txt(`${modelPayment?.typePayment?.description || ''}`).end ]).columnGap(-25).end
     ]).margin([0,0,0,5]).columnGap(60).end);
 

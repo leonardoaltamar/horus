@@ -123,16 +123,15 @@
   letter-spacing: .3px;
 }
 
-.status-P {
+.status-F {
   background-color: #c8e6c9;
   color: #256029;
 }
 
-.status-E {
+.status-P {
   background-color: #ffcdd2;
   color: #c63737;
 }
-
 
 .status-C {
   background: #e7e7e7;
