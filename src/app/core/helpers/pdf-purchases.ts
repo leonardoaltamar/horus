@@ -63,8 +63,8 @@ export const generatePdfPurchases= (modelPayment)=>{
 
   //tabla de totales
   pdf.add(new Table([
-    [ new Txt('IVA: ').bold().end , `$ ${modelPayment.totalLien}`],
-    [ new Txt('Sub-total: ').bold().end , `$ ${modelPayment.subTotal}`],
+    [ new Txt('IVA: ').bold().end , `$ ${modelPayment.totalLien || '$ 0'}`],
+    [ new Txt('Sub-total: ').bold().end , `$ ${modelPayment.subTotal || '$ 0'}`],
     [ new Txt('Descuentos: ').bold().end,'$ 0'],
     [new Txt('otros: ').bold().end,'$ 0'],
     [new Txt('valor Total: ').bold().end,`$ ${modelPayment.total}`],
