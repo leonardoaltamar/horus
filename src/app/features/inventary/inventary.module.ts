@@ -1,6 +1,5 @@
 import { InventaryComponent } from './inventary.component';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
 
 import { ProductComponent } from './product/product.component';
@@ -10,20 +9,7 @@ import { ProductionComponent } from './production/production.component';
 import { RawMaterialComponent } from './row-material/row-material.component';
 
 //Theme Primeng
-import { CalendarModule } from 'primeng/calendar';
-import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
-import { DropdownModule } from 'primeng/dropdown';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TabViewModule } from 'primeng/tabview';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -37,23 +23,8 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
   ],
   imports: [
     InventaryRoutingModule,
-    TableModule,
-    TabViewModule,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    FormsModule,
-    ReactiveFormsModule,
     CommonModule,
-    ConfirmDialogModule,
-    ConfirmPopupModule,
-    CalendarModule,
-    InputNumberModule,
-    ProgressSpinnerModule,
-    ToastModule,
-    DropdownModule,
-    MultiSelectModule,
-    ToggleButtonModule
+    SharedModule
   ],
   providers: [],
   entryComponents: []

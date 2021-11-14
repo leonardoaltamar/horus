@@ -11,6 +11,7 @@ import { ProcessRoutingModule } from './process-routing.module';
 
 //shared
 import { FormPayComponent } from '@shared/form-pay/form-pay.component';
+import { SharedModule } from '@shared/shared.module';
 //Theme Primeng
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
@@ -33,30 +34,14 @@ import { MessagesModule } from 'primeng/messages';
     purchasesComponent,
     SalesComponent,
     PayComponent,
-    EgressComponent,
-    FormPayComponent
+    EgressComponent
   ],
   exports: [
   ],
   imports: [
-    ProcessRoutingModule,
-    TableModule,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    FormsModule,
-    ReactiveFormsModule,
     CommonModule,
-    ConfirmDialogModule,
-    CalendarModule,
-    InputNumberModule,
-    ProgressSpinnerModule,
-    ToastModule,
-    DropdownModule,
-    MultiSelectModule,
-    CheckboxModule,
-    MessageModule,
-    MessagesModule
+    ProcessRoutingModule,
+    SharedModule
   ],
   providers: [],
   entryComponents: []
