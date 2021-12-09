@@ -24,12 +24,14 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TabViewModule } from 'primeng/tabview';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { DataViewModule } from 'primeng/dataview';
 
 const MODULES = [
     CommonModule,
     CalendarModule,
     TableModule,
     DialogModule,
+    DataViewModule,
     ButtonModule,
     InputTextModule,
     InputNumberModule,

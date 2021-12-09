@@ -14,6 +14,8 @@ export class Article {
   dateExpiry?: string;
   category: Category;
   rawMaterials: RawMaterial[];
+  imageUrl: string;
+  stockLimit: number;
   lien?: Lien;
 
   constructor() {

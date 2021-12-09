@@ -49,6 +49,7 @@ export class MenuComponent {
         label: 'Inventario',
         icon: 'fas pi-pw fa-inventory',
         items: [
+          { label: 'Articulos', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/articles"] },
           { label: 'Producción', icon: 'fas pi-fw fa-hand-holding-box', routerLink: ["/inventary/productions"] },
           { label: 'Movimiento de inventario', icon: 'fas fa-shopping-cart', routerLink: ["/inventary/inventory_movements"] },
         ]

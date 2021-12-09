@@ -28,7 +28,7 @@
               "node_modules/primeng/resources/themes/mdc-light-indigo/theme.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeflex/primeflex.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/apexcharts/dist/apexcharts.min.js"
@@ -94,7 +94,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -130,5 +130,10 @@
   "defaultProject": "horus",
   "cli": {
     "analytics": "43677749-ac2b-4954-90e8-529b37c1ab15"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
   }
 }

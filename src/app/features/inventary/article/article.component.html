@@ -1,0 +1,317 @@
+<div styleClass="ssw-panel" class="card scroll" *ngIf="!showModal">
+  <div class="card-header">
+    Articulos
+  </div>
+  <div class="card-body">
+    <div *ngIf="isLoading" class="p-text-center">
+      <p-progressSpinner animationDuration=".7s"></p-progressSpinner>
+    </div>
+    <div class="table-responsive" *ngIf="!isLoading">
+      <p-table [value]="rowMaterials" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines" #dt
+        [globalFilterFields]="['descripcion']">
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            <span class="p-input-icon-right">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar..."
+                (input)="dt.filterGlobal($event.target.value, 'contains')" class="input-line p-inputtext" />
+            </span>
+            <button pButton pRipple icon="pi pi-plus" iconPos="right" label="Nuevo" (click)="newRawMaterial()"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>stock</th>
+            <th>Valor de adquisición</th>
+            <th>Precio unitario</th>
+            <th>Categoría</th>
+            <th>Imagen</th>
+            <th>*</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rawMaterial let-rowIndex="rowIndex">
+          <tr>
+            <td>{{rowIndex+1}}</td>
+            <td>{{rawMaterial.code}}</td>
+            <td>{{rawMaterial.name}}</td>
+            <td>{{rawMaterial.stock}}</td>
+            <td>$ {{rawMaterial.acquisitionValue | currency: ' '}}</td>
+            <td>$ {{rawMaterial.unitValue | currency: ' '}}</td>
+            <td>{{rawMaterial.category.description}}</td>
+            <td>
+              <div class="imageCell">
+                <img class="imageTable"
+                  [src]="rawMaterial.imageUrl ? rawMaterial.imageUrl : 'assets/images/upload-tres.png'" />
+              </div>
+            </td>
+            <td>
+              <button pButton pRipple type="button" style="padding-right: 0.3em;"
+                (click)="modifyRawMaterial(rawMaterial)" icon="fas fa-pencil" class="button-action"></button>
+              <button pButton pRipple type="button" icon="fas fa-trash-alt" (click)="deleteRawMaterial(rawMaterial)"
+                class="button-action"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<div class="card scroll" *ngIf="showModal">
+  <div class="card-header p-d-flex p-jc-between p-ai-center">
+    <span>Nuevo Articulo</span>
+    <button pButton pRipple icon="fas fa-times" class="button-action" (click)="showModal=false"></button>
+  </div>
+
+  <div class="card-body">
+    <form action="" [formGroup]="form_row_material">
+      <div class="p-grid">
+        <div class="p-col-8">
+          <div class="p-grid">
+            <div class="p-field p-col-4 p-sm-12 p-md-6">
+              <label for="code">Código</label>
+              <input id="code" formControlName="code" [(ngModel)]="model.code" type="text"
+                onkeyup="javascript:this.value = this.value;" pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('code').hasError('required') && form_row_material.get('code').touched">
+                <small class="p-invalid p-text-center">El código es obligatorio</small>
+              </ng-container>
+              <ng-container
+                *ngIf="form_row_material.get('code').hasError('A') && form_row_material.get('code').touched">
+                <small class="caption p-text-center">Este código ya está en uso</small>
+              </ng-container>
+            </div>
+
+            <div class="p-field p-col-4 p-sm-12 p-md-6">
+              <label for="categories">Categorias</label>
+              <p-dropdown [options]="categories" [(ngModel)]="model.category.id" formControlName="category"
+                placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+              <ng-container
+                *ngIf="form_row_material.get('category').hasError('required') && form_row_material.get('category').touched">
+                <small class="p-invalid p-text-center">La categoria es obligatoria</small>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="p-grid">
+            <div class="p-field p-col-4 p-sm-12 p-md-6">
+              <label for="name">Nombre del articulo</label>
+              <input id="name" formControlName="name" [(ngModel)]="model.name" type="text" pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('code').hasError('required') && form_row_material.get('code').touched">
+                <small class="p-invalid p-text-center">El código es obligatorio</small>
+              </ng-container>
+              <ng-container
+                *ngIf="form_row_material.get('code').hasError('A') && form_row_material.get('code').touched">
+                <small class="caption p-text-center">Este código ya está en uso</small>
+              </ng-container>
+            </div>
+            <div class="p-field p-col-4 p-sm-12 p-md-6">
+              <label for="lien">Gravámenes</label>
+              <p-dropdown [options]="liens" [(ngModel)]="model.lien" formControlName="lien" placeholder="Seleccione"
+                [scrollHeight]="'135px'"></p-dropdown>
+            </div>
+          </div>
+
+          <div class="p-grid">
+            <div class="p-field p-col-12 p-sm-12 p-md-12">
+              <label for="name">Descripción</label>
+              <input id="name" formControlName="description" [(ngModel)]="model.description" type="text" pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('description').hasError('required') && form_row_material.get('description').touched">
+                <small class="p-invalid p-text-center">La descripción es obligatoria</small>
+              </ng-container>
+            </div>
+          </div>
+
+        </div>
+        <div class="p-col-4">
+          <div class="p-col-md-12">
+            <div class="container-image">
+              <div class="img">
+                <h4>Cargar imagen</h4>
+                <img (click)="fileInput.click()" [src]="model.imageUrl ? model.imageUrl : 'assets/images/profile.jpg'"
+                  alt="Imagen de perfil" class="imgRedonda " />
+                <ng-container *ngIf="isLoadingFile">
+                  <div>
+                    <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+                    <small>Subiendo foto...</small>
+                  </div>
+                </ng-container>
+                <div class="changePhoto">
+                  <span (click)="fileInput.click()"> <i class="fas fa-camera"></i></span>
+                </div>
+              </div>
+              <input type="file" (change)="onFileChanged($event)" style="display: none;" #fileInput accept="image/*" />
+            </div>
+            <!-- <button (click)="fileInput.click()" pButton pRipple icon="pi pi-arrow-up" type="button"></button> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-field p-col-3">
+          <label for="unitValue">Valor de venta </label>
+          <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="number" pInputText>
+          <ng-container
+            *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
+            <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
+          </ng-container>
+        </div>
+        <div class="p-field p-col-3">
+          <label for="unitValue">Valor de venta </label>
+          <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="number" pInputText>
+          <ng-container
+            *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
+            <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
+          </ng-container>
+        </div>
+        <div class="p-field p-col-3">
+          <label for="unitValue">Valor de venta </label>
+          <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="number" pInputText>
+          <ng-container
+            *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
+            <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
+          </ng-container>
+        </div>
+        <div class="p-field p-col-3">
+          <label for="unitValue">Valor de venta </label>
+          <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="number" pInputText>
+          <ng-container
+            *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
+            <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- <p-dialog header="Ingreso de articulos" class="dialog-small" [modal]="true"
+  [baseZIndex]="10000" [resizable]="false">
+  <div class="card-header p-d-flex p-jc-between p-ai-center">
+    <span>Nuevo articulo</span>
+    <button pButton pRipple icon="fas fa-times" class="button-action" (click)="showModal=false"></button>
+  </div>
+  <div class="card-body p-mt-2">
+    <form [formGroup]="form_row_material" class="">
+      <div class="p-grid">
+        <div class="p-col-md-6">
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-sm-12 p-md-4">
+              <label for="code">Código</label>
+              <input id="code" formControlName="code" [(ngModel)]="model.code" type="text"
+                onkeyup="javascript:this.value = this.value;" pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('code').hasError('required') && form_row_material.get('code').touched">
+                <small class="p-invalid p-text-center">El código es obligatorio</small>
+              </ng-container>
+              <ng-container
+                *ngIf="form_row_material.get('code').hasError('A') && form_row_material.get('code').touched">
+                <small class="caption p-text-center">Este código ya está en uso</small>
+              </ng-container>
+            </div>
+            <div class="p-field p-col-12 p-sm-12 p-md-8">
+              <label for="description">Nombre</label>
+              <input id="description" formControlName="name" [(ngModel)]="model.name" type="text" pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('name').hasError('required') && form_row_material.get('name').touched">
+                <small class="p-invalid p-text-center">El nombre del articulo es obligatorio</small>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-sm-12 p-md-4 ">
+              <label for="unitValue">Valor de adquisición</label>
+              <input id="unitValue" [(ngModel)]="model.acquisitionValue" formControlName="unitValue" type="number"
+                pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
+                <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
+              </ng-container>
+            </div>
+
+            <div class="p-field p-col-12 p-sm-12 p-md-4 ">
+              <label for="unitValue">Valor de venta </label>
+              <input id="unitValue" [(ngModel)]="model.unitValue" formControlName="unitValue" type="number"
+                pInputText>
+              <ng-container
+                *ngIf="form_row_material.get('unitValue').hasError('required') && form_row_material.get('unitValue').touched">
+                <small class="p-invalid p-text-center">El valor unitario es obligatorio</small>
+              </ng-container>
+            </div>
+
+            <div class="p-field p-col-12 p-sm-12 p-md-4">
+              <label for="expeditionDate">stock limite</label>
+              <input id="expeditionDate" type="number" formControlName="stockLimit" [(ngModel)]=" model.stockLimit"
+                formControlName="stockLimit"  pInputText>
+            </div>
+
+          </div>
+
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-sm-12 p-md-4">
+              <label for="categories">Categorias</label>
+              <p-dropdown [options]="categories" [(ngModel)]="model.category.id" formControlName="category"
+                placeholder="Seleccione" [scrollHeight]="'135px'"></p-dropdown>
+              <ng-container
+                *ngIf="form_row_material.get('category').hasError('required') && form_row_material.get('category').touched">
+                <small class="p-invalid p-text-center">La categoria es obligatoria</small>
+              </ng-container>
+            </div>
+
+            <div class="p-field p-col-12 p-sm-12 p-md-4">
+              <label for="lien">Gravámenes</label>
+              <p-dropdown [options]="liens" [(ngModel)]="model.lien" formControlName="lien" placeholder="Seleccione"
+                [scrollHeight]="'135px'"></p-dropdown>
+            </div>
+
+            <div class="p-field p-col-12 p-sm-12 p-md-4">
+              <label for="expeditionDate">Fecha de expiración</label>
+              <input id="expeditionDate" type="date" formControlName="expeditionDate" [(ngModel)]=" model.dateExpiry"
+                formControlName="expeditionDate" style="height: 30px; font-size: 12px;" pInputText>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="p-col-md-6">
+          <div class="container-image">
+            <div class="img">
+              <h4>Cargar imagen</h4>
+              <img (click)="fileInput.click()" [src]="model.imageUrl ? model.imageUrl : 'assets/images/upload-tres.png'"
+                alt="Imagen de perfil" class="imgRedonda " />
+              <ng-container *ngIf="isLoadingFile">
+                <div >
+                  <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+                  <small>Subiendo foto...</small>
+                </div>
+              </ng-container>
+              <div class="changePhoto">
+                <span (click)="fileInput.click()"> <i class="fas fa-camera"></i></span>
+              </div>
+            </div>
+            <input type="file" (change)="onFileChanged($event)" style="display: none;" #fileInput accept="image/*" />
+          </div>
+
+          <button (click)="fileInput.click()" pButton pRipple icon="pi pi-arrow-up" type="button"></button>
+        </div>
+      </div>
+
+
+
+      <br>
+      <p-footer class="p-grid">
+        <button type="submit" pButton pRipple icon="pi pi-save" label=" Guardar" (click)="saveRawMaterial()"
+          [disabled]="form_row_material.invalid"></button>
+        <button pButton pRipple icon="pi pi-times" label=" Cerrar" class="p-button-close button-text p-ml-2"
+          (click)="showModal=false"></button>
+      </p-footer>
+    </form>
+  </div>
+</p-dialog> -->
+<p-confirmDialog class="dialog-small"></p-confirmDialog>

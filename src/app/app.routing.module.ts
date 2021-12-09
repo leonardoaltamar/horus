@@ -16,16 +16,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'inventary',
+    loadChildren: () => import('./features/inventary/inventary.module').then(m => m.InventaryModule),
     component: LayoutComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('./features/inventary/inventary.module').then(
-            (m) => m.InventaryModule
-          ),
-      },
-    ],
   },
   {
     path: 'process',

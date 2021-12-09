@@ -353,26 +353,34 @@ label {
   width: 7.5rem;
 }
 
+.p-dropdown{
+  border: 1px solid #ced4da;
+}
+
 .p-inputtext {
-  padding: 0.376rem !important;
+  border: 1px solid #ced4da;
+}
+
+.p-inputtext {
+  padding: 0.65rem !important;
 }
 
 .p-inputtext:enabled:focus {
   box-shadow: none !important;
 }
 
-:host /deep/.input-line {
+:host .input-line {
   border: none;
   border-bottom: 1px solid #ced4da;
   border-radius: 0px;
   font-size: 14.5px;
 }
 
-:host /deep/.input-line:enabled:focus {
+:host .input-line:enabled:focus {
   box-shadow: none ;
 }
 
-:host /deep/.p-inputtext {
+:host .p-inputtext {
   border: none;
   border-bottom: 1px solid #ced4da;
 }

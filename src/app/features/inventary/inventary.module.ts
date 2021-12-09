@@ -10,6 +10,7 @@ import { RawMaterialComponent } from './row-material/row-material.component';
 
 //Theme Primeng
 import { SharedModule } from '@shared/shared.module';
+import { ArticleComponent } from './article/article.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SharedModule } from '@shared/shared.module';
     InventaryComponent,
     InventoryMovementComponent,
     ProductionComponent,
-    RawMaterialComponent
+    RawMaterialComponent,
+    ArticleComponent
   ],
   exports: [
   ],
